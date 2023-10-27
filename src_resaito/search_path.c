@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 12:40:54 by resaito           #+#    #+#             */
-/*   Updated: 2023/10/27 16:35:39 by resaito          ###   ########.fr       */
+/*   Updated: 2023/10/27 17:07:38 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,6 @@
 
 char	*search_path(const char *filename);
 char	*able_to_access(char *path);
-
-void	exesute_command(const char *args, const char *envp)
-{
-	(char *)args[0] = search_path(args[0]);
-	execve(args[0], args, envp);
-}
 
 char	*search_path(const char *filename)
 {
@@ -57,9 +51,10 @@ char	*able_to_access(char *path)
 	return (dup);
 }
 
-int	main(void)
-{
-    char *args[] = {"ls", "-la", NULL};
-
-	exesute_command(args, NULL);
-}
+// int	main(int ac, char **av, char **envp)
+// {
+//     (void)ac;
+//     (void)av;
+//     char *args[] = {search_path("ls"), "-la", NULL};
+// 	execve(args[0], args, envp);
+// }
