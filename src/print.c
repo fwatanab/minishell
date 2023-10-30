@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 00:21:46 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/10/30 10:28:36 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/10/30 17:25:07 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ void print_indent(int depth)
 
 void print_tree(t_node *node, int depth)
 {
+	int	i;
+
 	if (!node)
 		return ;
 	print_indent(depth);
@@ -43,10 +45,12 @@ void print_tree(t_node *node, int depth)
 	}
 	if (node->args)
 	{
-	    for (int i = 0; node->args[i]; ++i)
+		i = 0;
+		while (node->args[i])
 		{
 			print_indent(depth);
 			printf("Arg[%d]: %s\n", i, node->args[i]);
+			i++;
 		}
 	}
 	
