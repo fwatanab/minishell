@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 00:13:37 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/10/21 16:17:34 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/10/31 02:35:44 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,10 @@ static t_token_list	*add_token(t_token_list **list, char *token)
 
 	new_node = (t_token_list *)malloc(sizeof(t_token_list));
 	if (!new_node)
-		return (NULL);
+	{
+		list_free(list);
+		malloc_error();
+	}
 	new_node->token = ft_strdup(token);
 	new_node->next = NULL;
 	if (!(*list))
@@ -34,78 +37,74 @@ static t_token_list	*add_token(t_token_list **list, char *token)
 	return (new_node);
 }
 
-static const char	*handle_token(const char *str, \
-		const char *start, t_token_list **head)
+static t_token_list	*create_list(const char *str, \
+		t_token_list *list, t_token_check *check)
 {
-	char	*token;
-
-	if (str > start)
+	if (str > check->start)
 	{
-		token = ft_strndup(start, str - start);
-		add_token(head, token);
-		free(token);
+		check->token = strndup(check->start, str - check->start);
+		if (!check->token)
+		{
+			list_free(&list);
+			malloc_error();
+		}
+		add_token(&list, check->token);
+		free(check->token);
 	}
-	str++;
-	token = ft_strndup(str - 1, 1);
-	add_token(head, token);
-	free(token);
-	return (str);
+	return (list);
 }
 
-static const char	*check_cmd_type(const char *str, t_token_list *head, \
-		bool s_quote, bool d_quote)
+static const char	*check_cmd_type(const char *str, t_token_check *check)
 {
-	const char	*start;
-
-	start = str;
 	while (*str)
 	{
-		if (!d_quote && *str == D_QUOTE)
-			d_quote = true;
-		else if (!d_quote && *str == S_QUOTE)
-			s_quote = true;
-		else if ((d_quote && *str == D_QUOTE) || (s_quote && *str == S_QUOTE))
+		if (!check->s_quote && !check->d_quote && *str == D_QUOTE)
+			check->d_quote = true;
+		else if (!check->d_quote && !check->s_quote && *str == S_QUOTE)
+			check->s_quote = true;
+		else if ((check->d_quote && *str == D_QUOTE)
+			|| (check->s_quote && *str == S_QUOTE))
 		{
+			if (*str == D_QUOTE)
+				check->d_quote = false;
+			if (*str == S_QUOTE)
+				check->s_quote = false;
 			str++;
 			break ;
 		}
-		else if (!d_quote && !s_quote && *str == SPACE)
+		else if (!check->d_quote && !check->s_quote && *str == SPACE)
 			break ;
-		else if (!d_quote && !s_quote && (*str == PYPE
+		else if (!check->d_quote && !check->s_quote && (*str == PYPE
 				|| *str == REDIR_IN || *str == REDIR_OUT))
-		{
-			str = handle_token(str, start, &head);
 			break ;
-		}
 		str++;
 	}
 	return (str);
 }
 
-t_token_list	*tokenize(const char *str, t_token_list *head)
+t_token_list	*tokenize(const char *str)
 {
-	const char	*start;
-	char		*token;
-	bool		d_quote;
-	bool		s_quote;
+	t_token_list	*list;
+	t_token_check	*check;
 
+	list = NULL;
+	check = checker_init();
 	while (*str)
 	{
 		while (*str == SPACE)
 			str++;
-		start = str;
-		d_quote = false;
-		s_quote = false;
-		str = check_cmd_type(str, head, s_quote, d_quote);
-		if (!d_quote && !s_quote && (*(str - 1) == PYPE
-				|| *(str - 1) == REDIR_IN || *(str - 1) == REDIR_OUT))
-			start = str;
-		if (str > start)
+		check->start = str;
+		str = check_cmd_type(str, check);
+		if (*check->start == PYPE || *check->start == REDIR_IN
+			|| *check->start == REDIR_OUT)
 		{
-			token = strndup(start, str - start);
-			add_token(&head, token);
-			free(token);
+			check->start = str;
+			str++;
+			list = create_list(str, list, check);
 		}
+		else
+			list = create_list(str, list, check);
 	}
-	return (head);
+	free(check);
+	return (list);
 }
