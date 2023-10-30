@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 21:17:52 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/10/30 18:06:08 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/10/30 18:10:47 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,10 @@ int	syntax_analysis(char *line)
 	if (!head)
 		return (1);
 	check_token(head);
-	print_list(head);
+	// print_list(head);
 	node = parser_start(&head);
-	print_tree(node, 0);
-	// ft_execution(node);
+	// print_tree(node, 0);
+	ft_execution(node);
 	return (0);
 }
 

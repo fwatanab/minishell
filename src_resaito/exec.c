@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 13:39:58 by resaito           #+#    #+#             */
-/*   Updated: 2023/10/30 17:59:24 by resaito          ###   ########.fr       */
+/*   Updated: 2023/10/30 18:18:08 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,9 @@ void	execute_command(const char *cmd_name, char **args, int input_fd,
 		perror("execve");
 		exit(EXIT_FAILURE);
 	}
+	else
+		while (wait(NULL) > 0)
+			;
 }
 
 void	ft_execution(t_node *node)
