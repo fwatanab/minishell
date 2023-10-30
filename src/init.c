@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 00:15:40 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/10/19 21:55:30 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/10/27 19:31:35 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ t_node	*node_init(void)
 	node = (t_node *)malloc(sizeof(t_node));
 	if (!node)
 		return (NULL);
-	node->value = NULL;
+	node->name = NULL;
+	node->args = NULL;
 	node->left = NULL;
 	node->right = NULL;
 	return (node);
@@ -40,4 +41,6 @@ void	all_node_init(t_node *node)
 		free(node->left);
 		return ;
 	}
+	node->name = NULL;
+	node->args = NULL;
 }

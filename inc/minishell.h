@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 21:17:45 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/10/30 09:58:04 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/10/30 16:38:22 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,5 +85,8 @@ void	print_list(t_token_list *list);
 void	print_node(t_node *node);
 void	print_tree(t_node *node, int depth);
 void	print_syntax_tree(t_node *node, int depth);
+
+//resaito
+char	*search_path(const char *filename);
 
 #endif
