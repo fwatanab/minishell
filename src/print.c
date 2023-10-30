@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 00:21:46 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/10/30 09:57:48 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/10/30 10:28:36 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,34 +32,37 @@ void print_indent(int depth)
 
 void print_tree(t_node *node, int depth)
 {
-    if (!node) return;
-
-    print_indent(depth);
-    printf("Type: %d\n", node->type);
-
-    if (node->name) {
-        print_indent(depth);
-        printf("Name: %s\n", node->name);
-    }
-
-    if (node->args) {
-        for (int i = 0; node->args[i]; ++i) {
-            print_indent(depth);
-            printf("Arg[%d]: %s\n", i, node->args[i]);
-        }
-    }
-
-    if (node->left) {
-        print_indent(depth);
-        printf("Left:\n");
-        print_tree(node->left, depth + 1);
-    }
-
-    if (node->right) {
-        print_indent(depth);
-        printf("Right:\n");
-        print_tree(node->right, depth + 1);
-    }
+	if (!node)
+		return ;
+	print_indent(depth);
+	printf("Type: %d\n", node->type);
+	if (node->name)
+	{
+		print_indent(depth);
+		printf("Name: %s\n", node->name);
+	}
+	if (node->args)
+	{
+	    for (int i = 0; node->args[i]; ++i)
+		{
+			print_indent(depth);
+			printf("Arg[%d]: %s\n", i, node->args[i]);
+		}
+	}
+	
+	if (node->left)
+	{
+		print_indent(depth);
+		printf("Left:\n");
+		print_tree(node->left, depth + 1);
+	}
+	
+	if (node->right)
+	{
+		print_indent(depth);
+		printf("Right:\n");
+		print_tree(node->right, depth + 1);
+	}
 }
 
 void	print_node(t_node *node)
