@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 00:21:46 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/10/20 21:30:08 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/10/30 09:57:48 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,50 +22,60 @@ void	print_list(t_token_list *list)
 	printf("------------------\n\n");
 }
 
-void	printer(t_node *node, char c)
+
+void print_indent(int depth)
 {
-	if (!node)
-		return ;
-	if (c == 'l')
-	{
-		printf("left %s\n", node->value);
-		printf("left %u\n\n", node->type);
-		printf("right %s\n", node->right->value);
-		printf("right %u\n\n", node->right->type);
-		printer(node->left, 'l');
+	for (int i = 0; i < depth; ++i) {
+		printf("  ");
 	}
 }
 
-//void	print_node(t_node *node)
-//{
-//	if (!node)
-//		return ;
-//	while (node->right)
-//	{
-//		printf("node_value-> %s\n", node->value);
-//		printf("node_type-> %u\n\n", node->type);
-//		printf("node_left->value %s\n", node->left->value);
-//		printf("node_left->type %u\n\n", node->left->type);
-//		if (node->left->left)
-//			printer(node->left, 'l');
-//		if (node->left->right)
-//		{
-//			printer(node->right, 'r');
-////			printf("node_left->right->value %s\n", node->left->right->value);
-////			printf("node_left->right->type %u\n\n", node->left->right->type);
-//		}
-//		printf("node_right->value %s\n", node->right->value);
-//		printf("node_right->type %u\n\n", node->right->type);
-//		printf("-------node_right-------\n\n");
-//		node = node->right;
-//	}
-//}
+void print_tree(t_node *node, int depth)
+{
+    if (!node) return;
+
+    print_indent(depth);
+    printf("Type: %d\n", node->type);
+
+    if (node->name) {
+        print_indent(depth);
+        printf("Name: %s\n", node->name);
+    }
+
+    if (node->args) {
+        for (int i = 0; node->args[i]; ++i) {
+            print_indent(depth);
+            printf("Arg[%d]: %s\n", i, node->args[i]);
+        }
+    }
+
+    if (node->left) {
+        print_indent(depth);
+        printf("Left:\n");
+        print_tree(node->left, depth + 1);
+    }
+
+    if (node->right) {
+        print_indent(depth);
+        printf("Right:\n");
+        print_tree(node->right, depth + 1);
+    }
+}
 
 void	print_node(t_node *node)
 {
+	size_t	i;
+
 	if (!node)
 		return ;
-	printf("node_value-> %s\n", node->value);
+	printf("name %s\n", node->name);
+	i = 0;
+	while (node->args[i])
+	{
+		printf("%s ", node->args[i]);
+		i++;
+	}
+	printf("\n");
 	printf("node_type-> %u\n\n", node->type);
 	printf("--------------\n\n");
 	printf("left\n");

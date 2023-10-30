@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 19:19:00 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/10/25 18:52:33 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/10/30 09:56:54 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,47 @@ static char	*pop_token(t_token_list **list)
 	return (value);
 }
 
+static char	**add_array(char **array, char *token)
+{
+	size_t	len;
+	size_t	i;
+	char	**new_array;
+
+	len = 0;
+	if (array)
+	{
+		while (array[len])
+			len++;
+	}
+	new_array = (char **)malloc(sizeof(char *) * (len + 2));
+	if (!new_array)
+		exit(EXIT_FAILURE);
+	i = 0;
+	while (i < len)
+	{
+		new_array[i] = array[i];
+		i++;
+	}
+	new_array[len] = ft_strdup(token);
+	new_array[len + 1] = NULL;
+	if (!array)
+		free(array);
+	return (new_array);
+}
+
 static int	updata_type_value(t_node *node, \
 		t_token_list **list, t_parse_check *key)
 {
 	if (!key->key_type)
 	{
 		key->key_type = true;
-		node->type = N_PYPE;
-		node->value = key->token;
+		node->type = N_PIPE;
+		if (node->args)
+		{
+			free(node->args);
+			node->args = NULL;
+		}
+		node->name = key->token;
 		key->key_list = *list;
 	}
 	else
@@ -41,39 +74,15 @@ static int	updata_type_value(t_node *node, \
 	return (0);
 }
 
-//static t_node	*redir_parse(t_node *node, t_token_list **list, t_parse_check *key)
-//{
-//
-//	all_node_init(node);
-//	node->left->value = node->value;
-//	node->value = key->token;
-//	node->type = N_REDIR_IN;
-//	while (*list)
-//	{
-//		key->token = ft_strdup(pop_token(list));
-//		if (ft_strcmp(key->token, "|") == 0)
-//			break ;
-//		if (ft_strcmp(key->token, "<") == 0)
-//		{
-//			node->left = redir_parse(node->left, list, key);
-//			break ;
-//		}
-//		else
-//		{
-//			node->right->value = my_strjoin(node->right->value, key->token);
-//			node->right->value = my_strjoin(node->right->value, " ");
-//		}
-//	}
-//	return (node);
-//}
-
 static t_node	*updata_name_value(t_node *node, t_parse_check *key, t_token_list **list)
-{
+{ static size_t	i;
+
 	if (key->key_type)
 	{
+		if (node->right->name == NULL)
+			node->right->name = search_path(key->token);
 		node->right->type = N_COMMAND;
-		node->right->value = my_strjoin(node->right->value, key->token);
-		node->right->value = my_strjoin(node->right->value, " ");
+		node->right->args = add_array(node->right->args, key->token);
 	}
 	else if (!key->key_type)
 	{
@@ -82,12 +91,10 @@ static t_node	*updata_name_value(t_node *node, t_parse_check *key, t_token_list 
 //			key->key_redir = true;
 //			node->left = redir_parse(node->left, list, key);
 //		}
-//		else
-//		{
-			node->left->type = N_COMMAND;
-			node->left->value = my_strjoin(node->left->value, key->token);
-			node->left->value = my_strjoin(node->left->value, " ");
-//		}
+		if (node->left->name == NULL)
+			node->left->name = search_path(key->token);
+		node->left->type = N_COMMAND;
+		node->left->args = add_array(node->left->args, key->token);
 	}
 	return (node);
 }
@@ -115,34 +122,12 @@ t_node	*parser(t_node *node, t_token_list **list, t_parse_check *key)
 		else
 			node = updata_name_value(node, key, list);
 	}
-	if (!node->value)
+	if (node->type == N_COMMAND)
 	{
-		node->value = node->left->value;
-		node->left->value = NULL;
+		node->args = node->left->args;
+		node->left->args = NULL;
 	}
 	return (node);
-}
-
-void print_tree(t_node *node, int depth) {
-    if (!node) return;
-
-    // 右の子を表示
-    if (node->right) {
-        print_tree(node->right, depth + 1);
-    }
-
-    // 現在のノードの深さに応じてスペースを追加
-    for (int i = 0; i < depth; i++) {
-        printf("    ");
-    }
-
-    // 現在のノードの値を表示
-    printf("%s\n", node->value);
-
-    // 左の子を表示
-    if (node->left) {
-        print_tree(node->left, depth + 1);
-    }
 }
 
 t_node	*parser_start(t_token_list **list)
@@ -157,7 +142,7 @@ t_node	*parser_start(t_token_list **list)
 	if (!key)
 		return (NULL);
 	node = parser(node, list, key);
-    print_tree(node, 0);  // rootは木のルートノード
+	print_tree(node, 0);
 //	print_node(node);
 	free(key);
 	return (node);

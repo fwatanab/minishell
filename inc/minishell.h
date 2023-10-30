@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 21:17:45 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/10/23 16:43:04 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/10/30 09:58:04 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,14 @@ typedef enum e_type
 	N_REDIR_OUT,
 	N_REDIR_HERE,
 	N_REDIR_APPEND,
-	N_PYPE
+	N_PIPE
 }	t_type;
 
 typedef struct s_node
 {
 	enum e_type		type;
-	char			*value;
+	char			*name;
+	char			**args;
 	struct s_node	*left;
 	struct s_node	*right;
 }	t_node;
@@ -82,5 +83,7 @@ char	*my_strjoin(char const *s1, char const *s2);
 //print
 void	print_list(t_token_list *list);
 void	print_node(t_node *node);
+void	print_tree(t_node *node, int depth);
+void	print_syntax_tree(t_node *node, int depth);
 
 #endif
