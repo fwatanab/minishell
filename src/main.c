@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 21:17:52 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/10/27 17:04:01 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/10/30 18:02:31 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int	syntax_analysis(char *line)
 	check_token(head);
 	print_list(head);
 	node = parser_start(&head);
+	// ft_execution(node);
 	return (0);
 }
 

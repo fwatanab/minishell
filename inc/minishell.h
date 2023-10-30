@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 21:17:45 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/10/30 16:38:22 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/10/30 17:46:28 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,5 +88,6 @@ void	print_syntax_tree(t_node *node, int depth);
 
 //resaito
 char	*search_path(const char *filename);
+void	ft_execution(t_node *node);
 
 #endif
