@@ -6,57 +6,42 @@
 /*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 21:17:52 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/10/30 18:10:47 by resaito          ###   ########.fr       */
+/*   Updated: 2023/10/31 02:51:13 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-int	get_args(char *line)
+void	minishell(char *line)
 {
-	char	**input;
-
-	input = ft_split(line, SPACE);
-	if (!input)
-		return (1);
-	return (0);
-}
-
-int	syntax_analysis(char *line)
-{
-	t_token_list	*head;
+	t_token_list	*list;
 	t_node			*node;
 
-	head = NULL;
-	head = tokenize(line, head);
-	if (!head)
-		return (1);
-	check_token(head);
-	// print_list(head);
-	node = parser_start(&head);
-	// print_tree(node, 0);
+	list = tokenize(line);
+	check_token(list);
+//	print_list(list);
+	node = parser_start(&list);
+//	print_tree(node, 0);
 	ft_execution(node);
-	return (0);
+	list_free(&list);
+	node_free(node);
 }
 
 void	bash_loop(void)
 {
 	char	*line;
-	int		flag;
 
-	flag = 0;
-	while (flag == 0)
+	while (1)
 	{
 		line = readline(MINISHELL);
 		if (!line)
-			flag = 1;
+			break ;
 		else if (line[0] == '\0')
 			free(line);
 		else
 		{
 			add_history(line);
-			if (syntax_analysis(line) == 1)
-				flag = 1;
+			minishell(line);
 			free(line);
 		}
 	}
