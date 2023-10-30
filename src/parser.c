@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 19:19:00 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/10/30 18:02:23 by resaito          ###   ########.fr       */
+/*   Updated: 2023/10/30 18:07:34 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,9 @@ t_node	*parser(t_node *node, t_token_list **list, t_parse_check *key)
 	if (node->type == N_COMMAND)
 	{
 		node->args = node->left->args;
+		node->name = search_path(node->args[0]);
 		node->left->args = NULL;
+		node->left->name = NULL;
 	}
 	return (node);
 }
@@ -142,8 +144,6 @@ t_node	*parser_start(t_token_list **list)
 	if (!key)
 		return (NULL);
 	node = parser(node, list, key);
-	print_tree(node, 0);
-//	print_node(node);
 	free(key);
 	return (node);
 }
