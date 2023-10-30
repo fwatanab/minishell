@@ -2,11 +2,11 @@ NAME	= minishell
 
 SRCSDIR	= src/
 
-SRCS = main.c tokenize.c check_token.c utils.c parser.c init.c print.c
+SRCS = main.c free.c tokenize.c check_token.c utils.c parser.c init.c print.c
 
 RE_SRCSDIR	= src_resaito/
 
-RE_SRCS =exec.c search_path.c
+RE_SRCS = exec.c search_path.c
 
 OBJS	= $(addprefix $(SRCSDIR), $(SRCS:.c=.o))
 
