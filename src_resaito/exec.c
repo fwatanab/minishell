@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 13:39:58 by resaito           #+#    #+#             */
-/*   Updated: 2023/10/31 14:55:40 by resaito          ###   ########.fr       */
+/*   Updated: 2023/10/31 16:11:36 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 bool	has_pipe(t_node *node);
 
-void	execute_command(char *cmd_name, char **args, int input_fd, int output_fd)
+void	execute_command(char *cmd_name, char **args, int input_fd,
+		int output_fd)
 {
 	if (fork() == 0)
 	{
