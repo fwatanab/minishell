@@ -6,14 +6,15 @@
 /*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 13:39:58 by resaito           #+#    #+#             */
-/*   Updated: 2023/10/30 18:18:08 by resaito          ###   ########.fr       */
+/*   Updated: 2023/10/31 14:55:40 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-void	execute_command(const char *cmd_name, char **args, int input_fd,
-		int output_fd)
+bool	has_pipe(t_node *node);
+
+void	execute_command(char *cmd_name, char **args, int input_fd, int output_fd)
 {
 	if (fork() == 0)
 	{
@@ -38,8 +39,20 @@ void	execute_command(const char *cmd_name, char **args, int input_fd,
 
 void	ft_execution(t_node *node)
 {
-	// if (node->type == N_COMMAND)
+	if (node->type == N_COMMAND)
 		execute_command(node->name, node->args, STDIN_FILENO, STDOUT_FILENO);
+	// if (has_pipe(node))
+	// 	printf("has pipe\n");
+	// else
+	// 	printf("doesn't have pipe\n");
+}
+
+bool	has_pipe(t_node *node)
+{
+	if (node->type == N_PIPE)
+		return (true);
+	node = node->right;
+	return (false);
 }
 
 // int	main(void)
