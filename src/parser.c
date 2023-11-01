@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 19:19:00 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/10/30 18:07:34 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/11/01 20:55:03 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,42 +25,54 @@ static char	*pop_token(t_token_list **list)
 
 static char	**add_array(char **array, char *token)
 {
+	char	**new_array;
 	size_t	len;
 	size_t	i;
-	char	**new_array;
 
 	len = 0;
-	if (array)
+	if (array && array[len])
 	{
 		while (array[len])
 			len++;
 	}
 	new_array = (char **)malloc(sizeof(char *) * (len + 2));
 	if (!new_array)
-		exit(EXIT_FAILURE);
+	{
+		str_array_free(array);
+		malloc_error();
+	}
 	i = 0;
 	while (i < len)
 	{
-		new_array[i] = array[i];
+		new_array[i] = ft_strdup(array[i]);
+		if (!new_array[i])
+		{
+			str_array_free(new_array);
+			malloc_error();
+		}
 		i++;
 	}
 	new_array[len] = ft_strdup(token);
+	free(token);
+	if (!new_array[len])
+	{
+		str_array_free(new_array);
+		malloc_error();
+	}
 	new_array[len + 1] = NULL;
-	if (!array)
-		free(array);
+	str_array_free(array);
 	return (new_array);
 }
 
 static int	updata_type_value(t_node *node, \
 		t_token_list **list, t_parse_check *key)
 {
-	if (!key->key_type)
-	{
+	if (!key->key_type) {
 		key->key_type = true;
 		node->type = N_PIPE;
 		if (node->args)
 		{
-			free(node->args);
+			str_array_free(node->args);
 			node->args = NULL;
 		}
 		node->name = key->token;
@@ -74,8 +86,10 @@ static int	updata_type_value(t_node *node, \
 	return (0);
 }
 
-static t_node	*updata_name_value(t_node *node, t_parse_check *key, t_token_list **list)
-{ static size_t	i;
+static t_node	*updata_name_value(t_node *node, \
+		t_parse_check *key, t_token_list **list)
+{
+	static size_t	i;
 
 	if (key->key_type)
 	{
@@ -125,7 +139,7 @@ t_node	*parser(t_node *node, t_token_list **list, t_parse_check *key)
 	if (node->type == N_COMMAND)
 	{
 		node->args = node->left->args;
-		node->name = search_path(node->args[0]);
+		node->name = node->left->name;
 		node->left->args = NULL;
 		node->left->name = NULL;
 	}

@@ -6,13 +6,13 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 00:13:37 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/10/31 12:40:04 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/11/01 21:38:29 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-static t_token_list	*add_token(t_token_list **list, char *token)
+static void	add_token(t_token_list **list, char *token)
 {
 	t_token_list	*new_node;
 	t_token_list	*tmp;
@@ -24,6 +24,12 @@ static t_token_list	*add_token(t_token_list **list, char *token)
 		malloc_error();
 	}
 	new_node->token = ft_strdup(token);
+	if (!new_node)
+	{
+		free(new_node);
+		list_free(list);
+		malloc_error();
+	}
 	new_node->next = NULL;
 	if (!(*list))
 		*list = new_node;
@@ -34,7 +40,6 @@ static t_token_list	*add_token(t_token_list **list, char *token)
 			tmp = tmp->next;
 		tmp->next = new_node;
 	}
-	return (new_node);
 }
 
 static t_token_list	*create_list(const char *str, \
