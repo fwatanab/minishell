@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 02:23:51 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/10/31 02:24:08 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/11/01 21:39:16 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,18 @@
 void	list_free(t_token_list **list)
 {
 	t_token_list	*tmp;
+	t_token_list	*next;
 
-	while (*list)
+	if (!list && !*list)
+		return ;
+	tmp = *list;
+	while (tmp)
 	{
-		tmp = (*list)->next;
-		free(*list);
-		*list = tmp;
+		next = tmp->next;
+		free(tmp);
+		tmp = next;
 	}
+	*list = NULL;
 }
 
 void	str_array_free(char **array)
@@ -32,7 +37,10 @@ void	str_array_free(char **array)
 		return ;
 	i = 0;
 	while (array[i])
-		free(array[i++]);
+	{
+		free(array[i]);
+		i++;
+	}
 	free(array);
 }
 
@@ -40,10 +48,14 @@ void	node_free(t_node *node)
 {
 	if (!node)
 		return ;
-	node_free(node->left);
-	node_free(node->right);
-	str_array_free(node->args);
-	free(node->name);
+	if (node->args)
+		str_array_free(node->args);
+	if (node->name)
+		free(node->name);
+	if (node->left)
+		node_free(node->left);
+	if (node->right)
+		node_free(node->right);
 	free(node);
 }
 
