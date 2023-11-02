@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 19:19:00 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/01 20:55:03 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/11/02 17:14:42 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ static char	**add_array(char **array, char *token)
 		i++;
 	}
 	new_array[len] = ft_strdup(token);
-	free(token);
 	if (!new_array[len])
 	{
 		str_array_free(new_array);
@@ -67,19 +66,22 @@ static char	**add_array(char **array, char *token)
 static int	updata_type_value(t_node *node, \
 		t_token_list **list, t_parse_check *key)
 {
-	if (!key->key_type) {
+	if (!key->key_type)
+	{
 		key->key_type = true;
 		node->type = N_PIPE;
 		if (node->args)
 		{
-			str_array_free(node->args);
+//			str_array_free(node->args);
 			node->args = NULL;
 		}
 		node->name = key->token;
 		key->key_list = *list;
+	printf("11     %s\n", (*list)->token);
 	}
 	else
 	{
+		printf("--------     %s\n", (*list)->token);
 		node->right = parser(node->right, &key->key_list, key);
 		return (1);
 	}
@@ -89,8 +91,6 @@ static int	updata_type_value(t_node *node, \
 static t_node	*updata_name_value(t_node *node, \
 		t_parse_check *key, t_token_list **list)
 {
-	static size_t	i;
-
 	if (key->key_type)
 	{
 		if (node->right->name == NULL)
@@ -119,13 +119,10 @@ t_node	*parser(t_node *node, t_token_list **list, t_parse_check *key)
 	if (!node)
 		return (NULL);
 	key->key_type = false;
-	key->key_redir = false;
+	printf("     %s\n", (*list)->token);
 	while (*list)
 	{
-		if (!key->key_redir)
-			key->token = pop_token(list);
-		if (key->key_redir)
-			key->key_redir = false;
+		key->token = pop_token(list);
 		if (!key->token)
 			return (NULL);
 		if (ft_strcmp(key->token, "|") == 0)
@@ -136,7 +133,7 @@ t_node	*parser(t_node *node, t_token_list **list, t_parse_check *key)
 		else
 			node = updata_name_value(node, key, list);
 	}
-	if (node->type == N_COMMAND)
+	if (node->type == N_COMMAND && !node->right)
 	{
 		node->args = node->left->args;
 		node->name = node->left->name;
