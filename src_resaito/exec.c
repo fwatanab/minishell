@@ -6,79 +6,108 @@
 /*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 13:39:58 by resaito           #+#    #+#             */
-/*   Updated: 2023/10/31 16:11:36 by resaito          ###   ########.fr       */
+/*   Updated: 2023/11/02 16:34:12 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-bool	has_pipe(t_node *node);
-
-void	execute_command(char *cmd_name, char **args, int input_fd,
-		int output_fd)
+int	execute_command(t_node *node, bool has_pipe)
 {
-	if (fork() == 0)
+	int		pipefd[2];
+	pid_t	pid;
+	int		status;
+
+	if (has_pipe)
 	{
-		if (input_fd != STDIN_FILENO)
+		if (pipe(pipefd) < 0)
 		{
-			dup2(input_fd, STDIN_FILENO);
-			close(input_fd);
+			perror("pipe");
+			exit(-1);
 		}
-		if (output_fd != STDOUT_FILENO)
+	}
+	pid = fork();
+	if (pid < 0)
+	{
+		perror("fork");
+		exit(-1);
+	}
+	else if (pid == 0)
+	{
+		if (has_pipe)
 		{
-			dup2(output_fd, STDOUT_FILENO);
-			close(output_fd);
+			close(pipefd[0]);
+			dup2(pipefd[1], STDOUT_FILENO);
+			close(pipefd[1]);
 		}
-		execve(cmd_name, args, NULL);
-		perror("execve");
-		exit(EXIT_FAILURE);
+		execve(node->name, node->args, NULL);
+		perror(node->name);
+		return (-1);
 	}
 	else
-		while (wait(NULL) > 0)
-			;
+	{
+		waitpid(pid, &status, 0);
+		if (has_pipe)
+		{
+			close(pipefd[1]);
+			dup2(pipefd[0], STDIN_FILENO);
+			close(pipefd[0]);
+		}
+		return (0);
+	}
 }
 
-void	ft_execution(t_node *node)
+int	ft_execution(t_node *node, bool is_exec_pipe)
 {
+	if (node == NULL)
+		return (0);
+	if (node->type == N_PIPE)
+	{
+		ft_execution(node->left, true);
+		ft_execution(node->right, false);
+	}
 	if (node->type == N_COMMAND)
-		execute_command(node->name, node->args, STDIN_FILENO, STDOUT_FILENO);
-	// if (has_pipe(node))
-	// 	printf("has pipe\n");
-	// else
-	// 	printf("doesn't have pipe\n");
+		execute_command(node, is_exec_pipe);
+	return (0);
 }
 
 bool	has_pipe(t_node *node)
 {
 	if (node->type == N_PIPE)
 		return (true);
-	node = node->right;
 	return (false);
 }
 
-// int	main(void)
+// t_node *make_node(enum e_type node_type, char **args)
 // {
-// 	int pipefd1[2], pipefd2[2];
+//     t_node *node;
 
-// 	if (pipe(pipefd1) == -1 || pipe(pipefd2) == -1)
-// 	{
-// 		perror("pipe");
-// 		exit(EXIT_FAILURE);
-// 	}
+//     node = calloc(sizeof(t_node), 1);
+//     node->type = node_type;
+//     node->name = args[0];
+//     node->args = args;
+//     return node;
+// }
 
-// 	execute_command("command1", STDIN_FILENO, pipefd1[1]);
-// 	close(pipefd1[1]);
+// int main()
+// {
+//     t_node *ast;
+//     // char *args[] = {"/usr/bin/wc", "-l", NULL};
+//     // char *args2[] = {"/bin/cat", NULL};
+//     // char *args3[] = {"/usr/bin/grep", "hoge", NULL};
+//     char *ls[] = {"/bin/ls", NULL};
+//     char *cat[] = {"/bin/cat", NULL};
+//     char *wc[] = {"/usr/bin/wc", "-l", NULL};
+//     char *grep[] = {"/usr/bin/grep", "hoge", NULL};
 
-// 	execute_command("command2", pipefd1[0], pipefd2[1]);
-// 	close(pipefd1[0]);
-// 	close(pipefd2[1]);
-
-// 	execute_command("command3", pipefd2[0], STDOUT_FILENO);
-// 	close(pipefd2[0]);
-
-// 	// すべての子プロセスが終了するのを待つ
-// 	while (wait(NULL) > 0)
-// 		;
-
-// 	return (0);
+//     ast = make_node(N_PIPE, ls);
+//     ast->left = make_node(N_COMMAND, ls);
+//     ast->right = make_node(N_PIPE, ls);
+//     ast->right->left = make_node(N_COMMAND, grep);
+//     ast->right->right = make_node(N_COMMAND, wc);
+//     ft_execution(ast, false);
+//     // command_exec(args2, true);
+//     // command_exec(args3, false);
+//     // wait(NULL);
+//     // wait(NULL);
 // }
