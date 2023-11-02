@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 13:39:58 by resaito           #+#    #+#             */
-/*   Updated: 2023/11/02 17:47:51 by resaito          ###   ########.fr       */
+/*   Updated: 2023/11/02 17:58:34 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,22 +57,22 @@ int	execute_command(t_node *node, bool has_pipe)
 	}
 }
 
-#include <stdio.h>
+// #include <stdio.h>
 int	ft_execution(t_node *node, bool is_exec_pipe)
 {	
-	FILE *fp = fopen("hoge.txt", "a");
+	// FILE *fp = fopen("hoge.txt", "a");
 	// fprintf(fp, "type: %d\n", node->type);
 	// fprintf(fp, "name: %s\n", node->name);
-	fprintf(fp, "=========AAA: %s\n", node->name);
+	// fprintf(fp, "=========AAA: %s\n", node->name);
 	if (node == NULL)
 		return (0);
 	if (node->type == N_PIPE)
 	{
-		fprintf(fp, "=========BBB: %s\n", node->name);
+		// fprintf(fp, "=========BBB: %s\n", node->name);
 		ft_execution(node->left, true);
 		ft_execution(node->right, false);
 	}
-	fprintf(fp, "=========CCC: %s\n", node->name);
+	// fprintf(fp, "=========CCC: %s\n", node->name);
 	if (node->type == N_COMMAND)
 		execute_command(node, is_exec_pipe);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 19:19:00 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/02 17:14:42 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/11/02 18:01:15 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,11 +77,11 @@ static int	updata_type_value(t_node *node, \
 		}
 		node->name = key->token;
 		key->key_list = *list;
-	printf("11     %s\n", (*list)->token);
+	// printf("11     %s\n", (*list)->token);
 	}
 	else
 	{
-		printf("--------     %s\n", (*list)->token);
+		// printf("--------     %s\n", (*list)->token);
 		node->right = parser(node->right, &key->key_list, key);
 		return (1);
 	}
@@ -119,7 +119,7 @@ t_node	*parser(t_node *node, t_token_list **list, t_parse_check *key)
 	if (!node)
 		return (NULL);
 	key->key_type = false;
-	printf("     %s\n", (*list)->token);
+	// printf("     %s\n", (*list)->token);
 	while (*list)
 	{
 		key->token = pop_token(list);
