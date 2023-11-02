@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 19:19:00 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/02 17:14:42 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/11/02 18:33:38 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ static char	**add_array(char **array, char *token)
 		i++;
 	}
 	new_array[len] = ft_strdup(token);
+	printf("%p\n", new_array[len]);
 	if (!new_array[len])
 	{
 		str_array_free(new_array);
@@ -66,23 +67,24 @@ static char	**add_array(char **array, char *token)
 static int	updata_type_value(t_node *node, \
 		t_token_list **list, t_parse_check *key)
 {
+	t_token_list	*tmp;
+
 	if (!key->key_type)
 	{
 		key->key_type = true;
 		node->type = N_PIPE;
 		if (node->args)
 		{
-//			str_array_free(node->args);
+			str_array_free(node->args);
 			node->args = NULL;
 		}
 		node->name = key->token;
 		key->key_list = *list;
-	printf("11     %s\n", (*list)->token);
 	}
 	else
 	{
-		printf("--------     %s\n", (*list)->token);
-		node->right = parser(node->right, &key->key_list, key);
+		tmp = key->key_list;
+		node->right = parser(node->right, &tmp, key);
 		return (1);
 	}
 	return (0);
@@ -119,7 +121,6 @@ t_node	*parser(t_node *node, t_token_list **list, t_parse_check *key)
 	if (!node)
 		return (NULL);
 	key->key_type = false;
-	printf("     %s\n", (*list)->token);
 	while (*list)
 	{
 		key->token = pop_token(list);
@@ -133,7 +134,7 @@ t_node	*parser(t_node *node, t_token_list **list, t_parse_check *key)
 		else
 			node = updata_name_value(node, key, list);
 	}
-	if (node->type == N_COMMAND && !node->right)
+	if (!node && node->left && !node->right)
 	{
 		node->args = node->left->args;
 		node->name = node->left->name;
