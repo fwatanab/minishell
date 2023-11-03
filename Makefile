@@ -13,7 +13,7 @@ OBJS	= $(addprefix $(SRCSDIR), $(SRCS:.c=.o))
 RE_OBJS	= $(addprefix $(RE_SRCSDIR), $(RE_SRCS:.c=.o))
 
 CC		= cc
-CFLAGS	= #-Wall -Wextra -Werror
+CFLAGS	= -g #-Wall -Wextra -Werror
 RM		= rm -f
 
 LIBFTDIR	= libft/
