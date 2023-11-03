@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 12:50:56 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/03 16:04:24 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/11/03 18:08:23 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ t_node			*node_init(void);
 void			all_node_init(t_node *node);
 
 //parser_utils
-char	*pop_token(t_token_list **list);
-char	**add_array(char **array, char *token);
+char			*pop_token(t_token_list **list);
+char			**add_array(char **array, char *token);
 
 //print
 void			print_list(t_token_list *list);
