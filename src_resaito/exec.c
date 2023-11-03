@@ -58,7 +58,7 @@ int	execute_command(t_node *node, bool has_pipe)
 }
 
 // #include <stdio.h>
-int	ft_execution(t_node *node, bool is_exec_pipe)
+int	execution(t_node *node, bool is_exec_pipe)
 {	
 	// FILE *fp = fopen("hoge.txt", "a");
 	// fprintf(fp, "type: %d\n", node->type);
@@ -69,8 +69,8 @@ int	ft_execution(t_node *node, bool is_exec_pipe)
 	if (node->type == N_PIPE)
 	{
 		// fprintf(fp, "=========BBB: %s\n", node->name);
-		ft_execution(node->left, true);
-		ft_execution(node->right, false);
+		execution(node->left, true);
+		execution(node->right, false);
 	}
 	// fprintf(fp, "=========CCC: %s\n", node->name);
 	if (node->type == N_COMMAND)
@@ -78,12 +78,22 @@ int	ft_execution(t_node *node, bool is_exec_pipe)
 	return (0);
 }
 
-bool	has_pipe(t_node *node)
+void	ft_execution(t_node *node)
 {
-	if (node->type == N_PIPE)
-		return (true);
-	return (false);
+	int dupin;
+
+	dupin = dup(STDIN_FILENO);
+	execution(node, false);
+	dup2(dupin, STDIN_FILENO);
+	close(dupin);
 }
+
+// bool	has_pipe(t_node *node)
+// {
+// 	if (node->type == N_PIPE)
+// 		return (true);
+// 	return (false);
+// }
 
 // t_node *make_node(enum e_type node_type, char **args)
 // {

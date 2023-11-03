@@ -77,6 +77,7 @@ char			*my_strjoin(char const *s1, char const *s2);
 
 //resaito
 char			*search_path(const char *filename);
-int				ft_execution(t_node *node, bool is_exec_pipe);
+int				execution(t_node *node, bool is_exec_pipe);
+void			ft_execution(t_node *node);
 
 #endif

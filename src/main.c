@@ -24,7 +24,7 @@ void	minishell(char *line)
 //	print_list(list);
 	node = parser_start(&list);
 	// print_tree(node, 0);
-	ft_execution(node, false);
+	ft_execution(node);
 	list_free(&tmp);
 	node_free(node);
 }
