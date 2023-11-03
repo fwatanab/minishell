@@ -2,7 +2,7 @@ NAME	= minishell
 
 SRCSDIR	= src/
 
-SRCS = main.c free.c tokenize.c check_token.c utils.c parser.c init.c print.c
+SRCS = main.c free.c tokenize.c check_token.c utils.c parser.c parser_utils.c init.c print.c
 
 RE_SRCSDIR	= src_resaito/
 
@@ -13,7 +13,7 @@ OBJS	= $(addprefix $(SRCSDIR), $(SRCS:.c=.o))
 RE_OBJS	= $(addprefix $(RE_SRCSDIR), $(RE_SRCS:.c=.o))
 
 CC		= cc
-CFLAGS	= #-Wall -Wextra -Werror
+CFLAGS	= -g #-Wall -Wextra -Werror
 RM		= rm -f
 
 LIBFTDIR	= libft/
