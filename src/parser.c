@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 19:19:00 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/02 18:33:38 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/11/03 15:39:05 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ static char	**add_array(char **array, char *token)
 		i++;
 	}
 	new_array[len] = ft_strdup(token);
-	printf("%p\n", new_array[len]);
 	if (!new_array[len])
 	{
 		str_array_free(new_array);
@@ -73,18 +72,23 @@ static int	updata_type_value(t_node *node, \
 	{
 		key->key_type = true;
 		node->type = N_PIPE;
-		if (node->args)
+		node->name = ft_strdup(key->token);
+		if (!node->name)
 		{
-			str_array_free(node->args);
-			node->args = NULL;
+			node_free(node);
+			malloc_error();
 		}
-		node->name = key->token;
 		key->key_list = *list;
 	}
 	else
 	{
 		tmp = key->key_list;
+		if (node->right->args)
+			str_array_free(node->right->args);
+		if (node->right->name)
+			free(node->right->name);
 		node->right = parser(node->right, &tmp, key);
+		key->key_list = tmp;
 		return (1);
 	}
 	return (0);
@@ -95,7 +99,7 @@ static t_node	*updata_name_value(t_node *node, \
 {
 	if (key->key_type)
 	{
-		if (node->right->name == NULL)
+		if (!node->right->name)
 			node->right->name = search_path(key->token);
 		node->right->type = N_COMMAND;
 		node->right->args = add_array(node->right->args, key->token);
@@ -107,7 +111,7 @@ static t_node	*updata_name_value(t_node *node, \
 //			key->key_redir = true;
 //			node->left = redir_parse(node->left, list, key);
 //		}
-		if (node->left->name == NULL)
+		if (!node->left->name)
 			node->left->name = search_path(key->token);
 		node->left->type = N_COMMAND;
 		node->left->args = add_array(node->left->args, key->token);
