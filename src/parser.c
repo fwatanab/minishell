@@ -6,62 +6,11 @@
 /*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 19:19:00 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/03 15:39:05 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/11/03 16:04:37 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-
-static char	*pop_token(t_token_list **list)
-{
-	char	*value;
-
-	if (!(*list))
-		return (NULL);
-	value = (*list)->token;
-	*list = (*list)->next;
-	return (value);
-}
-
-static char	**add_array(char **array, char *token)
-{
-	char	**new_array;
-	size_t	len;
-	size_t	i;
-
-	len = 0;
-	if (array && array[len])
-	{
-		while (array[len])
-			len++;
-	}
-	new_array = (char **)malloc(sizeof(char *) * (len + 2));
-	if (!new_array)
-	{
-		str_array_free(array);
-		malloc_error();
-	}
-	i = 0;
-	while (i < len)
-	{
-		new_array[i] = ft_strdup(array[i]);
-		if (!new_array[i])
-		{
-			str_array_free(new_array);
-			malloc_error();
-		}
-		i++;
-	}
-	new_array[len] = ft_strdup(token);
-	if (!new_array[len])
-	{
-		str_array_free(new_array);
-		malloc_error();
-	}
-	new_array[len + 1] = NULL;
-	str_array_free(array);
-	return (new_array);
-}
 
 static int	updata_type_value(t_node *node, \
 		t_token_list **list, t_parse_check *key)
@@ -88,7 +37,6 @@ static int	updata_type_value(t_node *node, \
 		if (node->right->name)
 			free(node->right->name);
 		node->right = parser(node->right, &tmp, key);
-		key->key_list = tmp;
 		return (1);
 	}
 	return (0);
