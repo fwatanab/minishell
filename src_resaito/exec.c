@@ -46,7 +46,6 @@ int	execute_command(t_node *node, bool has_pipe)
 	}
 	else
 	{
-		waitpid(pid, &status, 0);
 		if (has_pipe)
 		{
 			close(pipefd[1]);
@@ -60,22 +59,32 @@ int	execute_command(t_node *node, bool has_pipe)
 // #include <stdio.h>
 int	execution(t_node *node, bool is_exec_pipe)
 {	
-	// FILE *fp = fopen("hoge.txt", "a");
-	// fprintf(fp, "type: %d\n", node->type);
-	// fprintf(fp, "name: %s\n", node->name);
-	// fprintf(fp, "=========AAA: %s\n", node->name);
 	if (node == NULL)
 		return (0);
 	if (node->type == N_PIPE)
 	{
-		// fprintf(fp, "=========BBB: %s\n", node->name);
 		execution(node->left, true);
 		execution(node->right, false);
 	}
-	// fprintf(fp, "=========CCC: %s\n", node->name);
 	if (node->type == N_COMMAND)
 		execute_command(node, is_exec_pipe);
 	return (0);
+}
+
+void wait_all(t_node *node)
+{
+	int status;
+
+	if (node == NULL)
+		return ;
+	if (node->type == N_PIPE)
+	{
+		wait_all(node->left);
+		wait_all(node->right);
+	}
+	if (node->type == N_COMMAND)
+		wait(&status);
+	return ;
 }
 
 void	ft_execution(t_node *node)
@@ -84,6 +93,7 @@ void	ft_execution(t_node *node)
 
 	dupin = dup(STDIN_FILENO);
 	execution(node, false);
+	wait_all(node);
 	dup2(dupin, STDIN_FILENO);
 	close(dupin);
 }
