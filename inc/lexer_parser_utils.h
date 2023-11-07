@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 12:50:56 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/03 18:08:23 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/11/07 19:58:30 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <stdbool.h>
 
 typedef struct s_token_list t_token_list;
+typedef struct s_redir t_redir;
 typedef struct s_node t_node;
 
 typedef struct s_token_check
@@ -39,10 +40,12 @@ typedef struct s_parse_check
 t_token_check	*checker_init(void);
 t_node			*node_init(void);
 void			all_node_init(t_node *node);
+t_redir			*create_redir(size_t len);
 
 //parser_utils
 char			*pop_token(t_token_list **list);
 char			**add_array(char **array, char *token);
+size_t			redir_size(t_token_list **list, char *token);
 
 //print
 void			print_list(t_token_list *list);

@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 02:23:51 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/03 17:43:52 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/11/07 20:01:21 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void	list_free(t_token_list **list)
 	while (tmp)
 	{
 		next = tmp->next;
-		free(tmp->token);
 		free(tmp);
 		tmp = next;
 	}
@@ -43,6 +42,24 @@ void	str_array_free(char **array)
 		i++;
 	}
 	free(array);
+}
+
+void	redir_free(t_redir **list)
+{
+	t_redir	*tmp;
+	t_redir	*next;
+
+	if (!list && !*list)
+		return ;
+	tmp = *list;
+	while (tmp)
+	{
+		next = tmp->next;
+		str_array_free(tmp->file);
+		free(tmp);
+		tmp = next;
+	}
+	*list = NULL;
 }
 
 void	node_free(t_node *node)

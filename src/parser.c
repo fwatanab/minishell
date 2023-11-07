@@ -3,19 +3,50 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-<<<<<<< HEAD
 /*   Created: 2023/09/25 19:19:00 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/03 16:04:37 by fwatanab         ###   ########.fr       */
-=======
-/*   Created: 2023/11/03 17:38:33 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/03 17:38:38 by fwatanab         ###   ########.fr       */
->>>>>>> 33874f8e1abadcf1602e1b00e7ea38a557ea29de
+/*   Updated: 2023/11/07 20:06:28 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+
+static void	redir_parse(t_redir **redir, t_token_list **list, char *token)
+{
+	size_t	len;
+
+	if (!list || (ft_strcmp(token, "<") != 0 && ft_strcmp(token, ">") != 0))
+		return;
+	len = redir_size(list, token);
+	*redir = create_redir(len);
+	if (!*redir)
+	{
+		/////free
+		malloc_error();
+	}
+	if (ft_strcmp(token, "<") == 0)
+		(*redir)->type = N_REDIR_IN;
+	else if (ft_strcmp(token, ">") == 0)
+		(*redir)->type = N_REDIR_OUT;
+	token = pop_token(list);
+	len = 0;
+	while (*list && ft_strcmp(token, "<") != 0 && ft_strcmp(token, ">") != 0)
+	{
+		(*redir)->file[len] = ft_strdup(token);
+		if (!(*redir)->file[len])
+		{
+			//////////free
+			malloc_error();
+		}
+		if (ft_strcmp((*list)->token, "|") == 0)
+			break ;
+		token = pop_token(list);
+		i++;
+	}
+	if (ft_strcmp(token, "<") == 0 || ft_strcmp(token, ">") == 0)
+		redir_parse(&((*redir)->next), list, token);
+}
 
 static int	updata_type_value(t_node *node, \
 		t_token_list **list, t_parse_check *key)
@@ -41,6 +72,8 @@ static int	updata_type_value(t_node *node, \
 			str_array_free(node->right->args);
 		if (node->right->name)
 			free(node->right->name);
+		if (node->redir)
+			redir_free(&(node->redir));
 		node->right = parser(node->right, &tmp, key);
 		return (1);
 	}
@@ -52,22 +85,27 @@ static t_node	*updata_name_value(t_node *node, \
 {
 	if (key->key_type)
 	{
-		if (!node->right->name)
-			node->right->name = search_path(key->token);
-		node->right->type = N_COMMAND;
-		node->right->args = add_array(node->right->args, key->token);
+		if (ft_strcmp(key->token, "<") == 0 || ft_strcmp(key->token, ">") == 0)
+			redir_parse(&(node->right->redir), list, key->token);
+		else
+		{
+			if (!node->right->name)
+				node->right->name = search_path(key->token);
+			node->right->type = N_COMMAND;
+			node->right->args = add_array(node->right->args, key->token);
+		}
 	}
 	else if (!key->key_type)
 	{
-//		if (ft_strcmp(key->token, "<") == 0)
-//		{
-//			key->key_redir = true;
-//			node->left = redir_parse(node->left, list, key);
-//		}
-		if (!node->left->name)
-			node->left->name = search_path(key->token);
-		node->left->type = N_COMMAND;
-		node->left->args = add_array(node->left->args, key->token);
+		if (ft_strcmp(key->token, "<") == 0 || ft_strcmp(key->token, ">") == 0)
+			redir_parse(&(node->left->redir), list, key->token);
+		else
+		{
+			if (!node->left->name)
+				node->left->name = search_path(key->token);
+			node->left->type = N_COMMAND;
+			node->left->args = add_array(node->left->args, key->token);
+		}
 	}
 	return (node);
 }
@@ -81,6 +119,7 @@ t_node	*parser(t_node *node, t_token_list **list, t_parse_check *key)
 	while (*list)
 	{
 		key->token = pop_token(list);
+		printf("token %s\n", key->token);
 		if (!key->token)
 			return (NULL);
 		if (ft_strcmp(key->token, "|") == 0)

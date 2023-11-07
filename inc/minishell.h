@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 21:17:45 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/02 16:35:53 by resaito          ###   ########.fr       */
+/*   Updated: 2023/11/07 19:58:10 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ typedef struct s_token_list
 
 typedef enum e_type
 {
+	NONE,
 	N_COMMAND,
 	N_REDIR_IN,
 	N_REDIR_OUT,
@@ -46,11 +47,19 @@ typedef enum e_type
 	N_PIPE
 }	t_type;
 
+typedef struct s_redir
+{
+	enum e_type		type;
+	char			**file;
+	struct s_redir	*next;
+}	t_redir;
+
 typedef struct s_node
 {
 	enum e_type		type;
 	char			*name;
 	char			**args;
+	struct s_redir	*redir;
 	struct s_node	*left;
 	struct s_node	*right;
 }	t_node;
@@ -65,6 +74,7 @@ t_node			*parser(t_node *node, t_token_list **list, t_parse_check *key);
 void			list_free(t_token_list **list);
 void			str_array_free(char **array);
 void			node_free(t_node *node);
+void			redir_free(t_redir **list);
 
 //error
 void			malloc_error(void);
@@ -77,7 +87,6 @@ char			*my_strjoin(char const *s1, char const *s2);
 
 //resaito
 char			*search_path(const char *filename);
-int				execution(t_node *node, bool is_exec_pipe);
 void			ft_execution(t_node *node);
 
 #endif

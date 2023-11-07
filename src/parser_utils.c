@@ -6,11 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 16:02:12 by fwatanab          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2023/11/03 16:04:32 by fwatanab         ###   ########.fr       */
-=======
-/*   Updated: 2023/11/03 17:39:05 by fwatanab         ###   ########.fr       */
->>>>>>> 33874f8e1abadcf1602e1b00e7ea38a557ea29de
+/*   Updated: 2023/11/07 18:17:01 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,3 +68,28 @@ char	**add_array(char **array, char *token)
 	str_array_free(array);
 	return (new_array);
 }
+
+size_t	redir_size(t_token_list **list, char *token)
+{
+	size_t			len;
+	t_token_list	*tmp;
+
+	tmp = *list;
+	len = 0;
+	if (ft_strcmp(token, "<") == 0 || ft_strcmp(token, ">") == 0)
+		token = pop_token(&tmp);
+	while (ft_strcmp(token, "|") != 0 && ft_strcmp(token, "<") != 0 && ft_strcmp(token, ">") != 0)
+	{
+		len++;
+		token = pop_token(&tmp);
+	}
+	return (len);
+}
+
+//void	one_command(t_node *node, char *token)
+//{
+//		node->args = node->left->args;
+//		node->name = node->left->name;
+//		node->left->args = NULL;
+//		node->left->name = NULL;
+//}
