@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 21:17:45 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/07 19:58:10 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/11/08 09:21:45 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ t_node			*parser(t_node *node, t_token_list **list, t_parse_check *key);
 void			list_free(t_token_list **list);
 void			str_array_free(char **array);
 void			node_free(t_node *node);
-void			redir_free(t_redir **list);
+void			redir_free(t_redir *redir);
 
 //error
 void			malloc_error(void);
