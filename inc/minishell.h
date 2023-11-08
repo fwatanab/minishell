@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 21:17:45 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/08 19:55:28 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/11/08 20:16:56 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ t_token_list	*tokenize(const char *str);
 void			check_token(t_token_list *list);
 t_node			*parser_start(t_token_list **list);
 t_node			*parser(t_node *node, t_token_list **list, t_parse_check *key);
-t_redir			*redir_parse(t_redir *redir, t_token_list **list, char *token);
+t_redir			*redir_parse(t_node *node, t_redir *redir, t_token_list **list, char *token);
 
 //free
 void			list_free(t_token_list **list);
