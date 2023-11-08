@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 16:02:12 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/08 18:47:40 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/11/08 20:04:07 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,29 +69,25 @@ char	**add_array(char **array, char *token)
 	return (new_array);
 }
 
-size_t	redir_size(t_token_list **list, char *token)
+void	one_n_command(t_node *node)
 {
-	size_t			len;
-	t_token_list	*tmp;
-
-	tmp = *list;
-	len = 0;
-	if (tmp && (ft_strcmp(token, "<") == 0 || ft_strcmp(token, ">") == 0))
-		token = pop_token(&tmp);
-	while (ft_strcmp(token, "|") != 0 && ft_strcmp(token, "<") != 0 && ft_strcmp(token, ">") != 0)
-	{
-		len++;
-		if (!tmp)
-			break ;
-		token = pop_token(&tmp);
-	}
-	return (len);
+		node->args = node->left->args;
+		node->name = node->left->name;
+		node->redir = node->left->redir;
+		node->left->args = NULL;
+		node->left->name = NULL;
+		node->left->redir = NULL;
 }
 
-//void	one_command(t_node *node, char *token)
-//{
-//		node->args = node->left->args;
-//		node->name = node->left->name;
-//		node->left->args = NULL;
-//		node->left->name = NULL;
-//}
+void	check_right_node(t_node *node)
+{
+	if (node->right->args)
+		str_array_free(node->right->args);
+	if (node->right->name)
+		free(node->right->name);
+	if (node->right->redir)
+	{
+		redir_free(node->right->redir);
+		node->right->redir = NULL;
+	}
+}
