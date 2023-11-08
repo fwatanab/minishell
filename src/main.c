@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 21:17:52 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/01 21:40:26 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/11/07 22:07:22 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ void	minishell(char *line)
 	check_token(list);
 //	print_list(list);
 	node = parser_start(&list);
-//	print_tree(node, 0);
-	ft_execution(node);
+	print_node(node);
+//	ft_execution(node);
 	list_free(&tmp);
 	node_free(node);
 }
