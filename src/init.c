@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 00:15:40 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/07 20:16:21 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/11/07 22:01:01 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,4 +82,3 @@ t_redir	*create_redir(size_t len)
 	new->next = NULL;
 	return (new);
 }
-Help people interested in this repository understand your project by adding a README.

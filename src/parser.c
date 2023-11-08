@@ -6,46 +6,47 @@
 /*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 19:19:00 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/07 20:06:28 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/11/08 09:53:12 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-static void	redir_parse(t_redir **redir, t_token_list **list, char *token)
+static t_redir	*redir_parse(t_redir *redir, t_token_list **list, char *token)
 {
 	size_t	len;
 
 	if (!list || (ft_strcmp(token, "<") != 0 && ft_strcmp(token, ">") != 0))
-		return;
+		return (NULL);
 	len = redir_size(list, token);
-	*redir = create_redir(len);
-	if (!*redir)
+	redir = create_redir(len);
+	if (!redir)
 	{
 		/////free
 		malloc_error();
 	}
 	if (ft_strcmp(token, "<") == 0)
-		(*redir)->type = N_REDIR_IN;
+		redir->type = N_REDIR_IN;
 	else if (ft_strcmp(token, ">") == 0)
-		(*redir)->type = N_REDIR_OUT;
+		redir->type = N_REDIR_OUT;
 	token = pop_token(list);
 	len = 0;
 	while (*list && ft_strcmp(token, "<") != 0 && ft_strcmp(token, ">") != 0)
 	{
-		(*redir)->file[len] = ft_strdup(token);
-		if (!(*redir)->file[len])
+		redir->file[len] = ft_strdup(token);
+		if (!redir->file[len])
 		{
 			//////////free
 			malloc_error();
 		}
 		if (ft_strcmp((*list)->token, "|") == 0)
-			break ;
+			return (redir);
 		token = pop_token(list);
-		i++;
+		len++;
 	}
 	if (ft_strcmp(token, "<") == 0 || ft_strcmp(token, ">") == 0)
-		redir_parse(&((*redir)->next), list, token);
+		redir->next = redir_parse(redir->next, list, token);
+	return (redir);
 }
 
 static int	updata_type_value(t_node *node, \
@@ -73,7 +74,7 @@ static int	updata_type_value(t_node *node, \
 		if (node->right->name)
 			free(node->right->name);
 		if (node->redir)
-			redir_free(&(node->redir));
+			redir_free(node->redir);
 		node->right = parser(node->right, &tmp, key);
 		return (1);
 	}
@@ -86,7 +87,7 @@ static t_node	*updata_name_value(t_node *node, \
 	if (key->key_type)
 	{
 		if (ft_strcmp(key->token, "<") == 0 || ft_strcmp(key->token, ">") == 0)
-			redir_parse(&(node->right->redir), list, key->token);
+			node->right->redir = redir_parse(node->right->redir, list, key->token);
 		else
 		{
 			if (!node->right->name)
@@ -98,7 +99,7 @@ static t_node	*updata_name_value(t_node *node, \
 	else if (!key->key_type)
 	{
 		if (ft_strcmp(key->token, "<") == 0 || ft_strcmp(key->token, ">") == 0)
-			redir_parse(&(node->left->redir), list, key->token);
+			node->left->redir = redir_parse(node->left->redir, list, key->token);
 		else
 		{
 			if (!node->left->name)
@@ -119,7 +120,6 @@ t_node	*parser(t_node *node, t_token_list **list, t_parse_check *key)
 	while (*list)
 	{
 		key->token = pop_token(list);
-		printf("token %s\n", key->token);
 		if (!key->token)
 			return (NULL);
 		if (ft_strcmp(key->token, "|") == 0)
