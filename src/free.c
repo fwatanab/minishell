@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 02:23:51 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/08 09:50:02 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/11/08 17:19:47 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ void	redir_free(t_redir *redir)
 {
 	t_redir	*tmp;
 
-//	if (!redir)
-//		return ;
+	if (!redir)
+		return ;
 	while (redir)
 	{
 		tmp = redir;
