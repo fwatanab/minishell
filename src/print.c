@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 00:21:46 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/07 20:02:44 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/11/08 09:31:20 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	print_redir(t_redir *redir)
 	i = 0;
 	while (redir->file[i])
 	{
-		printf("     [%zu]%s\n", i, redir->file[i]);
+		printf("     [%zu] %s\n", i, redir->file[i]);
 		i++;
 	}
 	print_redir(redir->next);
@@ -105,7 +105,7 @@ void	print_node(t_node *node)
 	printf("type: %u\n", node->type);
 	if (node->redir)
 		print_redir(node->redir);
-	printf("\n--------------\n\n");
+	printf("--------------\n");
 	if (node->left)
 	{
 		printf("left\n");
