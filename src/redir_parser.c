@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 19:48:34 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/08 19:55:43 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/11/08 20:37:11 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,33 @@ static t_redir	*create_redir(size_t len)
 	return (new);
 }
 
-t_redir	*redir_parse(t_redir *redir, t_token_list **list, char *token)
+static char	*add_redir_file(t_node *node, t_redir *redir, t_token_list **list)
+{
+	char	*token;
+	size_t	i;
+
+	if (*list)
+		token = pop_token(list);
+	i = 0;
+	while (ft_strcmp(token, "<") != 0 && ft_strcmp(token, ">") != 0)
+	{
+		redir->file[i] = ft_strdup(token);
+		if (!redir->file[i])
+		{
+			list_free(list);
+			node_free(node);
+			malloc_error();
+		}
+		if (!*list || ft_strcmp((*list)->token, "|") == 0)
+			break ;
+		token = pop_token(list);
+		i++;
+	}
+	return (token);
+}
+
+t_redir	*redir_parse(t_node *node, t_redir *redir, \
+		t_token_list **list, char *token)
 {
 	size_t	len;
 
@@ -65,29 +91,16 @@ t_redir	*redir_parse(t_redir *redir, t_token_list **list, char *token)
 	redir = create_redir(len);
 	if (!redir)
 	{
-		/////free
+		list_free(list);
+		node_free(node);
 		malloc_error();
 	}
 	if (ft_strcmp(token, "<") == 0)
 		redir->type = N_REDIR_IN;
 	else if (ft_strcmp(token, ">") == 0)
 		redir->type = N_REDIR_OUT;
-	token = pop_token(list);
-	len = 0;
-	while (ft_strcmp(token, "<") != 0 && ft_strcmp(token, ">") != 0)
-	{
-		redir->file[len] = ft_strdup(token);
-		if (!redir->file[len])
-		{
-			//////////free
-			malloc_error();
-		}
-		if (!*list || ft_strcmp((*list)->token, "|") == 0)
-			return (redir);
-		token = pop_token(list);
-		len++;
-	}
+	token = add_redir_file(node, redir, list);
 	if (*list && (ft_strcmp(token, "<") == 0 || ft_strcmp(token, ">") == 0))
-		redir->next = redir_parse(redir->next, list, token);
+		redir->next = redir_parse(node, redir->next, list, token);
 	return (redir);
 }
