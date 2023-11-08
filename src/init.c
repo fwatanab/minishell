@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 00:15:40 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/07 22:01:01 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/11/08 19:52:19 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,27 +58,4 @@ void	all_node_init(t_node *node)
 	}
 	node->name = NULL;
 	node->args = NULL;
-}
-
-t_redir	*create_redir(size_t len)
-{
-	t_redir		*new;
-	size_t		i;
-
-	if (!len)
-		return (NULL);
-	new = (t_redir *)malloc(sizeof(t_redir));
-	if (!new)
-		return (NULL);
-	new->file = (char **)malloc(sizeof(char *) * (len + 1));
-	if (!new->file)
-	{
-		free(new);
-		return (NULL);
-	}
-	i = 0;
-	while (i <= len)
-		new->file[i++] = NULL;
-	new->next = NULL;
-	return (new);
 }
