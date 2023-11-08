@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 02:23:51 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/08 17:19:47 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/11/08 19:06:45 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	list_free(t_token_list **list)
 	while (tmp)
 	{
 		next = tmp->next;
+		free(tmp->token);
 		free(tmp);
 		tmp = next;
 	}
@@ -68,6 +69,8 @@ void	node_free(t_node *node)
 		str_array_free(node->args);
 	if (node->name)
 		free(node->name);
+	if (node->redir)
+		redir_free(node->redir);
 	if (node->left)
 		node_free(node->left);
 	if (node->right)
