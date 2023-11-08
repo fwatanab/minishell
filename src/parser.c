@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 19:19:00 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/08 09:53:12 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/11/08 18:48:45 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static t_redir	*redir_parse(t_redir *redir, t_token_list **list, char *token)
 		redir->type = N_REDIR_OUT;
 	token = pop_token(list);
 	len = 0;
-	while (*list && ft_strcmp(token, "<") != 0 && ft_strcmp(token, ">") != 0)
+	while (ft_strcmp(token, "<") != 0 && ft_strcmp(token, ">") != 0)
 	{
 		redir->file[len] = ft_strdup(token);
 		if (!redir->file[len])
@@ -39,12 +39,12 @@ static t_redir	*redir_parse(t_redir *redir, t_token_list **list, char *token)
 			//////////free
 			malloc_error();
 		}
-		if (ft_strcmp((*list)->token, "|") == 0)
+		if (!*list || ft_strcmp((*list)->token, "|") == 0)
 			return (redir);
 		token = pop_token(list);
 		len++;
 	}
-	if (ft_strcmp(token, "<") == 0 || ft_strcmp(token, ">") == 0)
+	if (*list && (ft_strcmp(token, "<") == 0 || ft_strcmp(token, ">") == 0))
 		redir->next = redir_parse(redir->next, list, token);
 	return (redir);
 }
@@ -73,8 +73,11 @@ static int	updata_type_value(t_node *node, \
 			str_array_free(node->right->args);
 		if (node->right->name)
 			free(node->right->name);
-		if (node->redir)
-			redir_free(node->redir);
+		if (node->right->redir)
+		{
+			redir_free(node->right->redir);
+			node->right->redir = NULL;
+		}
 		node->right = parser(node->right, &tmp, key);
 		return (1);
 	}
@@ -130,12 +133,14 @@ t_node	*parser(t_node *node, t_token_list **list, t_parse_check *key)
 		else
 			node = updata_name_value(node, key, list);
 	}
-	if (!node && node->left && !node->right)
+	if (!node && !node->right)
 	{
 		node->args = node->left->args;
 		node->name = node->left->name;
+		node->redir = node->left->redir;
 		node->left->args = NULL;
 		node->left->name = NULL;
+		node->left->redir = NULL;
 	}
 	return (node);
 }
