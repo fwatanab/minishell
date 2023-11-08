@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 19:19:00 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/08 20:04:20 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/11/08 20:43:48 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,10 @@ static bool	redir_checker(t_node *node, t_parse_check *key, t_token_list **list)
 	{
 		if (key->key_type)
 			node->right->redir = redir_parse(\
-					node->right->redir, list, key->token);
+					node, node->right->redir, list, key->token);
 		else if (!key->key_type)
 			node->left->redir = redir_parse(\
-					node->left->redir, list, key->token);
+					node, node->left->redir, list, key->token);
 		return (true);
 	}
 	return (false);
