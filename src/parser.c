@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 19:19:00 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/08 20:43:48 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/11/11 17:37:19 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ t_node	*parser(t_node *node, t_token_list **list, t_parse_check *key)
 				updata_name_value(node, key, list);
 		}
 	}
-	if (!node && !node->right)
+	if (node->type == NONE)
 		one_n_command(node);
 	return (node);
 }
