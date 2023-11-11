@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 00:15:40 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/10/31 01:44:59 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/11/08 19:52:19 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ t_node	*node_init(void)
 		return (NULL);
 	node->name = NULL;
 	node->args = NULL;
+	node->redir = NULL;
 	node->left = NULL;
 	node->right = NULL;
 	return (node);
