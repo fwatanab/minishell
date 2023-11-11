@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 16:02:12 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/08 20:04:07 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/11/11 17:58:04 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,12 @@ void	one_n_command(t_node *node)
 {
 		node->args = node->left->args;
 		node->name = node->left->name;
-		node->redir = node->left->redir;
+		node->type = node->left->type;
+		if (node->left->redir)
+			node->redir = node->left->redir;
 		node->left->args = NULL;
 		node->left->name = NULL;
+		node->left->type = NONE;
 		node->left->redir = NULL;
 }
 
