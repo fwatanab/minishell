@@ -15,24 +15,23 @@
 
 int	redir_dup(t_node *node, int *pipefd)
 {
-	if (node->redir != NULL && (node->redir->type == N_REDIR_OUT
+	if (!(node->redir != NULL && (node->redir->type == N_REDIR_OUT
+			|| node->redir->type == N_REDIR_APPEND)))
+		return (0);
+	close(pipefd[0]);
+	while (node->redir != NULL && (node->redir->type == N_REDIR_OUT
 			|| node->redir->type == N_REDIR_APPEND))
 	{
-		close(pipefd[0]);
-		while (node->redir != NULL && (node->redir->type == N_REDIR_OUT
-				|| node->redir->type == N_REDIR_APPEND))
-		{
-			if (node->redir->type == N_REDIR_OUT)
-				pipefd[1] = open(node->redir->file[0],
-						O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
-			else
-				pipefd[1] = open(node->redir->file[0],
-						O_WRONLY | O_CREAT | O_APPEND, S_IRUSR | S_IWUSR);
-			node->redir = node->redir->next;
-		}
-		dup2(pipefd[1], STDOUT_FILENO);
-		close(pipefd[1]);
+		if (node->redir->type == N_REDIR_OUT)
+			pipefd[1] = open(node->redir->file[0],
+					O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
+		else
+			pipefd[1] = open(node->redir->file[0],
+					O_WRONLY | O_CREAT | O_APPEND, S_IRUSR | S_IWUSR);
+		node->redir = node->redir->next;
 	}
+	dup2(pipefd[1], STDOUT_FILENO);
+	close(pipefd[1]);
 	return (0);
 }
 

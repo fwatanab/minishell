@@ -144,7 +144,7 @@ void	ft_execution(t_node *node)
 // 	char *file2[] = {"fuga.txt", NULL};
 
 //     ast = make_node(N_PIPE, ls);
-//     ast = make_node(N_COMMAND, ls);
+//     ast->left = make_node(N_COMMAND, ls);
 //     ast->right = make_node(N_PIPE, ls);
 //     ast->right->left = make_node(N_COMMAND, grep);
 //     ast->right->right = make_node(N_COMMAND, wc);
