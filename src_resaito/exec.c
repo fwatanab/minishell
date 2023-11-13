@@ -6,11 +6,12 @@
 /*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 13:39:58 by resaito           #+#    #+#             */
-/*   Updated: 2023/11/02 17:58:34 by resaito          ###   ########.fr       */
+/*   Updated: 2023/11/13 14:33:58 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+#include <fcntl.h>
 
 int	execute_command(t_node *node, bool has_pipe)
 {
@@ -40,6 +41,13 @@ int	execute_command(t_node *node, bool has_pipe)
 			dup2(pipefd[1], STDOUT_FILENO);
 			close(pipefd[1]);
 		}
+		if (node->redir != NULL && node->redir->type == N_REDIR_OUT)
+		{
+			close(pipefd[0]);
+			pipefd[1] = open(node->redir->file[0], O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
+			dup2(pipefd[1], STDOUT_FILENO);
+			close(pipefd[1]);
+		}
 		execve(node->name, node->args, NULL);
 		perror(node->name);
 		return (-1);
@@ -59,7 +67,7 @@ int	execute_command(t_node *node, bool has_pipe)
 // #include <stdio.h>
 int	execution(t_node *node, bool is_exec_pipe)
 {	
-	if (node == NULL)
+	if (node == NONE)
 		return (0);
 	if (node->type == N_PIPE)
 	{
@@ -75,7 +83,7 @@ void wait_all(t_node *node)
 {
 	int status;
 
-	if (node == NULL)
+	if (node == NONE)
 		return ;
 	if (node->type == N_PIPE)
 	{
@@ -119,20 +127,28 @@ void	ft_execution(t_node *node)
 // int main()
 // {
 //     t_node *ast;
+// 	t_redir *redir;
 //     // char *args[] = {"/usr/bin/wc", "-l", NULL};
 //     // char *args2[] = {"/bin/cat", NULL};
 //     // char *args3[] = {"/usr/bin/grep", "hoge", NULL};
 //     char *ls[] = {"/bin/ls", NULL};
 //     char *cat[] = {"/bin/cat", NULL};
 //     char *wc[] = {"/usr/bin/wc", "-l", NULL};
-//     char *grep[] = {"/usr/bin/grep", "hoge", NULL};
+//     char *grep[] = {"/usr/bin/grep", "a.out", NULL};
+// 	char *file[] = {"hoge.txt", NULL};
 
 //     ast = make_node(N_PIPE, ls);
 //     ast->left = make_node(N_COMMAND, ls);
 //     ast->right = make_node(N_PIPE, ls);
 //     ast->right->left = make_node(N_COMMAND, grep);
 //     ast->right->right = make_node(N_COMMAND, wc);
-//     ft_execution(ast, false);
+
+// 	redir = malloc(sizeof(t_redir) * 1);
+// 	redir->file = file;
+// 	redir->type = N_REDIR_OUT;
+// 	redir->next = NULL;
+// 	ast->right->right->redir = redir;
+//     ft_execution(ast);
 //     // command_exec(args2, true);
 //     // command_exec(args3, false);
 //     // wait(NULL);
