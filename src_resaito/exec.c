@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 13:39:58 by resaito           #+#    #+#             */
-/*   Updated: 2023/11/13 14:33:58 by resaito          ###   ########.fr       */
+/*   Updated: 2023/11/13 15:31:06 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,7 @@ int	execute_command(t_node *node, bool has_pipe)
 			dup2(pipefd[1], STDOUT_FILENO);
 			close(pipefd[1]);
 		}
-		if (node->redir != NULL && node->redir->type == N_REDIR_OUT)
-		{
-			close(pipefd[0]);
-			pipefd[1] = open(node->redir->file[0], O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
-			dup2(pipefd[1], STDOUT_FILENO);
-			close(pipefd[1]);
-		}
+		redir_dup(node, pipefd);
 		execve(node->name, node->args, NULL);
 		perror(node->name);
 		return (-1);
@@ -124,6 +118,17 @@ void	ft_execution(t_node *node)
 //     return node;
 // }
 
+// t_redir *make_redir(char **file)
+// {
+// 	t_redir *redir;
+
+// 	redir = malloc(sizeof(t_redir) * 1);
+// 	redir->file = file;
+// 	redir->type = N_REDIR_OUT;
+// 	redir->next = NULL;
+// 	return redir;
+// }
+
 // int main()
 // {
 //     t_node *ast;
@@ -136,6 +141,7 @@ void	ft_execution(t_node *node)
 //     char *wc[] = {"/usr/bin/wc", "-l", NULL};
 //     char *grep[] = {"/usr/bin/grep", "a.out", NULL};
 // 	char *file[] = {"hoge.txt", NULL};
+// 	char *file2[] = {"hoge2.txt", NULL};
 
 //     ast = make_node(N_PIPE, ls);
 //     ast->left = make_node(N_COMMAND, ls);
@@ -143,10 +149,8 @@ void	ft_execution(t_node *node)
 //     ast->right->left = make_node(N_COMMAND, grep);
 //     ast->right->right = make_node(N_COMMAND, wc);
 
-// 	redir = malloc(sizeof(t_redir) * 1);
-// 	redir->file = file;
-// 	redir->type = N_REDIR_OUT;
-// 	redir->next = NULL;
+// 	redir = make_redir(file);
+// 	redir->next = make_redir(file2);
 // 	ast->right->right->redir = redir;
 //     ft_execution(ast);
 //     // command_exec(args2, true);

@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 21:17:45 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/11 15:51:00 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/11/13 15:31:44 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,5 +90,6 @@ char			*my_strjoin(char const *s1, char const *s2);
 char			*search_path(const char *filename);
 int				execution(t_node *node, bool is_exec_pipe);
 void			ft_execution(t_node *node);
+int				redir_dup(t_node *node, int *pipefd);
 
 #endif
