@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 13:39:58 by resaito           #+#    #+#             */
-/*   Updated: 2023/11/13 15:31:06 by resaito          ###   ########.fr       */
+/*   Updated: 2023/11/13 16:29:03 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,13 +118,13 @@ void	ft_execution(t_node *node)
 //     return node;
 // }
 
-// t_redir *make_redir(char **file)
+// t_redir *make_redir(enum e_type node_type, char **file)
 // {
 // 	t_redir *redir;
 
 // 	redir = malloc(sizeof(t_redir) * 1);
 // 	redir->file = file;
-// 	redir->type = N_REDIR_OUT;
+// 	redir->type = node_type;
 // 	redir->next = NULL;
 // 	return redir;
 // }
@@ -141,16 +141,16 @@ void	ft_execution(t_node *node)
 //     char *wc[] = {"/usr/bin/wc", "-l", NULL};
 //     char *grep[] = {"/usr/bin/grep", "a.out", NULL};
 // 	char *file[] = {"hoge.txt", NULL};
-// 	char *file2[] = {"hoge2.txt", NULL};
+// 	char *file2[] = {"fuga.txt", NULL};
 
 //     ast = make_node(N_PIPE, ls);
-//     ast->left = make_node(N_COMMAND, ls);
+//     ast = make_node(N_COMMAND, ls);
 //     ast->right = make_node(N_PIPE, ls);
 //     ast->right->left = make_node(N_COMMAND, grep);
 //     ast->right->right = make_node(N_COMMAND, wc);
 
-// 	redir = make_redir(file);
-// 	redir->next = make_redir(file2);
+// 	redir = make_redir(N_REDIR_OUT, file);
+// 	redir->next = make_redir(N_REDIR_APPEND, file2);
 // 	ast->right->right->redir = redir;
 //     ft_execution(ast);
 //     // command_exec(args2, true);
