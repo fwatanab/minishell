@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 14:05:49 by resaito           #+#    #+#             */
-/*   Updated: 2023/11/13 16:27:56 by resaito          ###   ########.fr       */
+/*   Updated: 2023/11/13 16:42:53 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ int	redir_dup(t_node *node, int *pipefd)
 			|| node->redir->type == N_REDIR_APPEND))
 	{
 		close(pipefd[0]);
-		while (node->redir != NULL)
+		while (node->redir != NULL && (node->redir->type == N_REDIR_OUT
+				|| node->redir->type == N_REDIR_APPEND))
 		{
 			if (node->redir->type == N_REDIR_OUT)
 				pipefd[1] = open(node->redir->file[0],
