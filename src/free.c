@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 02:23:51 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/03 17:43:52 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/11/08 19:06:45 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,22 @@ void	str_array_free(char **array)
 	free(array);
 }
 
+void	redir_free(t_redir *redir)
+{
+	t_redir	*tmp;
+
+	if (!redir)
+		return ;
+	while (redir)
+	{
+		tmp = redir;
+		if (redir->file)
+			str_array_free(tmp->file);
+		redir = redir->next;
+		free(tmp);
+	}
+}
+
 void	node_free(t_node *node)
 {
 	if (!node)
@@ -53,6 +69,8 @@ void	node_free(t_node *node)
 		str_array_free(node->args);
 	if (node->name)
 		free(node->name);
+	if (node->redir)
+		redir_free(node->redir);
 	if (node->left)
 		node_free(node->left);
 	if (node->right)

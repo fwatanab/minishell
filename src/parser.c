@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/03 17:38:33 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/03 17:38:38 by fwatanab         ###   ########.fr       */
+/*   Created: 2023/09/25 19:19:00 by fwatanab          #+#    #+#             */
+/*   Updated: 2023/11/11 17:37:19 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-static int	updata_type_value(t_node *node, \
+static bool	updata_type_value(t_node *node, \
 		t_token_list **list, t_parse_check *key)
 {
 	t_token_list	*tmp;
@@ -32,17 +32,14 @@ static int	updata_type_value(t_node *node, \
 	else
 	{
 		tmp = key->key_list;
-		if (node->right->args)
-			str_array_free(node->right->args);
-		if (node->right->name)
-			free(node->right->name);
+		check_right_node(node);
 		node->right = parser(node->right, &tmp, key);
-		return (1);
+		return (false);
 	}
-	return (0);
+	return (true);
 }
 
-static t_node	*updata_name_value(t_node *node, \
+static void	updata_name_value(t_node *node, \
 		t_parse_check *key, t_token_list **list)
 {
 	if (key->key_type)
@@ -54,17 +51,26 @@ static t_node	*updata_name_value(t_node *node, \
 	}
 	else if (!key->key_type)
 	{
-//		if (ft_strcmp(key->token, "<") == 0)
-//		{
-//			key->key_redir = true;
-//			node->left = redir_parse(node->left, list, key);
-//		}
 		if (!node->left->name)
 			node->left->name = search_path(key->token);
 		node->left->type = N_COMMAND;
 		node->left->args = add_array(node->left->args, key->token);
 	}
-	return (node);
+}
+
+static bool	redir_checker(t_node *node, t_parse_check *key, t_token_list **list)
+{
+	if (ft_strcmp(key->token, "<") == 0 || ft_strcmp(key->token, ">") == 0)
+	{
+		if (key->key_type)
+			node->right->redir = redir_parse(\
+					node, node->right->redir, list, key->token);
+		else if (!key->key_type)
+			node->left->redir = redir_parse(\
+					node, node->left->redir, list, key->token);
+		return (true);
+	}
+	return (false);
 }
 
 t_node	*parser(t_node *node, t_token_list **list, t_parse_check *key)
@@ -80,19 +86,17 @@ t_node	*parser(t_node *node, t_token_list **list, t_parse_check *key)
 			return (NULL);
 		if (ft_strcmp(key->token, "|") == 0)
 		{
-			if (updata_type_value(node, list, key) == 1)
+			if (updata_type_value(node, list, key) == false)
 				break ;
 		}
 		else
-			node = updata_name_value(node, key, list);
+		{
+			if (redir_checker(node, key, list) == false)
+				updata_name_value(node, key, list);
+		}
 	}
-	if (!node && node->left && !node->right)
-	{
-		node->args = node->left->args;
-		node->name = node->left->name;
-		node->left->args = NULL;
-		node->left->name = NULL;
-	}
+	if (node->type == NONE)
+		one_n_command(node);
 	return (node);
 }
 

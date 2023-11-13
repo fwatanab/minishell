@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 16:02:12 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/03 17:39:05 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/11/11 17:58:04 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,4 +67,30 @@ char	**add_array(char **array, char *token)
 	new_array[len + 1] = NULL;
 	str_array_free(array);
 	return (new_array);
+}
+
+void	one_n_command(t_node *node)
+{
+		node->args = node->left->args;
+		node->name = node->left->name;
+		node->type = node->left->type;
+		if (node->left->redir)
+			node->redir = node->left->redir;
+		node->left->args = NULL;
+		node->left->name = NULL;
+		node->left->type = NONE;
+		node->left->redir = NULL;
+}
+
+void	check_right_node(t_node *node)
+{
+	if (node->right->args)
+		str_array_free(node->right->args);
+	if (node->right->name)
+		free(node->right->name);
+	if (node->right->redir)
+	{
+		redir_free(node->right->redir);
+		node->right->redir = NULL;
+	}
 }
