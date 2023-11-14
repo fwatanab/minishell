@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 13:39:58 by resaito           #+#    #+#             */
-/*   Updated: 2023/11/13 16:29:03 by resaito          ###   ########.fr       */
+/*   Updated: 2023/11/14 15:11:44 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ int	execute_command(t_node *node, bool has_pipe)
 	}
 	else
 	{
+		indirect_exec(node, pipefd);
 		if (has_pipe)
 		{
 			close(pipefd[1]);
@@ -133,25 +134,28 @@ void	ft_execution(t_node *node)
 // {
 //     t_node *ast;
 // 	t_redir *redir;
+// 	t_redir *redir2;
 //     // char *args[] = {"/usr/bin/wc", "-l", NULL};
 //     // char *args2[] = {"/bin/cat", NULL};
 //     // char *args3[] = {"/usr/bin/grep", "hoge", NULL};
 //     char *ls[] = {"/bin/ls", NULL};
 //     char *cat[] = {"/bin/cat", NULL};
 //     char *wc[] = {"/usr/bin/wc", "-l", NULL};
-//     char *grep[] = {"/usr/bin/grep", "a.out", NULL};
+//     char *grep[] = {"/usr/bin/grep", "hoge", NULL};
 // 	char *file[] = {"hoge.txt", NULL};
 // 	char *file2[] = {"fuga.txt", NULL};
+// 	char *file3[] = {"piyo.txt", NULL};
 
 //     ast = make_node(N_PIPE, ls);
-//     ast->left = make_node(N_COMMAND, ls);
+//     ast->left = make_node(N_COMMAND, cat);
 //     ast->right = make_node(N_PIPE, ls);
 //     ast->right->left = make_node(N_COMMAND, grep);
 //     ast->right->right = make_node(N_COMMAND, wc);
 
-// 	redir = make_redir(N_REDIR_OUT, file);
-// 	redir->next = make_redir(N_REDIR_APPEND, file2);
-// 	ast->right->right->redir = redir;
+// 	redir = make_redir(N_REDIR_IN, file);
+// 	// redir2 = make_redir(N_REDIR_OUT, file3);
+// 	ast->left->redir = redir;
+// 	// ast->right->right->redir = redir2;
 //     ft_execution(ast);
 //     // command_exec(args2, true);
 //     // command_exec(args3, false);

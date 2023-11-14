@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 14:05:49 by resaito           #+#    #+#             */
-/*   Updated: 2023/11/13 16:42:53 by resaito          ###   ########.fr       */
+/*   Updated: 2023/11/14 15:11:47 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 int	redir_dup(t_node *node, int *pipefd)
 {
 	if (!(node->redir != NULL && (node->redir->type == N_REDIR_OUT
-			|| node->redir->type == N_REDIR_APPEND)))
+				|| node->redir->type == N_REDIR_APPEND)))
 		return (0);
 	close(pipefd[0]);
 	while (node->redir != NULL && (node->redir->type == N_REDIR_OUT
@@ -35,17 +35,18 @@ int	redir_dup(t_node *node, int *pipefd)
 	return (0);
 }
 
-int	indirect_exec(t_node *node)
+int	indirect_exec(t_node *node, int *pipefd)
 {
-	int		stdin_fd;
-	char	*file;
-
-	stdin_fd = 0;
-	stdin_fd = open(file, O_RDONLY);
-	dup2(stdin_fd, STDIN_FILENO);
-	close(stdin_fd);
-	execve(node->name, node->args, NULL);
-	dup2(stdin_fd, STDIN_FILENO);
-	close(stdin_fd);
+	if (!(node->redir != NULL && node->redir->type == N_REDIR_IN))
+		return (0);
+	close(pipefd[1]);
+	while (node->redir != NULL && (node->redir->type == N_REDIR_IN))
+	{
+		if (node->redir->type == N_REDIR_IN)
+			pipefd[0] = open(node->redir->file[0], O_RDONLY);
+		node->redir = node->redir->next;
+	}
+	dup2(pipefd[0], STDIN_FILENO);
+	close(pipefd[0]);
 	return (0);
 }
