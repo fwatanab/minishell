@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 13:39:58 by resaito           #+#    #+#             */
-/*   Updated: 2023/11/14 15:11:44 by resaito          ###   ########.fr       */
+/*   Updated: 2023/11/15 14:41:54 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ int	execute_command(t_node *node, bool has_pipe)
 	}
 	else
 	{
-		indirect_exec(node, pipefd);
 		if (has_pipe)
 		{
 			close(pipefd[1]);
@@ -62,8 +61,11 @@ int	execute_command(t_node *node, bool has_pipe)
 // #include <stdio.h>
 int	execution(t_node *node, bool is_exec_pipe)
 {	
+	int	dupout;
+
 	if (node == NONE)
 		return (0);
+	indirect_exec(node, dupout);
 	if (node->type == N_PIPE)
 	{
 		execution(node->left, true);
@@ -147,14 +149,14 @@ void	ft_execution(t_node *node)
 // 	char *file3[] = {"piyo.txt", NULL};
 
 //     ast = make_node(N_PIPE, ls);
-//     ast->left = make_node(N_COMMAND, cat);
+//     ast->right = make_node(N_COMMAND, cat);
 //     ast->right = make_node(N_PIPE, ls);
 //     ast->right->left = make_node(N_COMMAND, grep);
 //     ast->right->right = make_node(N_COMMAND, wc);
 
 // 	redir = make_redir(N_REDIR_IN, file);
 // 	// redir2 = make_redir(N_REDIR_OUT, file3);
-// 	ast->left->redir = redir;
+// 	ast->right->redir = redir;
 // 	// ast->right->right->redir = redir2;
 //     ft_execution(ast);
 //     // command_exec(args2, true);

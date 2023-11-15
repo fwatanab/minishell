@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 14:05:49 by resaito           #+#    #+#             */
-/*   Updated: 2023/11/14 15:11:47 by resaito          ###   ########.fr       */
+/*   Updated: 2023/11/15 14:39:14 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,18 +35,17 @@ int	redir_dup(t_node *node, int *pipefd)
 	return (0);
 }
 
-int	indirect_exec(t_node *node, int *pipefd)
+int	indirect_exec(t_node *node, int dupout)
 {
 	if (!(node->redir != NULL && node->redir->type == N_REDIR_IN))
 		return (0);
-	close(pipefd[1]);
 	while (node->redir != NULL && (node->redir->type == N_REDIR_IN))
 	{
 		if (node->redir->type == N_REDIR_IN)
-			pipefd[0] = open(node->redir->file[0], O_RDONLY);
+			dupout = open(node->redir->file[0], O_RDONLY);
 		node->redir = node->redir->next;
 	}
-	dup2(pipefd[0], STDIN_FILENO);
-	close(pipefd[0]);
+	dup2(dupout, STDIN_FILENO);
+	close(dupout);
 	return (0);
 }
