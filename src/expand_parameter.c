@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 23:43:04 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/21 19:21:13 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/11/22 00:20:34 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ char	*parse_parameter(char *token)
 	size_t	i;
 	size_t	j;
 
-	printf(" %s\n", token);
 	if (!token || token[0] != '$')
 		return (NULL);
 	str = (char *)malloc(sizeof(char) * ft_strlen(token));
@@ -55,6 +54,22 @@ char	*parse_parameter(char *token)
 	return (str);
 }
 
+char	*change_env_var(char *token)
+{
+	char	*env_name;
+	char	*env_var;
+
+	env_name = parse_parameter(token);
+	if (!env_name)
+		return (NULL);
+	env_var = getenv(env_name);
+	if (!env_var)
+		env_var = ft_strdup("");
+	else
+		env_var = ft_strdup(env_var);
+	return (env_var);
+}
+
 char	*expand_parameter(char *token)
 {
 	t_parm	*parm;
@@ -70,14 +85,9 @@ char	*expand_parameter(char *token)
 	{
 		if (*parm->tmp == '$')
 		{
-			parm->env_name = parse_parameter(parm->tmp);
-			if (!parm->env_name)
-				return (token);
-			env_var = getenv(parm->env_name);
+			env_var = change_env_var(parm->tmp);
 			if (!env_var)
-				env_var = ft_strdup("");
-			else
-				env_var = ft_strdup(env_var);
+				return (token);
 			return (env_var);
 		}
 		parm->tmp++;
