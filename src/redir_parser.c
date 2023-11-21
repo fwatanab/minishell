@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 19:48:34 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/08 20:37:11 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/11/21 18:25:47 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,12 @@ static size_t	redir_size(t_token_list **list, char *token)
 
 	tmp = *list;
 	len = 0;
-	if (tmp && (ft_strcmp(token, "<") == 0 || ft_strcmp(token, ">") == 0))
+	if (tmp && (ft_strcmp(token, "<") == 0 || ft_strcmp(token, ">") == 0
+			|| ft_strcmp(token, "<<") == 0 || ft_strcmp(token, ">>") == 0))
 		token = pop_token(&tmp);
 	while (ft_strcmp(token, "|") != 0
-		&& ft_strcmp(token, "<") != 0 && ft_strcmp(token, ">") != 0)
+		&& ft_strcmp(token, "<") != 0 && ft_strcmp(token, ">") != 0
+		&& ft_strcmp(token, "<<") != 0 && ft_strcmp(token, ">>") != 0)
 	{
 		len++;
 		if (!tmp)
@@ -63,7 +65,8 @@ static char	*add_redir_file(t_node *node, t_redir *redir, t_token_list **list)
 	if (*list)
 		token = pop_token(list);
 	i = 0;
-	while (ft_strcmp(token, "<") != 0 && ft_strcmp(token, ">") != 0)
+	while (ft_strcmp(token, "<") != 0 && ft_strcmp(token, ">") != 0
+		&& ft_strcmp(token, "<<") != 0 && ft_strcmp(token, ">>") != 0)
 	{
 		redir->file[i] = ft_strdup(token);
 		if (!redir->file[i])
@@ -83,12 +86,10 @@ static char	*add_redir_file(t_node *node, t_redir *redir, t_token_list **list)
 t_redir	*redir_parse(t_node *node, t_redir *redir, \
 		t_token_list **list, char *token)
 {
-	size_t	len;
-
-	if (!list || (ft_strcmp(token, "<") != 0 && ft_strcmp(token, ">") != 0))
+	if (!list || (ft_strcmp(token, "<") != 0 && ft_strcmp(token, ">") != 0
+			&& ft_strcmp(token, "<<") != 0 && ft_strcmp(token, ">>") != 0))
 		return (NULL);
-	len = redir_size(list, token);
-	redir = create_redir(len);
+	redir = create_redir(redir_size(list, token));
 	if (!redir)
 	{
 		list_free(list);
@@ -99,8 +100,13 @@ t_redir	*redir_parse(t_node *node, t_redir *redir, \
 		redir->type = N_REDIR_IN;
 	else if (ft_strcmp(token, ">") == 0)
 		redir->type = N_REDIR_OUT;
+	else if (ft_strcmp(token, "<<") == 0)
+		redir->type = N_REDIR_HERE;
+	else if (ft_strcmp(token, ">>") == 0)
+		redir->type = N_REDIR_APPEND;
 	token = add_redir_file(node, redir, list);
-	if (*list && (ft_strcmp(token, "<") == 0 || ft_strcmp(token, ">") == 0))
+	if (*list && (ft_strcmp(token, "<") == 0 || ft_strcmp(token, ">") == 0
+			|| ft_strcmp(token, "<<") == 0 || ft_strcmp(token, ">>") == 0))
 		redir->next = redir_parse(node, redir->next, list, token);
 	return (redir);
 }
