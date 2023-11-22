@@ -1,120 +1,84 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec.c                                             :+:      :+:    :+:   */
+/*   redirect_dup.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/30 13:39:58 by resaito           #+#    #+#             */
-/*   Updated: 2023/11/16 17:05:29 by resaito          ###   ########.fr       */
+/*   Created: 2023/11/09 14:05:49 by resaito           #+#    #+#             */
+/*   Updated: 2023/11/16 17:49:53 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 #include <fcntl.h>
 
-int	execute_command(t_node *node, bool has_pipe)
+int	redir_dup(t_node *node, int *pipefd)
 {
-	int		pipefd[2];
-	pid_t	pid;
-	int		status;
-	char	*line;
-
-	if (has_pipe)
-	{
-		if (pipe(pipefd) < 0)
-		{
-			perror("pipe");
-			exit(-1);
-		}
-	}
-	pid = fork();
-	if (pid < 0)
-	{
-		perror("fork");
-		exit(-1);
-	}
-	else if (pid == 0)
-	{
-		if (has_pipe)
-		{
-			close(pipefd[0]);
-			dup2(pipefd[1], STDOUT_FILENO);
-			close(pipefd[1]);
-		}
-		redir_dup(node, pipefd);
-		execve(node->name, node->args, NULL);
-		perror(node->name);
-		return (-1);
-	}
-	else
-	{
-		if (has_pipe)
-		{
-			close(pipefd[1]);
-			dup2(pipefd[0], STDIN_FILENO);
-			close(pipefd[0]);
-		}
+	if (!(node->redir != NULL && (node->redir->type == N_REDIR_OUT
+				|| node->redir->type == N_REDIR_APPEND)))
 		return (0);
-	}
-}
-
-// #include <stdio.h>
-int	execution(t_node *node, bool is_exec_pipe)
-{	
-	int	dupout;
-	char *line;
-
-	if (node == NONE)
-		return (0);
-	indirect_exec(node, dupout);
-	if (node->type == N_PIPE)
+	close(pipefd[0]);
+	while (node->redir != NULL && (node->redir->type == N_REDIR_OUT
+			|| node->redir->type == N_REDIR_APPEND))
 	{
-		execution(node->left, true);
-		execution(node->right, false);
+		if (node->redir->type == N_REDIR_OUT)
+			pipefd[1] = open(node->redir->file[0],
+					O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
+		else
+			pipefd[1] = open(node->redir->file[0],
+					O_WRONLY | O_CREAT | O_APPEND, S_IRUSR | S_IWUSR);
+		node->redir = node->redir->next;
 	}
-	if (node->type == N_COMMAND)
-	{
-		execute_command(node, is_exec_pipe);
-	}
+	dup2(pipefd[1], STDOUT_FILENO);
+	close(pipefd[1]);
 	return (0);
 }
 
-void wait_all(t_node *node)
+int	indirect_exec(t_node *node, int dupout)
 {
-	int status;
+	t_redir *redir;
 
-	if (node == NONE)
-		return ;
-	if (node->type == N_PIPE)
+	redir = node->redir;
+	if (!(redir != NULL && redir->type == N_REDIR_IN))
+		return (0);
+	while (redir != NULL && (redir->type == N_REDIR_IN))
 	{
-		wait_all(node->left);
-		wait_all(node->right);
+		if (redir->type == N_REDIR_IN)
+			dupout = open(redir->file[0], O_RDONLY);
+		redir = redir->next;
 	}
-	if (node->type == N_COMMAND)
-		wait(&status);
-	return ;
+	dup2(dupout, STDIN_FILENO);
+	close(dupout);
+	return (0);
 }
 
-void	ft_execution(t_node *node)
+int	heredoc_exec(char *delimiter)
 {
-	int dupin;
+	char	*line;
+	int		pipefd[2];
 
-	dupin = dup(STDIN_FILENO);
-	execution(node, false);
-	system("leaks -q minishell");
-	wait_all(node);
-	// system("leaks -q minishell");
-	dup2(dupin, STDIN_FILENO);
-	close(dupin);
+	if (pipe(pipefd) < 0)
+	{
+		perror("pipe");
+		exit(-1);
+	}
+	while (1)
+	{
+		line = readline("> ");
+		if (line == NULL)
+			break ;
+		if (ft_strncmp(line, delimiter, ft_strlen(delimiter)) == 0)
+		{
+			free(line);
+			break ;
+		}
+		ft_putendl_fd(line, pipefd[1]);
+		free(line);
+	}
+	close(pipefd[1]);
+	return (pipefd[0]);
 }
-
-// bool	has_pipe(t_node *node)
-// {
-// 	if (node->type == N_PIPE)
-// 		return (true);
-// 	return (false);
-// }
 
 // t_node *make_node(enum e_type node_type, char **args)
 // {
@@ -166,7 +130,7 @@ void	ft_execution(t_node *node)
 // 	// redir->next->next = make_redir(N_REDIR_OUT, file2);
 // 	ast->redir = redir;
 // 	// redir->next = redir2;
-//     ft_execution(ast);
+//     heredoc_exec(ast->redir->file[0]);
 //     // command_exec(args2, true);
 //     // command_exec(args3, false);
 //     // wait(NULL);
