@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 21:17:45 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/15 14:40:19 by resaito          ###   ########.fr       */
+/*   Updated: 2023/11/22 20:52:43 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define MINISHELL_H
 
 # include "../libft/inc/libft.h"
+# include "../libft/inc/libft_utils.h"
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -79,12 +80,6 @@ void			redir_free(t_redir *redir);
 
 //error
 void			malloc_error(void);
-
-//utils
-char			*ft_strndup(const char *s1, size_t n);
-char			*ft_strstr(const char *big, const char *little);
-int				ft_strcmp(const char *s1, const char *s2);
-char			*my_strjoin(char const *s1, char const *s2);
 
 //resaito
 char			*search_path(const char *filename);

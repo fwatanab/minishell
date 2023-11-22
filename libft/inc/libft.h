@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 19:48:59 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/08/02 18:53:33 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/11/22 20:49:05 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 # include <unistd.h>
 # include <limits.h>
 # include <stdarg.h>
-# include "get_next_line_bonus.h"
 
 void	ft_bzero(void *s, size_t n);
 int		ft_isalnum(int c);

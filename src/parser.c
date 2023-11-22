@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 19:19:00 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/11 17:37:19 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/11/21 18:22:12 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,8 @@ static void	updata_name_value(t_node *node, \
 
 static bool	redir_checker(t_node *node, t_parse_check *key, t_token_list **list)
 {
-	if (ft_strcmp(key->token, "<") == 0 || ft_strcmp(key->token, ">") == 0)
+	if (ft_strcmp(key->token, "<") == 0 || ft_strcmp(key->token, ">") == 0
+		|| ft_strcmp(key->token, "<<") == 0 || ft_strcmp(key->token, ">>") == 0)
 	{
 		if (key->key_type)
 			node->right->redir = redir_parse(\
