@@ -6,7 +6,9 @@ SRCS = main.c free.c tokenize.c check_token.c utils.c parser.c redir_parser.c pa
 
 RE_SRCSDIR	= src_resaito/
 
-RE_SRCS = exec.c search_path.c
+RE_SRCS = exec.c \
+			search_path.c \
+			redirect_dup.c
 
 OBJS	= $(addprefix $(SRCSDIR), $(SRCS:.c=.o))
 
