@@ -37,13 +37,16 @@ int	redir_dup(t_node *node, int *pipefd)
 
 int	indirect_exec(t_node *node, int dupout)
 {
-	if (!(node->redir != NULL && node->redir->type == N_REDIR_IN))
+	t_redir *redir;
+
+	redir = node->redir;
+	if (!(redir != NULL && redir->type == N_REDIR_IN))
 		return (0);
-	while (node->redir != NULL && (node->redir->type == N_REDIR_IN))
+	while (redir != NULL && (redir->type == N_REDIR_IN))
 	{
-		if (node->redir->type == N_REDIR_IN)
-			dupout = open(node->redir->file[0], O_RDONLY);
-		node->redir = node->redir->next;
+		if (redir->type == N_REDIR_IN)
+			dupout = open(redir->file[0], O_RDONLY);
+		redir = redir->next;
 	}
 	dup2(dupout, STDIN_FILENO);
 	close(dupout);
