@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 03:53:40 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/22 22:49:33 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/11/23 17:15:52 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,12 @@ typedef struct s_parm
 	char		*str;
 	char		*env_var;
 	char		*value;
-	size_t		new_len;
+	size_t		len;
 }	t_parm;
 
-char	*expand_parameter(char *token);
+//init
+t_parm	*parameter_init(char *token);
+
+char	*check_parameter(t_parm *parm, char *token);
 
 #endif
