@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 03:53:40 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/23 17:15:52 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/11/23 17:40:51 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,9 @@
 
 typedef struct s_parm
 {
-	char		*token;
 	char		*tmp;
 	char		*str;
 	char		*env_var;
-	char		*value;
 	size_t		len;
 }	t_parm;
 
