@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 00:15:40 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/16 19:24:29 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/11/23 17:16:20 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,3 +60,4 @@ void	all_node_init(t_node *node)
 	node->args = NULL;
 	node->redir = NULL;
 }
+
