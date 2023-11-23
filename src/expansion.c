@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 17:52:58 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/23 20:07:51 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/11/24 00:14:11 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ char	*delete_quote(char	*token)
 	size_t	i;
 	size_t	j;
 
-	if (token[0] != '\'' && token[0] != '"')
+	if (!token || (token[0] != '\'' && token[0] != '"'))
 		return (token);
 	new_token = (char *)malloc(sizeof(char) * (ft_strlen(token) - 1));
 	if (!new_token)
@@ -57,6 +57,35 @@ char	*delete_quote(char	*token)
 	return (new_token);
 }
 
+char	*check_command(char *str)
+{
+	char	*tmp;
+	bool	quote;
+	size_t	open;
+	size_t	close;
+
+	tmp = str;
+	quote = false;
+	open = 0;
+	close = 0;
+	while (*tmp)
+	{
+		if (!quote && (*tmp == '\'' || *tmp == '"'))
+			quote = true;
+		else if (quote && (*tmp == '\'' || *tmp == '"'))
+			quote = false;
+		else if (*tmp == '$' && *(tmp + 1) == '{')
+			open++;
+		else if ((close + 1) == open && *tmp == '}')
+			close++;
+		tmp++;
+	}
+	if (quote || (str[0] == '\'' && str[ft_strlen(str) - 1] == '"')
+		|| (str[0] == '"' && str[ft_strlen(str)-1] == '\'') || open != close)
+		return (NULL);
+	return (str);
+}
+
 void	expansion(char **array)
 {
 	char	*new_array;
@@ -66,6 +95,7 @@ void	expansion(char **array)
 	new_array = NULL;
 	while (array[i])
 	{
+		array[i] = check_command(array[i]);
 		array[i] = expand_parameter(array[i]);
 		array[i] = delete_quote(array[i]);
 		i++;
