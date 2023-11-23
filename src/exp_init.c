@@ -15,6 +15,7 @@ t_parm	*parameter_init(char *token)
 		return (NULL);
 	}
 	new->str[0] = '\0';
+	new->env_var = NULL;
 	new->len = 0;
 	return (new);
 }
