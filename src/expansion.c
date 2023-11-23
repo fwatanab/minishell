@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 17:52:58 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/23 17:47:53 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/11/23 18:54:43 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ char	*expand_parameter(char *token)
 	new_token = ft_strdup(parm->str);
 	free(parm->str);
 	free(parm);
+	free(token);
 	return (new_token);
 }
 

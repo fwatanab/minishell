@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 23:43:04 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/23 17:11:40 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/11/23 18:56:12 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ char	*get_env_var(char *token)
 		env_var = ft_strdup("");
 	else
 		env_var = ft_strdup(env_var);
+	free(env_name);
 	return (env_var);
 }
 
