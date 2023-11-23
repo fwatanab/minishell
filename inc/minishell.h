@@ -85,5 +85,7 @@ void			malloc_error(void);
 char			*search_path(const char *filename);
 int				execution(t_node *node, bool is_exec_pipe);
 void			ft_execution(t_node *node);
+int				redir_dup(t_node *node, int *pipefd);
+int				indirect_exec(t_node *node, int dupout);
 
 #endif
