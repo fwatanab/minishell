@@ -6,42 +6,42 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 23:43:04 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/22 22:56:44 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/11/23 17:11:40 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/expansion.h"
 
-t_parm	*parameter_init(char *token)
+static char	*update_string(t_parm *parm)
 {
-	t_parm	*new;
+	char	*new;
 
-	new = (t_parm *)malloc(sizeof(t_parm));
+	parm->len = ft_strlen(parm->str);
+	new = ft_realloc(parm->str, parm->len + 2);
 	if (!new)
-		return (NULL);
-	new->tmp = token;
-	new->str = malloc(sizeof(char) * (ft_strlen(token) + 1));
-	if (!new->str)
 	{
-		free(new);
+		free(parm->str);
+		free(parm);
 		return (NULL);
 	}
-	new->str[0] = '\0';
-	new->new_len = 0;
-	return (new);
+	parm->str = new;
+	parm->str[parm->len] = *parm->tmp;
+	parm->str[parm->len + 1] = '\0';
+	parm->tmp++;
+	return (parm->str);
 }
 
-char	*parse_parameter(char *token)
+static char	*parse_parameter(char *token)
 {
-	char	*str;
+	char	*env_name;
 	size_t	brackets;
 	size_t	i;
 	size_t	j;
 
 	if (!token || token[0] != '$')
 		return (NULL);
-	str = (char *)malloc(sizeof(char) * ft_strlen(token));
-	if (!str)
+	env_name = (char *)malloc(sizeof(char) * ft_strlen(token));
+	if (!env_name)
 		return (NULL);
 	i = 1;
 	j = 0;
@@ -53,14 +53,14 @@ char	*parse_parameter(char *token)
 		else if (brackets < 2 && token[i] == '}')
 			brackets++;
 		else
-			str[j++] = token[i];
+			env_name[j++] = token[i];
 		i++;
 	}
-	str[j] = '\0';
-	return (str);
+	env_name[j] = '\0';
+	return (env_name);
 }
 
-char	*change_env_var(char *token)
+char	*get_env_var(char *token)
 {
 	char	*env_name;
 	char	*env_var;
@@ -76,62 +76,53 @@ char	*change_env_var(char *token)
 	return (env_var);
 }
 
-char	*expand_parameter(char *token)
+static char	*expand_env_variable(t_parm *parm)
 {
-	t_parm	*parm;
-	char	*value;
+	char	*new;
 
-	if (!token || (token[0] == '\'' && token[ft_strlen(token) - 1] == '\''))
-		return (token);
-	parm = parameter_init(token);
-	if (!parm)
-		return (token);
-	while (*parm->tmp) {
+	parm->env_var = get_env_var(parm->tmp);
+	if (!parm->env_var)
+	{
+		free(parm->str);
+		free(parm);
+		return (NULL);
+	}
+	else
+	{
+		parm->len = ft_strlen(parm->str) + ft_strlen(parm->env_var);
+		new = ft_realloc(parm->str, parm->len + 1);
+		if (!new)
+		{
+			free(parm->str);
+			free(parm->env_var);
+			free(parm);
+			return (NULL);
+		}
+		parm->str = new;
+		ft_strcat(parm->str, parm->env_var);
+		free(parm->env_var);
+	}
+	return (parm->str);
+}
+
+char	*check_parameter(t_parm *parm, char *token)
+{
+	while (*parm->tmp)
+	{
 		if (*parm->tmp == '$')
 		{
-			parm->env_var = change_env_var(parm->tmp);
-			if (!parm->env_var)
-			{
-				free(parm->str);
-				free(parm);
-				return (token);
-			}
-			else
-			{
-				parm->new_len = ft_strlen(parm->str) + ft_strlen(parm->env_var);
-				char	*new = ft_realloc(parm->str, parm->new_len + 1);
-				if (!new)
-				{
-					free(parm->str);
-					free(parm->env_var);
-					free(parm);
-					return token;
-				}
-				parm->str = new;
-				ft_strcat(parm->str, parm->env_var);
-				free(parm->env_var);
-			}
+			parm->str = expand_env_variable(parm);
+			if (!parm->str)
+				return (NULL);
 			while (*parm->tmp && *parm->tmp != '"' && *parm->tmp != ' ')
 				parm->tmp++;
 		}
 		else
 		{
-			size_t len = ft_strlen(parm->str);
-			char *new = ft_realloc(parm->str, len + 2);
-			if (!new)
-			{
-				free(parm->str);
-				free(parm);
-				return token;
-			}
-			parm->str = new;
-			parm->str[len] = *parm->tmp;
-			parm->str[len + 1] = '\0';
-			parm->tmp++;
+			parm->str = update_string(parm);
+			if (!parm->str)
+				return (NULL);
 		}
 	}
-	value = ft_strdup(parm->str);
-	free(parm->str);
-	free(parm);
-	return (value);
+	return (parm->str);
 }

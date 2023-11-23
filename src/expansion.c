@@ -6,12 +6,29 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 17:52:58 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/21 19:10:05 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/11/23 17:11:38 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 #include "../inc/expansion.h"
+
+char	*expand_parameter(char *token)
+{
+	t_parm	*parm;
+	char	*new_token;
+
+	if (!token || (token[0] == '\'' && token[ft_strlen(token) - 1] == '\''))
+		return (token);
+	parm = parameter_init(token);
+	if (!parm)
+		return (token);
+	parm->str = check_parameter(parm, token);
+	new_token = ft_strdup(parm->str);
+	free(parm->str);
+	free(parm);
+	return (new_token);
+}
 
 void	expansion(char **array)
 {
