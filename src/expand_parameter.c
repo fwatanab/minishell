@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 23:43:04 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/23 18:56:12 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/11/23 19:18:23 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,8 @@ char	*check_parameter(t_parm *parm, char *token)
 	{
 		if (*parm->tmp == '$')
 		{
+			if (*(parm->tmp + 1) == ' ' || (*parm->tmp + 1) == '\0')
+				return (NULL);
 			parm->str = expand_env_variable(parm);
 			if (!parm->str)
 				return (NULL);
