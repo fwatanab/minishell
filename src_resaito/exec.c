@@ -42,7 +42,7 @@ int	execute_command(t_node *node, bool has_pipe)
 			dup2(pipefd[1], STDOUT_FILENO);
 			close(pipefd[1]);
 		}
-		redir_dup(node, pipefd);
+		redir_dup(node);
 		execve(node->name, node->args, NULL);
 		perror(node->name);
 		return (-1);
@@ -67,7 +67,7 @@ int	execution(t_node *node, bool is_exec_pipe)
 
 	if (node == NONE)
 		return (0);
-	indirect_exec(node, dupout);
+	indirect_exec(node);
 	if (node->type == N_PIPE)
 	{
 		execution(node->left, true);
@@ -101,8 +101,8 @@ void	ft_execution(t_node *node)
 	int dupin;
 
 	dupin = dup(STDIN_FILENO);
+	heredoc_exec(node);
 	execution(node, false);
-	system("leaks -q minishell");
 	wait_all(node);
 	// system("leaks -q minishell");
 	dup2(dupin, STDIN_FILENO);

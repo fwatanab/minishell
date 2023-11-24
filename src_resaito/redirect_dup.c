@@ -13,31 +13,33 @@
 #include "../inc/minishell.h"
 #include <fcntl.h>
 
-int	redir_dup(t_node *node, int *pipefd)
+int	redir_dup(t_node *node)
 {
+	int out_fd;
+
 	if (!(node->redir != NULL && (node->redir->type == N_REDIR_OUT
 				|| node->redir->type == N_REDIR_APPEND)))
 		return (0);
-	close(pipefd[0]);
 	while (node->redir != NULL && (node->redir->type == N_REDIR_OUT
 			|| node->redir->type == N_REDIR_APPEND))
 	{
 		if (node->redir->type == N_REDIR_OUT)
-			pipefd[1] = open(node->redir->file[0],
-					O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
+			out_fd = open(node->redir->file[0],
+					O_WRONLY | O_CREAT | O_TRUNC | O_CLOEXEC, S_IRUSR | S_IWUSR);
 		else
-			pipefd[1] = open(node->redir->file[0],
-					O_WRONLY | O_CREAT | O_APPEND, S_IRUSR | S_IWUSR);
+			out_fd = open(node->redir->file[0],
+					O_WRONLY | O_CREAT | O_APPEND | O_CLOEXEC, S_IRUSR | S_IWUSR);
 		node->redir = node->redir->next;
 	}
-	dup2(pipefd[1], STDOUT_FILENO);
-	close(pipefd[1]);
+	dup2(out_fd, STDOUT_FILENO);
+	close(out_fd);
 	return (0);
 }
 
-int	indirect_exec(t_node *node, int dupout)
+int	indirect_exec(t_node *node)
 {
 	t_redir *redir;
+	int 	dupin;
 
 	redir = node->redir;
 	if (!(redir != NULL && redir->type == N_REDIR_IN))
@@ -45,19 +47,21 @@ int	indirect_exec(t_node *node, int dupout)
 	while (redir != NULL && (redir->type == N_REDIR_IN))
 	{
 		if (redir->type == N_REDIR_IN)
-			dupout = open(redir->file[0], O_RDONLY);
+			dupin = open(redir->file[0], O_RDONLY);
 		redir = redir->next;
 	}
-	dup2(dupout, STDIN_FILENO);
-	close(dupout);
+	dup2(dupin, STDIN_FILENO);
+	close(dupin);
 	return (0);
 }
 
-int	heredoc_exec(char *delimiter)
+int	heredoc_exec(t_node *node)
 {
 	char	*line;
 	int		pipefd[2];
 
+	if (!(node->redir != NULL && node->redir->type == N_REDIR_HERE))
+		return (0);
 	if (pipe(pipefd) < 0)
 	{
 		perror("pipe");
@@ -68,16 +72,18 @@ int	heredoc_exec(char *delimiter)
 		line = readline("> ");
 		if (line == NULL)
 			break ;
-		if (ft_strncmp(line, delimiter, ft_strlen(delimiter)) == 0)
+		if (ft_strncmp(line, node->redir->file[0], ft_strlen(node->redir->file[0])) == 0)
 		{
 			free(line);
+			close(pipefd[1]);
 			break ;
 		}
 		ft_putendl_fd(line, pipefd[1]);
 		free(line);
 	}
-	close(pipefd[1]);
-	return (pipefd[0]);
+	dup2(pipefd[0], STDIN_FILENO);
+	close(pipefd[0]);
+	return (pipefd[1]);
 }
 
 // t_node *make_node(enum e_type node_type, char **args)
