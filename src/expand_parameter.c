@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 23:43:04 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/25 16:20:09 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/11/25 16:39:39 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,23 +31,17 @@ static char	*update_string(t_parm *parm)
 	return (parm->str);
 }
 
-static char	*parse_parameter(char *token, t_parm *parm)
+static char	*parse_parameter(char *token, char *env_name, t_parm *parm)
 {
-	char	*env_name;
 	size_t	brackets;
 	size_t	i;
 	size_t	j;
 
-	if (!token || token[0] != '$')
-		return (NULL);
-	env_name = (char *)malloc(sizeof(char) * ft_strlen(token));
-	if (!env_name)
-		return (NULL);
 	i = 1;
 	j = 0;
 	brackets = 0;
 	while (token[i] && (token[i] == '{' || token[i] == '}'
-			|| ft_isalnum(token[i]) == 1))
+			|| token[i] == '_' || ft_isalnum(token[i]) == 1))
 	{
 		if (token[i - 1] == '$' && brackets < 1 && token[i] == '{')
 			brackets++;
@@ -69,7 +63,12 @@ char	*get_env_var(t_parm *parm)
 	char	*env_name;
 	char	*env_var;
 
-	env_name = parse_parameter(parm->tmp, parm);
+	if (!parm->tmp || *parm->tmp != '$')
+		return (NULL);
+	env_name = (char *)malloc(sizeof(char) * ft_strlen(parm->tmp));
+	if (!env_name)
+		return (NULL);
+	env_name = parse_parameter(parm->tmp, env_name, parm);
 	if (!env_name)
 		return (NULL);
 	env_var = getenv(env_name);
@@ -120,7 +119,6 @@ char	*check_parameter(t_parm *parm, char *token)
 			parm->str = expand_env_variable(parm);
 			if (!parm->str)
 				return (NULL);
-			printf("%s\n", parm->tmp);
 			parm->tmp = parm->end;
 		}
 		else
