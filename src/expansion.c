@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 17:52:58 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/24 00:14:11 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/11/25 16:34:59 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ char	*check_command(char *str)
 	}
 	if (quote || (str[0] == '\'' && str[ft_strlen(str) - 1] == '"')
 		|| (str[0] == '"' && str[ft_strlen(str)-1] == '\'') || open != close)
-		return (NULL);
+		str[0] = '\0';
 	return (str);
 }
 
