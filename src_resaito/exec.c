@@ -67,7 +67,6 @@ int	execution(t_node *node, bool is_exec_pipe)
 
 	if (node == NONE)
 		return (0);
-	indirect_exec(node);
 	if (node->type == N_PIPE)
 	{
 		execution(node->left, true);
@@ -75,6 +74,8 @@ int	execution(t_node *node, bool is_exec_pipe)
 	}
 	if (node->type == N_COMMAND)
 	{
+		indirect_exec(node);
+		heredoc_exec(node);
 		execute_command(node, is_exec_pipe);
 	}
 	return (0);
@@ -101,7 +102,6 @@ void	ft_execution(t_node *node)
 	int dupin;
 
 	dupin = dup(STDIN_FILENO);
-	heredoc_exec(node);
 	execution(node, false);
 	wait_all(node);
 	// system("leaks -q minishell");
@@ -154,18 +154,20 @@ void	ft_execution(t_node *node)
 // 	char *file2[] = {"fuga.txt", NULL};
 // 	char *file3[] = {"piyo.txt", NULL};
 // 	char *eof[] = {"hoge", NULL};
+// 	char *eof2[] = {"fuga", NULL};
 
-//     // ast = make_node(N_PIPE, ls);
-//     ast = make_node(N_COMMAND, cat);
+//     ast = make_node(N_PIPE, ls);
+//     ast->left = make_node(N_COMMAND, cat);
 //     // ast->right = make_node(N_PIPE, ls);
-//     // ast->right = make_node(N_COMMAND, grep);
+//     ast->right = make_node(N_COMMAND, cat);
 //     // ast->right->right = make_node(N_COMMAND, wc);
 
 // 	redir = make_redir(N_REDIR_HERE, eof);
 // 	// redir->next = make_redir(N_REDIR_IN, file3);
 // 	// redir->next->next = make_redir(N_REDIR_OUT, file2);
-// 	ast->redir = redir;
-// 	// redir->next = redir2;
+// 	redir2 = make_redir(N_REDIR_HERE, eof2);
+// 	ast->left->redir = redir;
+// 	ast->right->redir = redir2;
 //     ft_execution(ast);
 //     // command_exec(args2, true);
 //     // command_exec(args3, false);

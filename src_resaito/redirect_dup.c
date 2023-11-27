@@ -82,8 +82,8 @@ int	heredoc_exec(t_node *node)
 		free(line);
 	}
 	dup2(pipefd[0], STDIN_FILENO);
-	close(pipefd[0]);
-	return (pipefd[1]);
+	// close(pipefd[0]);
+	return (0);
 }
 
 // t_node *make_node(enum e_type node_type, char **args)
