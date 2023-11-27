@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 14:05:49 by resaito           #+#    #+#             */
-/*   Updated: 2023/11/16 17:49:53 by resaito          ###   ########.fr       */
+/*   Updated: 2023/11/27 17:44:57 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 int	redir_dup(t_node *node)
 {
-	int out_fd;
+	int	out_fd;
 
 	if (!(node->redir != NULL && (node->redir->type == N_REDIR_OUT
 				|| node->redir->type == N_REDIR_APPEND)))
@@ -25,10 +25,12 @@ int	redir_dup(t_node *node)
 	{
 		if (node->redir->type == N_REDIR_OUT)
 			out_fd = open(node->redir->file[0],
-					O_WRONLY | O_CREAT | O_TRUNC | O_CLOEXEC, S_IRUSR | S_IWUSR);
+					O_WRONLY | O_CREAT | O_TRUNC | O_CLOEXEC,
+					S_IRUSR | S_IWUSR);
 		else
 			out_fd = open(node->redir->file[0],
-					O_WRONLY | O_CREAT | O_APPEND | O_CLOEXEC, S_IRUSR | S_IWUSR);
+					O_WRONLY | O_CREAT | O_APPEND | O_CLOEXEC,
+					S_IRUSR | S_IWUSR);
 		node->redir = node->redir->next;
 	}
 	dup2(out_fd, STDOUT_FILENO);
@@ -38,8 +40,8 @@ int	redir_dup(t_node *node)
 
 int	indirect_exec(t_node *node)
 {
-	t_redir *redir;
-	int 	dupin;
+	t_redir	*redir;
+	int		dupin;
 
 	redir = node->redir;
 	if (!(redir != NULL && redir->type == N_REDIR_IN))
@@ -72,7 +74,8 @@ int	heredoc_exec(t_node *node)
 		line = readline("> ");
 		if (line == NULL)
 			break ;
-		if (ft_strncmp(line, node->redir->file[0], ft_strlen(node->redir->file[0])) == 0)
+		if (ft_strncmp(line, node->redir->file[0],
+				ft_strlen(node->redir->file[0])) == 0)
 		{
 			free(line);
 			close(pipefd[1]);
@@ -94,7 +97,7 @@ int	heredoc_exec(t_node *node)
 //     node->type = node_type;
 //     node->name = args[0];
 //     node->args = args;
-//     return node;
+//     return (node);
 // }
 
 // t_redir *make_redir(enum e_type node_type, char **file)
@@ -105,7 +108,7 @@ int	heredoc_exec(t_node *node)
 // 	redir->file = file;
 // 	redir->type = node_type;
 // 	redir->next = NULL;
-// 	return redir;
+// 	return (redir);
 // }
 
 // int main()
