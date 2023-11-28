@@ -1,7 +1,11 @@
 #include "../inc/minishell.h"
+#include <string.h>
+#include <errno.h>
 
 int content_node(t_node *node)
 {
+    t_redir *redir;
+
     if (node->type == NONE)
         return (0);
     if (node->type == N_PIPE)
@@ -11,8 +15,15 @@ int content_node(t_node *node)
     }
     if (node->type == N_COMMAND)
     {
-        if (is_type_heredoc(node->redir))
-            node->redir->input_fd = heredoc_exec(node);
+        redir = node->redir;
+        while (redir != NULL)
+        {
+            if (is_type_heredoc(redir))
+                redir->fd = heredoc_exec(redir);
+            if (is_type_indirect(redir))
+                redir->fd = open(redir->file[0], O_RDONLY);
+            redir = redir->next;
+        }
     }
     return (0);
 }
@@ -20,6 +31,13 @@ int content_node(t_node *node)
 bool    is_type_heredoc(t_redir *redir)
 {
     if (redir != NULL && redir->type == N_REDIR_HERE)
+        return (true);
+    return (false);
+}
+
+bool    is_type_indirect(t_redir *redir)
+{
+    if (redir != NULL && redir->type == N_REDIR_IN)
         return (true);
     return (false);
 }

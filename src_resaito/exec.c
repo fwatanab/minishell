@@ -74,13 +74,7 @@ int	execution(t_node *node, bool is_exec_pipe)
 	}
 	if (node->type == N_COMMAND)
 	{
-		indirect_exec(node);
-		// heredoc_exec(node);
-		if (is_type_heredoc(node->redir))
-		{
-			dup2(node->redir->input_fd, STDIN_FILENO);
-			close(node->redir->input_fd);
-		}
+		dup_2_stdin(node);
 		execute_command(node, is_exec_pipe);
 	}
 	return (0);
@@ -113,6 +107,24 @@ void	ft_execution(t_node *node)
 	// system("leaks -q minishell");
 	dup2(dupin, STDIN_FILENO);
 	close(dupin);
+}
+
+void	dup_2_stdin(t_node *node)
+{
+	t_redir *redir;
+
+	if (node->redir == NULL)
+		return ;
+	redir = node->redir;
+	while (redir != NULL)
+	{
+		if (is_type_heredoc(redir) || is_type_indirect(redir))
+		{
+			dup2(redir->fd, STDIN_FILENO);
+			close(redir->fd);
+		}
+		redir = redir->next;
+	}
 }
 
 // bool	has_pipe(t_node *node)

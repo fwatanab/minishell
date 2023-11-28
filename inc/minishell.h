@@ -19,6 +19,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <stddef.h>
+# include <fcntl.h>
 # include "lexer_parser_utils.h"
 
 # define MINISHELL "minishell $ "
@@ -52,7 +53,7 @@ typedef struct s_redir
 {
 	enum e_type		type;
 	char			**file;
-	int				input_fd;
+	int				fd;
 	struct s_redir	*next;
 }	t_redir;
 
@@ -91,8 +92,10 @@ int				execution(t_node *node, bool is_exec_pipe);
 void			ft_execution(t_node *node);
 int				redir_dup(t_node *node);
 int				indirect_exec(t_node *node);
-int				heredoc_exec(t_node *node);
+int				heredoc_exec(t_redir *redir);
 int				content_node(t_node *node);
 bool    		is_type_heredoc(t_redir *redir);
+bool    		is_type_indirect(t_redir *redir);
+void			dup_2_stdin(t_node *node);
 
 #endif

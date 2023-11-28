@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-#include <fcntl.h>
 
 int	redir_dup(t_node *node)
 {
@@ -36,32 +35,11 @@ int	redir_dup(t_node *node)
 	return (0);
 }
 
-int	indirect_exec(t_node *node)
-{
-	t_redir *redir;
-	int 	dupin;
-
-	redir = node->redir;
-	if (!(redir != NULL && redir->type == N_REDIR_IN))
-		return (0);
-	while (redir != NULL && (redir->type == N_REDIR_IN))
-	{
-		if (redir->type == N_REDIR_IN)
-			dupin = open(redir->file[0], O_RDONLY);
-		redir = redir->next;
-	}
-	dup2(dupin, STDIN_FILENO);
-	close(dupin);
-	return (0);
-}
-
-int	heredoc_exec(t_node *node)
+int	heredoc_exec(t_redir *redir)
 {
 	char	*line;
 	int		pipefd[2];
 
-	if (!(node->redir != NULL && node->redir->type == N_REDIR_HERE))
-		return (0);
 	if (pipe(pipefd) < 0)
 	{
 		perror("pipe");
@@ -72,7 +50,7 @@ int	heredoc_exec(t_node *node)
 		line = readline("> ");
 		if (line == NULL)
 			break ;
-		if (ft_strncmp(line, node->redir->file[0], ft_strlen(node->redir->file[0])) == 0)
+		if (ft_strncmp(line, redir->file[0], ft_strlen(redir->file[0])) == 0)
 		{
 			free(line);
 			close(pipefd[1]);
