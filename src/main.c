@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 21:17:52 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/28 20:01:37 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/11/28 20:54:14 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void	bash_loop(void)
 	while (1)
 	{
 		signal(SIGINT, signal_handler);
+		signal(SIGQUIT, signal_handler);
 		line = readline(MINISHELL);
 		if (!line)
 			break ;

@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 21:17:45 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/28 19:59:20 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/11/28 20:30:49 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,8 @@ t_redir			*redir_parse(t_node *node, t_redir *redir, t_token_list **list, char *
 void			check_exp(t_node *node);
 
 //signal
-void			signal_handler(int sig_num);
-void			signal_c_fork_handler(int sig_num);
+void			signal_handler(int sig);
+void			signal_fork_handler(int sig);
 
 //free
 void			list_free(t_token_list **list);
