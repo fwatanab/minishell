@@ -52,6 +52,7 @@ typedef struct s_redir
 {
 	enum e_type		type;
 	char			**file;
+	int				input_fd;
 	struct s_redir	*next;
 }	t_redir;
 
@@ -91,5 +92,7 @@ void			ft_execution(t_node *node);
 int				redir_dup(t_node *node);
 int				indirect_exec(t_node *node);
 int				heredoc_exec(t_node *node);
+int				content_node(t_node *node);
+bool    		is_type_heredoc(t_redir *redir);
 
 #endif

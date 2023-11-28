@@ -81,9 +81,9 @@ int	heredoc_exec(t_node *node)
 		ft_putendl_fd(line, pipefd[1]);
 		free(line);
 	}
-	dup2(pipefd[0], STDIN_FILENO);
+	// dup2(pipefd[0], STDIN_FILENO);
 	// close(pipefd[0]);
-	return (0);
+	return (pipefd[0]);
 }
 
 // t_node *make_node(enum e_type node_type, char **args)
