@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 03:53:40 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/29 16:52:02 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/11/29 17:35:15 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ typedef struct s_parm
 //init
 t_parm	*parameter_init(char *token);
 
-char	*check_command(char *str);
 char	*check_parameter(t_parm *parm, char *token);
+char	*expand_parameter(char *token);
 
 #endif
