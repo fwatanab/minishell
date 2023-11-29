@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 03:53:40 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/24 21:30:11 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/11/29 16:52:02 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef struct s_parm
 //init
 t_parm	*parameter_init(char *token);
 
+char	*check_command(char *str);
 char	*check_parameter(t_parm *parm, char *token);
 
 #endif
