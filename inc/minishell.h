@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 21:17:45 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/28 20:30:49 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/11/29 17:06:28 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <stddef.h>
+# include <fcntl.h>
 # include "lexer_parser_utils.h"
 # include <signal.h>
 
@@ -53,6 +54,7 @@ typedef struct s_redir
 {
 	enum e_type		type;
 	char			**file;
+	int				fd;
 	struct s_redir	*next;
 }	t_redir;
 
@@ -93,7 +95,12 @@ void			malloc_error(void);
 char			*search_path(const char *filename);
 int				execution(t_node *node, bool is_exec_pipe);
 void			ft_execution(t_node *node);
-int				redir_dup(t_node *node, int *pipefd);
-int				indirect_exec(t_node *node, int dupout);
+int				redir_dup(t_node *node);
+int				indirect_exec(t_node *node);
+int				heredoc_exec(t_redir *redir);
+int				input_redir(t_node *node);
+bool			is_type_heredoc(t_redir *redir);
+bool			is_type_indirect(t_redir *redir);
+void			dup_2_stdin(t_node *node);
 
 #endif
