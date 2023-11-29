@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 13:39:58 by resaito           #+#    #+#             */
-/*   Updated: 2023/11/29 14:39:37 by resaito          ###   ########.fr       */
+/*   Updated: 2023/11/29 20:09:11 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ int	execute_command(t_node *node, bool has_pipe)
 	int		status;
 	char	*line;
 
+	signal(SIGINT, signal_fork_handler);
+	signal(SIGQUIT, signal_fork_handler);
 	if (has_pipe)
 	{
 		if (pipe(pipefd) < 0)
