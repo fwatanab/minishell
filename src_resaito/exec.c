@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 13:39:58 by resaito           #+#    #+#             */
-/*   Updated: 2023/11/16 17:05:29 by resaito          ###   ########.fr       */
+/*   Updated: 2023/11/29 14:39:37 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	execute_command(t_node *node, bool has_pipe)
 			dup2(pipefd[1], STDOUT_FILENO);
 			close(pipefd[1]);
 		}
-		redir_dup(node, pipefd);
+		redir_dup(node);
 		execve(node->name, node->args, NULL);
 		perror(node->name);
 		return (-1);
@@ -67,7 +67,6 @@ int	execution(t_node *node, bool is_exec_pipe)
 
 	if (node == NONE)
 		return (0);
-	indirect_exec(node, dupout);
 	if (node->type == N_PIPE)
 	{
 		execution(node->left, true);
@@ -75,6 +74,7 @@ int	execution(t_node *node, bool is_exec_pipe)
 	}
 	if (node->type == N_COMMAND)
 	{
+		dup_2_stdin(node);
 		execute_command(node, is_exec_pipe);
 	}
 	return (0);
@@ -101,8 +101,8 @@ void	ft_execution(t_node *node)
 	int dupin;
 
 	dupin = dup(STDIN_FILENO);
+	input_redir(node);
 	execution(node, false);
-	system("leaks -q minishell");
 	wait_all(node);
 	// system("leaks -q minishell");
 	dup2(dupin, STDIN_FILENO);
@@ -154,18 +154,20 @@ void	ft_execution(t_node *node)
 // 	char *file2[] = {"fuga.txt", NULL};
 // 	char *file3[] = {"piyo.txt", NULL};
 // 	char *eof[] = {"hoge", NULL};
+// 	char *eof2[] = {"fuga", NULL};
 
-//     // ast = make_node(N_PIPE, ls);
-//     ast = make_node(N_COMMAND, cat);
+//     ast = make_node(N_PIPE, ls);
+//     ast->left = make_node(N_COMMAND, cat);
 //     // ast->right = make_node(N_PIPE, ls);
-//     // ast->right = make_node(N_COMMAND, grep);
+//     ast->right = make_node(N_COMMAND, cat);
 //     // ast->right->right = make_node(N_COMMAND, wc);
 
 // 	redir = make_redir(N_REDIR_HERE, eof);
 // 	// redir->next = make_redir(N_REDIR_IN, file3);
 // 	// redir->next->next = make_redir(N_REDIR_OUT, file2);
-// 	ast->redir = redir;
-// 	// redir->next = redir2;
+// 	redir2 = make_redir(N_REDIR_HERE, eof2);
+// 	ast->left->redir = redir;
+// 	ast->right->redir = redir2;
 //     ft_execution(ast);
 //     // command_exec(args2, true);
 //     // command_exec(args3, false);

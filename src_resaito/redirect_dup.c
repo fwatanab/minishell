@@ -6,54 +6,39 @@
 /*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 14:05:49 by resaito           #+#    #+#             */
-/*   Updated: 2023/11/16 17:49:53 by resaito          ###   ########.fr       */
+/*   Updated: 2023/11/29 17:38:48 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-#include <fcntl.h>
+#include "../inc/expansion.h"
 
-int	redir_dup(t_node *node, int *pipefd)
+int	redir_dup(t_node *node)
 {
+	int	out_fd;
+
 	if (!(node->redir != NULL && (node->redir->type == N_REDIR_OUT
 				|| node->redir->type == N_REDIR_APPEND)))
 		return (0);
-	close(pipefd[0]);
 	while (node->redir != NULL && (node->redir->type == N_REDIR_OUT
 			|| node->redir->type == N_REDIR_APPEND))
 	{
 		if (node->redir->type == N_REDIR_OUT)
-			pipefd[1] = open(node->redir->file[0],
-					O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
+			out_fd = open(node->redir->file[0],
+					O_WRONLY | O_CREAT | O_TRUNC | O_CLOEXEC,
+					S_IRUSR | S_IWUSR);
 		else
-			pipefd[1] = open(node->redir->file[0],
-					O_WRONLY | O_CREAT | O_APPEND, S_IRUSR | S_IWUSR);
+			out_fd = open(node->redir->file[0],
+					O_WRONLY | O_CREAT | O_APPEND | O_CLOEXEC,
+					S_IRUSR | S_IWUSR);
 		node->redir = node->redir->next;
 	}
-	dup2(pipefd[1], STDOUT_FILENO);
-	close(pipefd[1]);
+	dup2(out_fd, STDOUT_FILENO);
+	close(out_fd);
 	return (0);
 }
 
-int	indirect_exec(t_node *node, int dupout)
-{
-	t_redir *redir;
-
-	redir = node->redir;
-	if (!(redir != NULL && redir->type == N_REDIR_IN))
-		return (0);
-	while (redir != NULL && (redir->type == N_REDIR_IN))
-	{
-		if (redir->type == N_REDIR_IN)
-			dupout = open(redir->file[0], O_RDONLY);
-		redir = redir->next;
-	}
-	dup2(dupout, STDIN_FILENO);
-	close(dupout);
-	return (0);
-}
-
-int	heredoc_exec(char *delimiter)
+int	heredoc_exec(t_redir *redir)
 {
 	char	*line;
 	int		pipefd[2];
@@ -68,15 +53,16 @@ int	heredoc_exec(char *delimiter)
 		line = readline("> ");
 		if (line == NULL)
 			break ;
-		if (ft_strncmp(line, delimiter, ft_strlen(delimiter)) == 0)
+		if (ft_strncmp(line, redir->file[0], ft_strlen(redir->file[0])) == 0)
 		{
 			free(line);
+			close(pipefd[1]);
 			break ;
 		}
+		line = expand_parameter(line);
 		ft_putendl_fd(line, pipefd[1]);
 		free(line);
 	}
-	close(pipefd[1]);
 	return (pipefd[0]);
 }
 
@@ -88,7 +74,7 @@ int	heredoc_exec(char *delimiter)
 //     node->type = node_type;
 //     node->name = args[0];
 //     node->args = args;
-//     return node;
+//     return (node);
 // }
 
 // t_redir *make_redir(enum e_type node_type, char **file)
@@ -99,7 +85,7 @@ int	heredoc_exec(char *delimiter)
 // 	redir->file = file;
 // 	redir->type = node_type;
 // 	redir->next = NULL;
-// 	return redir;
+// 	return (redir);
 // }
 
 // int main()
