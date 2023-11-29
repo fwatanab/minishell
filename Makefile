@@ -8,7 +8,8 @@ RE_SRCSDIR	= src_resaito/
 
 RE_SRCS = exec.c \
 			search_path.c \
-			redirect_dup.c
+			redirect_dup.c \
+			input_redir.c
 
 OBJS	= $(addprefix $(SRCSDIR), $(SRCS:.c=.o))
 
