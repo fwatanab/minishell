@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 21:17:52 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/29 16:22:56 by resaito          ###   ########.fr       */
+/*   Updated: 2023/11/29 17:06:31 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	minishell(char *line)
 	node = parser_start(&list);
 	check_exp(node);
 	ft_execution(node);
-	// print_node(node);
+//	print_node(node);
 	list_free(&tmp);
 	node_free(node);
 }
@@ -36,10 +36,12 @@ void	bash_loop(void)
 
 	while (1)
 	{
+		signal(SIGINT, signal_handler);
+		signal(SIGQUIT, signal_handler);
 		line = readline(MINISHELL);
 		if (!line)
 			break ;
-		else if (line[0] == '\0')
+		else if (line[1] == '\0')
 			free(line);
 		else
 		{

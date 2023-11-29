@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 21:17:45 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/29 14:59:52 by resaito          ###   ########.fr       */
+/*   Updated: 2023/11/29 17:06:28 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <stddef.h>
 # include <fcntl.h>
 # include "lexer_parser_utils.h"
+# include <signal.h>
 
 # define MINISHELL "minishell $ "
 # define SPACE ' '
@@ -75,7 +76,11 @@ t_node			*parser(t_node *node, t_token_list **list, t_parse_check *key);
 t_redir			*redir_parse(t_node *node, t_redir *redir, t_token_list **list, char *token);
 
 //expansion
-void	check_exp(t_node *node);
+void			check_exp(t_node *node);
+
+//signal
+void			signal_handler(int sig);
+void			signal_fork_handler(int sig);
 
 //free
 void			list_free(t_token_list **list);
