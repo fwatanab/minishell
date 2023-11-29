@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 21:17:45 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/23 17:47:12 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/11/29 14:59:52 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,9 +93,9 @@ void			ft_execution(t_node *node);
 int				redir_dup(t_node *node);
 int				indirect_exec(t_node *node);
 int				heredoc_exec(t_redir *redir);
-int				content_node(t_node *node);
-bool    		is_type_heredoc(t_redir *redir);
-bool    		is_type_indirect(t_redir *redir);
+int				input_redir(t_node *node);
+bool			is_type_heredoc(t_redir *redir);
+bool			is_type_indirect(t_redir *redir);
 void			dup_2_stdin(t_node *node);
 
 #endif

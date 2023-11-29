@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 13:39:58 by resaito           #+#    #+#             */
-/*   Updated: 2023/11/16 17:05:29 by resaito          ###   ########.fr       */
+/*   Updated: 2023/11/29 14:39:37 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,30 +101,12 @@ void	ft_execution(t_node *node)
 	int dupin;
 
 	dupin = dup(STDIN_FILENO);
-	content_node(node);
+	input_redir(node);
 	execution(node, false);
 	wait_all(node);
 	// system("leaks -q minishell");
 	dup2(dupin, STDIN_FILENO);
 	close(dupin);
-}
-
-void	dup_2_stdin(t_node *node)
-{
-	t_redir *redir;
-
-	if (node->redir == NULL)
-		return ;
-	redir = node->redir;
-	while (redir != NULL)
-	{
-		if (is_type_heredoc(redir) || is_type_indirect(redir))
-		{
-			dup2(redir->fd, STDIN_FILENO);
-			close(redir->fd);
-		}
-		redir = redir->next;
-	}
 }
 
 // bool	has_pipe(t_node *node)

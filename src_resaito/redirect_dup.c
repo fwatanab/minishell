@@ -6,11 +6,12 @@
 /*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 14:05:49 by resaito           #+#    #+#             */
-/*   Updated: 2023/11/27 17:44:57 by resaito          ###   ########.fr       */
+/*   Updated: 2023/11/29 16:52:13 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+#include "../inc/expansion.h"
 
 int	redir_dup(t_node *node)
 {
@@ -58,11 +59,10 @@ int	heredoc_exec(t_redir *redir)
 			close(pipefd[1]);
 			break ;
 		}
+		line = expand_parameter(line);
 		ft_putendl_fd(line, pipefd[1]);
 		free(line);
 	}
-	// dup2(pipefd[0], STDIN_FILENO);
-	// close(pipefd[0]);
 	return (pipefd[0]);
 }
 
