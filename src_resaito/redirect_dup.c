@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 14:05:49 by resaito           #+#    #+#             */
-/*   Updated: 2023/11/29 17:29:37 by resaito          ###   ########.fr       */
+/*   Updated: 2023/11/29 17:38:48 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ int	heredoc_exec(t_redir *redir)
 			break ;
 		}
 		line = expand_parameter(line);
-		printf("line: %s\n", line);
 		ft_putendl_fd(line, pipefd[1]);
 		free(line);
 	}
