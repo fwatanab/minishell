@@ -71,7 +71,7 @@ typedef struct s_node
 typedef struct s_env
 {
 	char	**env;
-	pid_t	pid;
+	int		status;
 }	t_env;
 
 //lexer parser

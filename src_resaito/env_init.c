@@ -15,12 +15,11 @@
 t_env	*env_init(char **envp)
 {
 	t_env	*env;
-	pid_t	pid;
 
 	env = malloc(sizeof(t_env) * 1);
 	if (env == NULL)
 		exit(1);
 	env->env = envp;
-	env->pid = pid;
+	env->status = 0;
 	return (env);
 }
