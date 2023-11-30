@@ -70,9 +70,16 @@ typedef struct s_node
 
 typedef struct s_env
 {
-	char	**env;
-	int		status;
+	char	*key;
+	char	*value;
+	struct s_env	*next;
 }	t_env;
+
+typedef struct s_nanasi
+{
+	t_env	*env;
+	int		status;
+} t_nanasi;
 
 //lexer parser
 t_token_list	*tokenize(const char *str);
@@ -109,5 +116,9 @@ bool			is_type_heredoc(t_redir *redir);
 bool			is_type_indirect(t_redir *redir);
 void			dup_2_stdin(t_node *node);
 t_env			*env_init(char **envp);
+void			envadd_back(t_env **env, t_env *new);
+t_env			*new_env(char *envp);
+char			**make_env_strs(t_env *env);
+size_t			ft_list_size(t_env *env);
 
 #endif
