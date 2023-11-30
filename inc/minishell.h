@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
+/*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 21:17:45 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/29 17:06:28 by resaito          ###   ########.fr       */
+/*   Updated: 2023/11/30 15:25:26 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,12 @@ typedef struct s_node
 	struct s_node	*right;
 }	t_node;
 
+typedef struct s_env
+{
+	char	**env;
+	pid_t	pid;
+}	t_env;
+
 //lexer parser
 t_token_list	*tokenize(const char *str);
 void			check_token(t_token_list *list);
@@ -102,5 +108,6 @@ int				input_redir(t_node *node);
 bool			is_type_heredoc(t_redir *redir);
 bool			is_type_indirect(t_redir *redir);
 void			dup_2_stdin(t_node *node);
+t_env			*env_init(char **envp);
 
 #endif
