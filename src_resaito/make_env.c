@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_init.c                                         :+:      :+:    :+:   */
+/*   make_env.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 15:12:57 by resaito           #+#    #+#             */
-/*   Updated: 2023/11/30 15:17:10 by resaito          ###   ########.fr       */
+/*   Updated: 2023/12/01 15:24:03 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,14 @@ t_env	*new_envs(char **envp)
 
 void	envadd_back(t_env **env, t_env *new)
 {
-	t_env *tmp;
+	t_env	*tmp;
 
 	if (!*env)
 		*env = new;
 	else
 	{
 		tmp = *env;
-		while(tmp->next)
+		while (tmp->next)
 			tmp = tmp->next;
 		tmp->next = new;
 	}
@@ -71,7 +71,7 @@ char	**make_env_strs(t_env *env)
 	if (str == NULL)
 		exit(1);
 	size = 0;
-	while(size < env_size && env != NULL)
+	while (size < env_size && env != NULL)
 	{
 		tmp = ft_strjoin(env->key, "=");
 		if (tmp == NULL)
@@ -100,6 +100,8 @@ size_t	ft_list_size(t_env *env)
 	return (count);
 }
 
+// void	envs_str_free(t_env *env, char **str);
+
 // int main(int ac, char **av, char **envp)
 // {
 // 	t_env *env;
@@ -107,12 +109,13 @@ size_t	ft_list_size(t_env *env)
 // 	int i = 0;
 
 // 	env = new_envs(envp);
-// 	// while(env != NULL)
+// 	// while(env->next != NULL)
 // 	// {
 // 	// 	printf("%s\nkey: %s\nvalue: %s\n\n", envp[i], env->key, env->value);
 // 	// 	env = env->next;
 // 	// 	i++;
 // 	// }
+// 	// printf("%s\nkey: %s\nvalue: %s\n\n", envp[i], env->key, env->value);
 // 	i = 0;
 // 	res = make_env_strs(env);
 // 	while (res[i] != NULL)
@@ -121,4 +124,13 @@ size_t	ft_list_size(t_env *env)
 // 		printf("%s\n", envp[i]);
 // 		i++;
 // 	}
+// 	// str_array_free(res);
+// 	// envs_free(env);
+// 	envs_str_free(env, res);
+
+// }
+
+// __attribute__((destructor))
+// static void destructor() {
+// 	system("leaks -q a.out");
 // }

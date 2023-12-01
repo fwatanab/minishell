@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 21:17:45 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/30 15:25:26 by resaito          ###   ########.fr       */
+/*   Updated: 2023/12/01 15:23:23 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,5 +120,7 @@ void			envadd_back(t_env **env, t_env *new);
 t_env			*new_env(char *envp);
 char			**make_env_strs(t_env *env);
 size_t			ft_list_size(t_env *env);
+void			envs_free(t_env *env);
+void			envs_str_free(t_env *env, char **str);
 
 #endif
