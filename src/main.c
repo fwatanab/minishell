@@ -6,6 +6,7 @@
 /*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 21:17:52 by fwatanab          #+#    #+#             */
+/*   Updated: 2023/11/29 20:34:50 by fwatanab         ###   ########.fr       */
 /*   Updated: 2023/11/29 17:06:31 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -34,6 +35,7 @@ void	bash_loop(void)
 {
 	char	*line;
 
+	rl_catch_signals = 0;
 	while (1)
 	{
 		signal(SIGINT, signal_handler);
@@ -50,6 +52,7 @@ void	bash_loop(void)
 			free(line);
 		}
 	}
+	rl_clear_history();
 }
 
 int	main(int argc, char **argv, char **envp)
