@@ -75,11 +75,11 @@ typedef struct s_env
 	struct s_env	*next;
 }	t_env;
 
-typedef struct s_nanasi
+typedef struct s_envval
 {
 	t_env	*env;
 	int		status;
-} t_nanasi;
+} t_envval;
 
 //lexer parser
 t_token_list	*tokenize(const char *str);
@@ -89,7 +89,7 @@ t_node			*parser(t_node *node, t_token_list **list, t_parse_check *key);
 t_redir			*redir_parse(t_node *node, t_redir *redir, t_token_list **list, char *token);
 
 //expansion
-void			check_exp(t_node *node);
+void			check_exp(t_node *node, t_envval *envval);
 
 //signal
 void			signal_handler(int sig);
@@ -106,8 +106,8 @@ void			malloc_error(void);
 
 //resaito
 char			*search_path(const char *filename);
-int				execution(t_node *node, bool is_exec_pipe);
-void			ft_execution(t_node *node);
+int				execution(t_node *node, bool is_exec_pipe, t_envval *envval);
+void			ft_execution(t_node *node, t_envval *envval);
 int				redir_dup(t_node *node);
 int				indirect_exec(t_node *node);
 int				heredoc_exec(t_redir *redir);
@@ -115,12 +115,13 @@ int				input_redir(t_node *node);
 bool			is_type_heredoc(t_redir *redir);
 bool			is_type_indirect(t_redir *redir);
 void			dup_2_stdin(t_node *node);
-t_env			*env_init(char **envp);
+t_env			*new_envs(char **envp);
 void			envadd_back(t_env **env, t_env *new);
 t_env			*new_env(char *envp);
 char			**make_env_strs(t_env *env);
 size_t			ft_list_size(t_env *env);
 void			envs_free(t_env *env);
 void			envs_str_free(t_env *env, char **str);
+t_envval    	*make_envval(t_env *env);
 
 #endif

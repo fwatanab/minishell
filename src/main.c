@@ -13,7 +13,7 @@
 
 #include "../inc/minishell.h"
 
-void	minishell(char *line)
+void	minishell(char *line, t_envval *envval)
 {
 	t_token_list	*list;
 	t_token_list	*tmp;
@@ -24,14 +24,14 @@ void	minishell(char *line)
 	check_token(list);
 //	print_list(list);
 	node = parser_start(&list);
-	check_exp(node);
-	ft_execution(node);
+	check_exp(node, envval);
+	ft_execution(node, envval);
 //	print_node(node);
 	list_free(&tmp);
 	node_free(node);
 }
 
-void	bash_loop(void)
+void	bash_loop(t_envval *envval)
 {
 	char	*line;
 
@@ -48,7 +48,7 @@ void	bash_loop(void)
 		else
 		{
 			add_history(line);
-			minishell(line);
+			minishell(line, envval);
 			free(line);
 		}
 	}
@@ -57,7 +57,12 @@ void	bash_loop(void)
 
 int	main(int argc, char **argv, char **envp)
 {
+	t_envval *envval;
+
 	if (argc == 1)
-		bash_loop();
+	{
+		envval = make_envval(new_envs(envp));
+		bash_loop(envval);
+	}	
 	return (0);
 }
