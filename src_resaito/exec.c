@@ -22,40 +22,15 @@ int	execute_command(t_node *node, bool has_pipe, t_envval *envval)
 	signal(SIGINT, signal_fork_handler);
 	signal(SIGQUIT, signal_fork_handler);
 	if (has_pipe)
-	{
-		if (pipe(pipefd) < 0)
-		{
-			perror("pipe");
-			exit(-1);
-		}
-	}
+		ft_pipe(pipefd);
 	pid = fork();
 	if (pid < 0)
-	{
-		perror("fork");
-		exit(-1);
-	}
+		ft_perror("fork");
 	else if (pid == 0)
-	{
-		if (has_pipe)
-		{
-			close(pipefd[0]);
-			dup2(pipefd[1], STDOUT_FILENO);
-			close(pipefd[1]);
-		}
-		redir_dup(node);
-		execve(node->name, node->args, make_env_strs(envval->env));
-		perror(node->name);
-		return (-1);
-	}
+		child_process(node, has_pipe, envval, pipefd);
 	else
 	{
-		if (has_pipe)
-		{
-			close(pipefd[1]);
-			dup2(pipefd[0], STDIN_FILENO);
-			close(pipefd[0]);
-		}
+		parent_process(has_pipe, pipefd);
 		return (0);
 	}
 }

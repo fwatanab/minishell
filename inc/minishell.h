@@ -104,10 +104,16 @@ void			redir_free(t_redir *redir);
 //error
 void			malloc_error(void);
 
-//resaito
+//resaito search_path
 char			*search_path(const char *filename);
+
+// exec
 int				execution(t_node *node, bool is_exec_pipe, t_envval *envval);
 void			ft_execution(t_node *node, t_envval *envval);
+void    		child_process(t_node *node, bool has_pipe, t_envval *envval, int pipefd[2]);
+void    		parent_process(bool has_pipe, int pipefd[2]);
+
+// redir
 int				redir_dup(t_node *node);
 int				indirect_exec(t_node *node);
 int				heredoc_exec(t_redir *redir);
@@ -115,6 +121,8 @@ int				input_redir(t_node *node);
 bool			is_type_heredoc(t_redir *redir);
 bool			is_type_indirect(t_redir *redir);
 void			dup_2_stdin(t_node *node);
+
+// env
 t_env			*new_envs(char **envp);
 void			envadd_back(t_env **env, t_env *new);
 t_env			*new_env(char *envp);
@@ -123,5 +131,10 @@ size_t			ft_list_size(t_env *env);
 void			envs_free(t_env *env);
 void			envs_str_free(t_env *env, char **str);
 t_envval    	*make_envval(t_env *env);
+
+// utils
+void			*ft_xmalloc(size_t size);
+void    		ft_perror(char *str);
+int				ft_pipe(int pipefd[2]);
 
 #endif
