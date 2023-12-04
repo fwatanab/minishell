@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 21:17:45 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/01 15:23:23 by resaito          ###   ########.fr       */
+/*   Updated: 2023/12/04 14:29:07 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,8 @@ typedef struct s_node
 
 typedef struct s_env
 {
-	char	*key;
-	char	*value;
+	char			*key;
+	char			*value;
 	struct s_env	*next;
 }	t_env;
 
@@ -79,7 +79,7 @@ typedef struct s_envval
 {
 	t_env	*env;
 	int		status;
-} t_envval;
+}	t_envval;
 
 //lexer parser
 t_token_list	*tokenize(const char *str);
@@ -89,7 +89,7 @@ t_node			*parser(t_node *node, t_token_list **list, t_parse_check *key);
 t_redir			*redir_parse(t_node *node, t_redir *redir, t_token_list **list, char *token);
 
 //expansion
-void			check_exp(t_node *node, t_envval *envval);
+void			check_exp(t_node *node);
 
 //signal
 void			signal_handler(int sig);
@@ -110,8 +110,9 @@ char			*search_path(const char *filename);
 // exec
 int				execution(t_node *node, bool is_exec_pipe, t_envval *envval);
 void			ft_execution(t_node *node, t_envval *envval);
-void    		child_process(t_node *node, bool has_pipe, t_envval *envval, int pipefd[2]);
-void    		parent_process(bool has_pipe, int pipefd[2]);
+void			child_process(t_node *node, bool has_pipe, t_envval *envval
+					int pipefd[2]);
+void			parent_process(bool has_pipe, int pipefd[2]);
 
 // redir
 int				redir_dup(t_node *node);
@@ -130,11 +131,11 @@ char			**make_env_strs(t_env *env);
 size_t			ft_list_size(t_env *env);
 void			envs_free(t_env *env);
 void			envs_str_free(t_env *env, char **str);
-t_envval    	*make_envval(t_env *env);
+t_envval		*make_envval(t_env *env);
 
 // utils
 void			*ft_xmalloc(size_t size);
-void    		ft_perror(char *str);
+void			ft_perror(char *str);
 int				ft_pipe(int pipefd[2]);
 
 #endif

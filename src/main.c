@@ -3,13 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
+/*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 21:17:52 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/29 20:34:50 by fwatanab         ###   ########.fr       */
-/*   Updated: 2023/11/29 17:06:31 by resaito          ###   ########.fr       */
+/*   Updated: 2023/12/04 14:17:35 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../inc/minishell.h"
 
@@ -24,7 +24,7 @@ void	minishell(char *line, t_envval *envval)
 	check_token(list);
 //	print_list(list);
 	node = parser_start(&list);
-	check_exp(node, envval);
+	check_exp(node);
 	ft_execution(node, envval);
 //	print_node(node);
 	list_free(&tmp);

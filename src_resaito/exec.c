@@ -3,13 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
+/*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 13:39:58 by resaito           #+#    #+#             */
-/*   Updated: 2023/11/29 20:09:11 by fwatanab         ###   ########.fr       */
-/*   Updated: 2023/11/29 14:39:37 by resaito          ###   ########.fr       */
+/*   Updated: 2023/12/04 14:19:04 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../inc/minishell.h"
 #include <fcntl.h>
@@ -33,6 +33,7 @@ int	execute_command(t_node *node, bool has_pipe, t_envval *envval)
 		parent_process(has_pipe, pipefd);
 		return (0);
 	}
+	return (0);
 }
 
 // #include <stdio.h>
@@ -55,7 +56,7 @@ int	execution(t_node *node, bool is_exec_pipe, t_envval *envval)
 	return (0);
 }
 
-void wait_all(t_node *node, t_envval *envval)
+void	wait_all(t_node *node, t_envval *envval)
 {
 	if (node == NONE)
 		return ;
@@ -71,7 +72,7 @@ void wait_all(t_node *node, t_envval *envval)
 
 void	ft_execution(t_node *node, t_envval *envval)
 {
-	int dupin;
+	int	dupin;
 
 	dupin = dup(STDIN_FILENO);
 	input_redir(node);

@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_pipe.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/12/04 14:18:32 by resaito           #+#    #+#             */
+/*   Updated: 2023/12/04 14:18:35 by resaito          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/minishell.h"
 
-int ft_pipe(int pipefd[2])
+int	ft_pipe(int pipefd[2])
 {
-    if (pipe(pipefd) < 0)
-        ft_perror("pipe");
-    return (0);
+	if (pipe(pipefd) < 0)
+		ft_perror("pipe");
+	return (0);
 }
