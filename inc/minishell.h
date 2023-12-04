@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 21:17:45 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/04 14:29:07 by resaito          ###   ########.fr       */
+/*   Updated: 2023/12/04 15:27:59 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ char			*search_path(const char *filename);
 // exec
 int				execution(t_node *node, bool is_exec_pipe, t_envval *envval);
 void			ft_execution(t_node *node, t_envval *envval);
-void			child_process(t_node *node, bool has_pipe, t_envval *envval
+void			child_process(t_node *node, bool has_pipe, t_envval *envval,
 					int pipefd[2]);
 void			parent_process(bool has_pipe, int pipefd[2]);
 
