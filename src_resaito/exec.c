@@ -14,12 +14,10 @@
 #include "../inc/minishell.h"
 #include <fcntl.h>
 
-int	execute_command(t_node *node, bool has_pipe)
+int	execute_command(t_node *node, bool has_pipe, t_envval *envval)
 {
 	int		pipefd[2];
 	pid_t	pid;
-	int		status;
-	char	*line;
 
 	signal(SIGINT, signal_fork_handler);
 	signal(SIGQUIT, signal_fork_handler);
@@ -46,7 +44,7 @@ int	execute_command(t_node *node, bool has_pipe)
 			close(pipefd[1]);
 		}
 		redir_dup(node);
-		execve(node->name, node->args, NULL);
+		execve(node->name, node->args, make_env_strs(envval->env));
 		perror(node->name);
 		return (-1);
 	}
@@ -63,50 +61,47 @@ int	execute_command(t_node *node, bool has_pipe)
 }
 
 // #include <stdio.h>
-int	execution(t_node *node, bool is_exec_pipe)
+int	execution(t_node *node, bool is_exec_pipe, t_envval *envval)
 {	
 	int	dupout;
-	char *line;
 
 	if (node == NONE)
 		return (0);
 	if (node->type == N_PIPE)
 	{
-		execution(node->left, true);
-		execution(node->right, false);
+		execution(node->left, true, envval);
+		execution(node->right, false, envval);
 	}
 	if (node->type == N_COMMAND)
 	{
 		dup_2_stdin(node);
-		execute_command(node, is_exec_pipe);
+		execute_command(node, is_exec_pipe, envval);
 	}
 	return (0);
 }
 
-void wait_all(t_node *node)
+void wait_all(t_node *node, t_envval *envval)
 {
-	int status;
-
 	if (node == NONE)
 		return ;
 	if (node->type == N_PIPE)
 	{
-		wait_all(node->left);
-		wait_all(node->right);
+		wait_all(node->left, envval);
+		wait_all(node->right, envval);
 	}
 	if (node->type == N_COMMAND)
-		wait(&status);
+		wait(&(envval->status));
 	return ;
 }
 
-void	ft_execution(t_node *node)
+void	ft_execution(t_node *node, t_envval *envval)
 {
 	int dupin;
 
 	dupin = dup(STDIN_FILENO);
 	input_redir(node);
-	execution(node, false);
-	wait_all(node);
+	execution(node, false, envval);
+	wait_all(node, envval);
 	// system("leaks -q minishell");
 	dup2(dupin, STDIN_FILENO);
 	close(dupin);
