@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 23:43:04 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/25 16:39:39 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/06 22:09:29 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ static char	*parse_parameter(char *token, char *env_name, t_parm *parm)
 			brackets++;
 		else if ((brackets < 2 && 0 < brackets) && token[i] == '}')
 			brackets++;
+		else if (token[i] != '_' && ft_isalnum(token[i]) != 1)
+			return (NULL);
 		else if (token[i] == '{' || token[i] == '}')
 			break ;
 		else
@@ -54,7 +56,7 @@ static char	*parse_parameter(char *token, char *env_name, t_parm *parm)
 		i++;
 	}
 	env_name[j] = '\0';
-	parm->end = &token[i];
+	check_brackets_balance(&brackets, &token, env_name, parm);
 	return (env_name);
 }
 
@@ -109,17 +111,20 @@ static char	*expand_env_variable(t_parm *parm)
 	return (parm->str);
 }
 
-char	*check_parameter(t_parm *parm, char *token)
+char	*check_parameter(t_parm *parm, char *token, t_envval *envval)
 {
 	while (*parm->tmp)
 	{
 		if (*parm->tmp == '$' && *(parm->tmp + 1) != ' '
 			&& *(parm->tmp + 1) != '\0' && *(parm->tmp + 1) != '"')
 		{
-			parm->str = expand_env_variable(parm);
+			if (check_question(parm, token, envval) == 1)
+			{
+				parm->str = expand_env_variable(parm);
+				parm->tmp = parm->end;
+			}
 			if (!parm->str)
 				return (NULL);
-			parm->tmp = parm->end;
 		}
 		else
 		{
