@@ -58,6 +58,7 @@ int	execution(t_node *node, bool is_exec_pipe, t_envval *envval)
 
 void	wait_all(t_node *node, t_envval *envval)
 {
+	int status;
 	if (node == NONE)
 		return ;
 	if (node->type == N_PIPE)
@@ -66,7 +67,10 @@ void	wait_all(t_node *node, t_envval *envval)
 		wait_all(node->right, envval);
 	}
 	if (node->type == N_COMMAND)
-		wait(&(envval->status));
+	{
+		wait(&status);
+		envval->status = status >> 8;
+	}
 	return ;
 }
 
