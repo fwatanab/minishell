@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 21:17:45 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/04 15:27:59 by resaito          ###   ########.fr       */
+/*   Updated: 2023/12/07 23:18:40 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ t_node			*parser(t_node *node, t_token_list **list, t_parse_check *key);
 t_redir			*redir_parse(t_node *node, t_redir *redir, t_token_list **list, char *token);
 
 //expansion
-void			check_exp(t_node *node);
+void			check_exp(t_node *node, t_envval *envval);
 
 //signal
 void			signal_handler(int sig);
