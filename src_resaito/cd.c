@@ -12,10 +12,13 @@
 
 #include "../inc/minishell.h"
 
-int	cd(t_node *node, t_env *env)
+#define PATHNAME_SIZE 512
+
+int	cd(t_node *node, t_envval *envval)
 {
-	int val;
-	t_env *tmp;
+	int		val;
+	t_env	*tmp;
+	char	pathname[PATHNAME_SIZE];
 
 	if (node->args[1] == NULL)
 		val = chdir(getenv("HOME"));
@@ -26,35 +29,45 @@ int	cd(t_node *node, t_env *env)
 		perror("cd");
 		return (1);
 	}
-	tmp = env;
-	while (tmp->next && ft_strncmp(tmp->key, "PWD", 3) != 0)
+	tmp = envval->env;
+	ft_memset(pathname, '\0', PATHNAME_SIZE);
+	while (tmp->next && ft_strcmp(tmp->key, "PWD") != 0)
 		tmp = tmp->next;
-	// printf("%s\n", tmp->key);
 	free(tmp->value);
-	// tmp->value = getcwd();
+	if (getcwd(pathname, PATHNAME_SIZE) == NULL)
+		return (1);
+	tmp->value = ft_strdup(pathname);
 	return (0);
 }
 
-t_node	*make_node(enum e_type node_type, char **args)
-{
-	t_node	*node;
+// t_node	*make_node(enum e_type node_type, char **args)
+// {
+// 	t_node	*node;
 
-	node = calloc(sizeof(t_node), 1);
-	node->type = node_type;
-	node->name = args[0];
-	node->args = args;
-	return (node);
-}
+// 	node = calloc(sizeof(t_node), 1);
+// 	node->type = node_type;
+// 	node->name = args[0];
+// 	node->args = args;
+// 	return (node);
+// }
 
-int	main(int ac, char **av, char **envp)
-{
-	t_node	*node;
-	t_env	*env;
-	char	*cd_arg[] = {"cd", "..", NULL};
+// int pwd(t_node *node, t_envval *envval);
 
-	node = make_node(N_COMMAND, cd_arg);
-	env = new_envs(envp);
-	cd(node, env);
-	free(node);
-	envs_free(env);
-}
+// int	main(int ac, char **av, char **envp)
+// {
+// 	t_node		*node;
+// 	t_node		*pwd_node;
+// 	t_envval	*envval;
+// 	char		*cd_arg[] = {"cd", NULL};
+// 	char		*pwd_arg[] = {"pwd", NULL};
+
+// 	node = make_node(N_COMMAND, cd_arg);
+// 	pwd_node = make_node(N_COMMAND, pwd_arg);
+// 	envval = make_envval(new_envs(envp)); //make_envval.c make_env.c
+// 	cd(node, envval);
+// 	pwd(pwd_node, envval);
+// 	free(node);
+// 	free(pwd_node);
+// 	envs_free(envval->env); //env_free.c ../src/free.c
+// 	free(envval);
+// } // ../libft/libft.a

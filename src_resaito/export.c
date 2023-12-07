@@ -2,7 +2,7 @@
 
 static size_t  len_2_equal(char *str);
 
-int export(t_node *node, t_env *env)
+int export(t_node *node, t_envval *envval)
 {
     size_t  size;
     t_env   *tmp;
@@ -14,7 +14,7 @@ int export(t_node *node, t_env *env)
         equal_len = len_2_equal(node->args[size]);
         if (equal_len == 0)
             return (1);
-        tmp = env;
+        tmp = envval->env;
         while (tmp->next && ft_strncmp(tmp->key, node->args[size], equal_len) != 0)
             tmp = tmp->next;
         if (ft_strncmp(tmp->key, node->args[size], equal_len) == 0)
@@ -23,7 +23,7 @@ int export(t_node *node, t_env *env)
             tmp->value = ft_strdup(node->args[size] + (equal_len + 1));
         }
         else
-            envadd_back(&env, new_env(node->args[size]));
+            envadd_back(&(envval->env), new_env(node->args[size]));
         size++;
     }
     return (0);
