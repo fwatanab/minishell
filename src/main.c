@@ -24,7 +24,7 @@ void	minishell(char *line, t_envval *envval)
 	check_token(list);
 //	print_list(list);
 	node = parser_start(&list);
-	check_exp(node);
+	check_exp(node, envval);
 	ft_execution(node, envval);
 //	print_node(node);
 	list_free(&tmp);
