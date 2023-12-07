@@ -3,13 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
+/*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 13:39:58 by resaito           #+#    #+#             */
-/*   Updated: 2023/11/29 20:09:11 by fwatanab         ###   ########.fr       */
-/*   Updated: 2023/11/29 14:39:37 by resaito          ###   ########.fr       */
+/*   Updated: 2023/12/04 14:19:04 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../inc/minishell.h"
 #include <fcntl.h>
@@ -22,42 +22,18 @@ int	execute_command(t_node *node, bool has_pipe, t_envval *envval)
 	signal(SIGINT, signal_fork_handler);
 	signal(SIGQUIT, signal_fork_handler);
 	if (has_pipe)
-	{
-		if (pipe(pipefd) < 0)
-		{
-			perror("pipe");
-			exit(-1);
-		}
-	}
+		ft_pipe(pipefd);
 	pid = fork();
 	if (pid < 0)
-	{
-		perror("fork");
-		exit(-1);
-	}
+		ft_perror("fork");
 	else if (pid == 0)
-	{
-		if (has_pipe)
-		{
-			close(pipefd[0]);
-			dup2(pipefd[1], STDOUT_FILENO);
-			close(pipefd[1]);
-		}
-		redir_dup(node);
-		execve(node->name, node->args, make_env_strs(envval->env));
-		perror(node->name);
-		return (-1);
-	}
+		child_process(node, has_pipe, envval, pipefd);
 	else
 	{
-		if (has_pipe)
-		{
-			close(pipefd[1]);
-			dup2(pipefd[0], STDIN_FILENO);
-			close(pipefd[0]);
-		}
+		parent_process(has_pipe, pipefd);
 		return (0);
 	}
+	return (0);
 }
 
 // #include <stdio.h>
@@ -80,7 +56,7 @@ int	execution(t_node *node, bool is_exec_pipe, t_envval *envval)
 	return (0);
 }
 
-void wait_all(t_node *node, t_envval *envval)
+void	wait_all(t_node *node, t_envval *envval)
 {
 	if (node == NONE)
 		return ;
@@ -96,7 +72,7 @@ void wait_all(t_node *node, t_envval *envval)
 
 void	ft_execution(t_node *node, t_envval *envval)
 {
-	int dupin;
+	int	dupin;
 
 	dupin = dup(STDIN_FILENO);
 	input_redir(node);

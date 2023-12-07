@@ -12,7 +12,11 @@ RE_SRCS = exec.c \
 			input_redir.c \
 			make_env.c \
 			env_free.c \
-			make_envval.c
+			make_envval.c \
+			ft_xmalloc.c \
+			ft_perror.c \
+			ft_pipe.c \
+			execution_by_process.c
 
 BUILTINS	= builtins/
 
