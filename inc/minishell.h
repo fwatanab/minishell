@@ -108,7 +108,7 @@ void			malloc_error(void);
 char			*search_path(const char *filename);
 
 // exec
-int				execution(t_node *node, bool is_exec_pipe, t_envval *envval);
+void			execution(t_node *node, bool is_exec_pipe, t_envval *envval);
 void			ft_execution(t_node *node, t_envval *envval);
 int				child_process(t_node *node, bool has_pipe, t_envval *envval,
 					int pipefd[2]);
@@ -121,7 +121,7 @@ int				heredoc_exec(t_redir *redir, t_envval *envval);
 int				input_redir(t_node *node, t_envval *envval);
 bool			is_type_heredoc(t_redir *redir);
 bool			is_type_indirect(t_redir *redir);
-void			dup_2_stdin(t_node *node);
+int				dup_2_stdin(t_node *node);
 
 // env
 t_env			*new_envs(char **envp);

@@ -37,12 +37,13 @@ int	execute_command(t_node *node, bool has_pipe, t_envval *envval)
 }
 
 // #include <stdio.h>
-int	execution(t_node *node, bool is_exec_pipe, t_envval *envval)
+void	execution(t_node *node, bool is_exec_pipe, t_envval *envval)
 {	
 	int	dupout;
+	int status;
 
 	if (node == NONE)
-		return (0);
+		return ;
 	if (node->type == N_PIPE)
 	{
 		execution(node->left, true, envval);
@@ -50,10 +51,15 @@ int	execution(t_node *node, bool is_exec_pipe, t_envval *envval)
 	}
 	if (node->type == N_COMMAND)
 	{
-		dup_2_stdin(node);
+		status = dup_2_stdin(node);
+		if (status != 0)
+		{
+			envval->status = status;
+			return ;
+		}
 		execute_command(node, is_exec_pipe, envval);
 	}
-	return (0);
+	return ;
 }
 
 void	wait_all(t_node *node, t_envval *envval)
@@ -68,7 +74,9 @@ void	wait_all(t_node *node, t_envval *envval)
 	}
 	if (node->type == N_COMMAND)
 	{
+		printf("aa\n");
 		wait(&status);
+		printf("%d\n", status >> 8);
 		envval->status = status >> 8;
 	}
 	return ;
