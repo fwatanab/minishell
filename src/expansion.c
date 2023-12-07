@@ -6,14 +6,13 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 17:52:58 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/25 16:34:59 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/05 22:14:51 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
 #include "../inc/expansion.h"
 
-char	*expand_parameter(char *token)
+char	*expand_parameter(char *token, t_envval *envval)
 {
 	t_parm	*parm;
 	char	*new_token;
@@ -23,7 +22,7 @@ char	*expand_parameter(char *token)
 	parm = parameter_init(token);
 	if (!parm)
 		return (token);
-	parm->str = check_parameter(parm, token);
+	parm->str = check_parameter(parm, token, envval);
 	if (!parm->str)
 		return (token);
 	new_token = ft_strdup(parm->str);
@@ -86,7 +85,7 @@ char	*check_command(char *str)
 	return (str);
 }
 
-void	expansion(char **array)
+void	expansion(char **array, t_envval *envval)
 {
 	char	*new_array;
 	size_t	i;
@@ -96,13 +95,13 @@ void	expansion(char **array)
 	while (array[i])
 	{
 		array[i] = check_command(array[i]);
-		array[i] = expand_parameter(array[i]);
+		array[i] = expand_parameter(array[i], envval);
 		array[i] = delete_quote(array[i]);
 		i++;
 	}
 }
 
-void	check_exp(t_node *node)
+void	check_exp(t_node *node, t_envval *envval)
 {
 	size_t	i;
 
@@ -110,9 +109,9 @@ void	check_exp(t_node *node)
 	if (!node)
 		return ;
 	if (node->args)
-		expansion(node->args);
+		expansion(node->args, envval);
 	if (node->left)
-		check_exp(node->left);
+		check_exp(node->left, envval);
 	if (node->right)
-		check_exp(node->right);
+		check_exp(node->right, envval);
 }
