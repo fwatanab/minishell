@@ -21,6 +21,8 @@ char	*search_path(const char *filename)
 	char	*value;
 	char	*end;
 
+	if (access(filename, X_OK) == 0)
+		return able_to_access((char *)filename);
 	value = getenv("PATH");
 	while (value)
 	{

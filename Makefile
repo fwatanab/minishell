@@ -16,7 +16,8 @@ RE_SRCS = exec.c \
 			ft_xmalloc.c \
 			ft_perror.c \
 			ft_pipe.c \
-			execution_by_process.c
+			execution_by_process.c \
+			print_error.c
 
 OBJS	= $(addprefix $(SRCSDIR), $(SRCS:.c=.o))
 

@@ -12,7 +12,7 @@
 
 #include "../inc/minishell.h"
 
-void	child_process(t_node *node, bool has_pipe, t_envval *envval,
+int child_process(t_node *node, bool has_pipe, t_envval *envval,
 		int pipefd[2])
 {
 	if (has_pipe)
@@ -22,8 +22,11 @@ void	child_process(t_node *node, bool has_pipe, t_envval *envval,
 		close(pipefd[1]);
 	}
 	redir_dup(node);
+    if (!node->name)
+        exit(print_error(node->args[0], "command not found", 127));
 	execve(node->name, node->args, make_env_strs(envval->env));
 	ft_perror(node->name);
+    return (0);
 }
 
 void	parent_process(bool has_pipe, int pipefd[2])
