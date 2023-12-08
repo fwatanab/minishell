@@ -1,46 +1,59 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   export.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/12/08 13:28:22 by resaito           #+#    #+#             */
+/*   Updated: 2023/12/08 13:30:31 by resaito          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/minishell.h"
 
-static size_t  len_2_equal(char *str);
+static size_t	len_2_equal(char *str);
 
-int export(t_node *node, t_envval *envval)
+int	export(t_node *node, t_envval *envval)
 {
-    size_t  size;
-    t_env   *tmp;
-    size_t  equal_len;
+	size_t	size;
+	t_env	*tmp;
+	size_t	equal_len;
 
-    size = 1;
-    while (node->args[size] != NULL)
-    {
-        equal_len = len_2_equal(node->args[size]);
-        if (equal_len == 0)
-            return (1);
-        tmp = envval->env;
-        while (tmp->next && ft_strncmp(tmp->key, node->args[size], equal_len) != 0)
-            tmp = tmp->next;
-        if (ft_strncmp(tmp->key, node->args[size], equal_len) == 0)
-        {
-            free(tmp->value);
-            tmp->value = ft_strdup(node->args[size] + (equal_len + 1));
-        }
-        else
-            envadd_back(&(envval->env), new_env(node->args[size]));
-        size++;
-    }
-    return (0);
+	size = 1;
+	while (node->args[size] != NULL)
+	{
+		equal_len = len_2_equal(node->args[size]);
+		if (equal_len == 0)
+			return (1);
+		tmp = envval->env;
+		while (tmp->next && ft_strncmp(tmp->key, node->args[size],
+                equal_len) != 0)
+			tmp = tmp->next;
+		if (ft_strncmp(tmp->key, node->args[size], equal_len) == 0)
+		{
+			free(tmp->value);
+			tmp->value = ft_strdup(node->args[size] + (equal_len + 1));
+		}
+		else
+			envadd_back(&(envval->env), new_env(node->args[size]));
+		size++;
+	}
+	return (0);
 }
 
-static size_t  len_2_equal(char *str)
+static size_t	len_2_equal(char *str)
 {
-    size_t  len;
+	size_t	len;
 
-    len = 0;
-    if (str == NULL)
-        return (0);
-    while (str[len] != '\0' && str[len] != '=')
-        len++;
-    if (str[len] != '=')
-        return (0);
-    return (len);
+	len = 0;
+	if (str == NULL)
+		return (0);
+	while (str[len] != '\0' && str[len] != '=')
+		len++;
+	if (str[len] != '=')
+		return (0);
+	return (len);
 }
 
 // t_node	*make_node(enum e_type node_type, char **args)

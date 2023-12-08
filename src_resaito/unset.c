@@ -1,38 +1,48 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   unset.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/12/08 13:27:05 by resaito           #+#    #+#             */
+/*   Updated: 2023/12/08 13:51:17 by resaito          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/minishell.h"
 
-int unset(t_node *node, t_envval *envval)
+int	unset(t_node *node, t_envval *envval)
 {
-    size_t size;
-    t_env *tmp;
-    t_env *tmp_back;
+	size_t	size;
+	t_env	*tmp;
+	t_env	*tmp_back;
 
-    size = 1;
-    while (node->args[size] != NULL)
-    {
-        tmp = envval->env;
-        tmp_back = tmp;
-        while (ft_strcmp(node->args[size], tmp->key) != 0 && tmp->next)
-        {
-            tmp_back = tmp;
-            tmp = tmp->next;
-        }
-        if (tmp->next)
-        {
-            if (tmp == envval->env)
-                envval->env = tmp->next;
-            else if (tmp->next)
-                tmp_back->next = tmp->next;
-        }
-        else if (ft_strcmp(node->args[size], tmp->key) == 0)
-            tmp_back->next = NULL;
-        else
-            return (1);
-        free(tmp->key);
-        free(tmp->value);
-        free(tmp);
-        size++;
-    }
-    return (0);
+	size = 1;
+	while (node->args[size] != NULL)
+	{
+		tmp = envval->env;
+		tmp_back = tmp;
+		while (ft_strcmp(node->args[size], tmp->key) != 0 && tmp->next)
+		{
+			tmp_back = tmp;
+			tmp = tmp->next;
+		}
+		if (tmp->next)
+		{
+			if (tmp == envval->env)
+				envval->env = tmp->next;
+			else if (tmp->next)
+				tmp_back->next = tmp->next;
+		}
+		else if (ft_strcmp(node->args[size], tmp->key) == 0)
+			tmp_back->next = NULL;
+		else
+			return (1);
+		env_free(tmp);
+		size++;
+	}
+	return (0);
 }
 
 // t_node	*make_node(enum e_type node_type, char **args)
