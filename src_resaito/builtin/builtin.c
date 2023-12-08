@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   biltin.c                                           :+:      :+:    :+:   */
+/*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 13:32:35 by resaito           #+#    #+#             */
-/*   Updated: 2023/12/08 13:33:05 by resaito          ###   ########.fr       */
+/*   Updated: 2023/12/08 16:08:29 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#include "../../inc/minishell.h"
 
-bool	is_biltin(t_node *node)
+bool	is_builtin(t_node *node)
 {
 	if (ft_strcmp(node->args[0], "echo") == 0)
 		return (true);
@@ -32,7 +32,7 @@ bool	is_biltin(t_node *node)
 		return (false);
 }
 
-void	exec_biltin(t_node *node, t_envval *envval)
+void	exec_builtin(t_node *node, t_envval *envval)
 {
 	if (ft_strcmp(node->args[0], "echo") == 0)
 		envval->status = echo(node);

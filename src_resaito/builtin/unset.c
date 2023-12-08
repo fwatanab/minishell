@@ -1,59 +1,48 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   export.c                                           :+:      :+:    :+:   */
+/*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/08 13:28:22 by resaito           #+#    #+#             */
-/*   Updated: 2023/12/08 13:30:31 by resaito          ###   ########.fr       */
+/*   Created: 2023/12/08 13:27:05 by resaito           #+#    #+#             */
+/*   Updated: 2023/12/08 16:09:00 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#include "../../inc/minishell.h"
 
-static size_t	len_2_equal(char *str);
-
-int	export(t_node *node, t_envval *envval)
+int	unset(t_node *node, t_envval *envval)
 {
 	size_t	size;
 	t_env	*tmp;
-	size_t	equal_len;
+	t_env	*tmp_back;
 
 	size = 1;
 	while (node->args[size] != NULL)
 	{
-		equal_len = len_2_equal(node->args[size]);
-		if (equal_len == 0)
-			return (1);
 		tmp = envval->env;
-		while (tmp->next && ft_strncmp(tmp->key, node->args[size],
-                equal_len) != 0)
-			tmp = tmp->next;
-		if (ft_strncmp(tmp->key, node->args[size], equal_len) == 0)
+		tmp_back = tmp;
+		while (ft_strcmp(node->args[size], tmp->key) != 0 && tmp->next)
 		{
-			free(tmp->value);
-			tmp->value = ft_strdup(node->args[size] + (equal_len + 1));
+			tmp_back = tmp;
+			tmp = tmp->next;
 		}
+		if (tmp->next)
+		{
+			if (tmp == envval->env)
+				envval->env = tmp->next;
+			else if (tmp->next)
+				tmp_back->next = tmp->next;
+		}
+		else if (ft_strcmp(node->args[size], tmp->key) == 0)
+			tmp_back->next = NULL;
 		else
-			envadd_back(&(envval->env), new_env(node->args[size]));
+			return (1);
+		env_free(tmp);
 		size++;
 	}
 	return (0);
-}
-
-static size_t	len_2_equal(char *str)
-{
-	size_t	len;
-
-	len = 0;
-	if (str == NULL)
-		return (0);
-	while (str[len] != '\0' && str[len] != '=')
-		len++;
-	if (str[len] != '=')
-		return (0);
-	return (len);
 }
 
 // t_node	*make_node(enum e_type node_type, char **args)
@@ -70,25 +59,27 @@ static size_t	len_2_equal(char *str)
 // int	main(int ac, char **av, char **envp)
 // {
 // 	t_node	*node;
-// 	t_env	*env;
+// 	// t_env	*env;
+//     t_envval *envval;
 //     char    **array;
 //     int     size = 0;
-// 	char	*export_arg[] = {"export", "PATH", NULL};
+// 	char	*unset_arg[] = {"export", "$PATH", NULL};
 
-// 	node = make_node(N_COMMAND, export_arg);
-// 	env = new_envs(envp);
-// 	export(node, env);
-//     array = make_env_strs(env);
-//     envs_free(env);
+// 	node = make_node(N_COMMAND, unset_arg);
+// 	envval = make_envval(new_envs(envp)); //make_envval.c make_env.c
+// 	printf("%d\n",unset(node, envval));
+//     array = make_env_strs(envval->env); //make_env.c
+//     envs_free(envval->env); // env_free.c
+//     free(envval);
 //     while (array[size] != NULL)
 //     {
 //         printf("%s\n", array[size]);
 //         size++;
 //     }
 // 	free(node);
-//     str_array_free(array);
+//     str_array_free(array); //env_free.c ../src/free.c
 // 	// envs_str_free(env, array);
-// }
+// } // ../libft/libft.a
 
 // __attribute__((destructor))
 // static void destructor() {
