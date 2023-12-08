@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 14:17:03 by resaito           #+#    #+#             */
-/*   Updated: 2023/12/04 14:17:14 by resaito          ###   ########.fr       */
+/*   Updated: 2023/12/08 15:54:31 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 int child_process(t_node *node, bool has_pipe, t_envval *envval,
 		int pipefd[2])
 {
+	char	**str;
+
 	if (has_pipe)
 	{
 		close(pipefd[0]);
@@ -24,7 +26,9 @@ int child_process(t_node *node, bool has_pipe, t_envval *envval,
 	redir_dup(node);
     if (!node->name)
         exit(print_error(node->args[0], "command not found", 127));
-	execve(node->name, node->args, make_env_strs(envval->env));
+	str = make_env_strs(envval->env);
+	execve(node->name, node->args, str);
+	str_array_free(str);
 	ft_perror(node->name);
     return (0);
 }
