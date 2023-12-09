@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 23:43:04 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/08 20:24:01 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/09 11:21:34 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,10 +120,7 @@ char	*check_parameter(t_parm *parm, char *token, t_envval *envval)
 			&& *(parm->tmp + 1) != '\0' && *(parm->tmp + 1) != '"')
 		{
 			if (check_question(parm, token, envval) == 1)
-			{
 				parm->str = expand_env_variable(parm, envval);
-//				parm->tmp = parm->end;
-			}
 			if (!parm->str)
 				return (NULL);
 		}
