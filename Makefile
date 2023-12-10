@@ -17,14 +17,22 @@ RE_SRCS = exec.c \
 			ft_perror.c \
 			ft_pipe.c \
 			execution_by_process.c \
-			print_error.c
+			print_error.c \
+			builtin/builtin.c \
+			builtin/cd.c \
+			builtin/echo.c \
+			builtin/export.c \
+			builtin/ft_env.c \
+			builtin/pwd.c \
+			builtin/unset.c \
+			is_single_command.c
 
 OBJS	= $(addprefix $(SRCSDIR), $(SRCS:.c=.o))
 
 RE_OBJS	= $(addprefix $(RE_SRCSDIR), $(RE_SRCS:.c=.o))
 
 CC		= cc
-CFLAGS	= -g -I$(READLINEDIR)/include #-Wall -Wextra -Werror
+CFLAGS	= -g -I$(READLINEDIR)/include #-fsanitize=address #-Wall -Wextra -Werror
 RM		= rm -f
 READLINEDIR    := $(shell brew --prefix readline)
 
