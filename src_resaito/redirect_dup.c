@@ -13,6 +13,8 @@
 #include "../inc/minishell.h"
 #include "../inc/expansion.h"
 
+char	*expand_parameter(char *token, t_envval *envval);
+
 int	redir_dup(t_node *node)
 {
 	int	out_fd;

@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 21:17:45 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/10 16:56:59 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/10 20:54:19 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,9 +111,9 @@ void			malloc_error(void);
 char			*search_path(const char *filename);
 
 // exec
-int				execution(t_node *node, bool is_exec_pipe, t_envval *envval);
+void			execution(t_node *node, bool is_exec_pipe, t_envval *envval);
 void			ft_execution(t_node *node, t_envval *envval);
-void			child_process(t_node *node, bool has_pipe, t_envval *envval,
+int				child_process(t_node *node, bool has_pipe, t_envval *envval,
 					int pipefd[2]);
 void			parent_process(bool has_pipe, int pipefd[2]);
 
@@ -124,7 +124,7 @@ int				heredoc_exec(t_redir *redir, t_envval *envval);
 int				input_redir(t_node *node, t_envval *envval);
 bool			is_type_heredoc(t_redir *redir);
 bool			is_type_indirect(t_redir *redir);
-void			dup_2_stdin(t_node *node);
+int				dup_2_stdin(t_node *node);
 
 // env
 t_env			*new_envs(char **envp);
@@ -134,11 +134,24 @@ char			**make_env_strs(t_env *env);
 size_t			ft_list_size(t_env *env);
 void			envs_free(t_env *env);
 void			envs_str_free(t_env *env, char **str);
+void			env_free(t_env *env);
 t_envval		*make_envval(t_env *env);
+
+// builtin
+bool			is_builtin(t_node *node);
+void			exec_builtin(t_node *node, t_envval *envval);
+int				cd(t_node *node, t_envval *envval);
+int				echo(t_node *node);
+int				export(t_node *node, t_envval *envval);
+int				ft_env(t_envval *envval);
+int				pwd(t_envval *envval);
+int				unset(t_node *node, t_envval *envval);
 
 // utils
 void			*ft_xmalloc(size_t size);
 void			ft_perror(char *str);
 int				ft_pipe(int pipefd[2]);
+int				print_error(char *command, char *error, int status);
+bool			is_single_command(t_node *node);
 
 #endif

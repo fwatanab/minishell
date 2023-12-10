@@ -6,11 +6,11 @@
 /*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 16:14:59 by resaito           #+#    #+#             */
-/*   Updated: 2023/12/04 17:54:06 by resaito          ###   ########.fr       */
+/*   Updated: 2023/12/08 16:08:38 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#include "../../inc/minishell.h"
 
 #define PATHNAME_SIZE 512
 

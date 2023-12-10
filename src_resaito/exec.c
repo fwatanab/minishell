@@ -37,12 +37,13 @@ int	execute_command(t_node *node, bool has_pipe, t_envval *envval)
 }
 
 // #include <stdio.h>
-int	execution(t_node *node, bool is_exec_pipe, t_envval *envval)
+void	execution(t_node *node, bool is_exec_pipe, t_envval *envval)
 {	
 	int	dupout;
+	int status;
 
 	if (node == NONE)
-		return (0);
+		return ;
 	if (node->type == N_PIPE)
 	{
 		execution(node->left, true, envval);
@@ -50,14 +51,20 @@ int	execution(t_node *node, bool is_exec_pipe, t_envval *envval)
 	}
 	if (node->type == N_COMMAND)
 	{
-		dup_2_stdin(node);
+		status = dup_2_stdin(node);
+		if (status != 0)
+		{
+			envval->status = status;
+			return ;
+		}
 		execute_command(node, is_exec_pipe, envval);
 	}
-	return (0);
+	return ;
 }
 
 void	wait_all(t_node *node, t_envval *envval)
 {
+	int status;
 	if (node == NONE)
 		return ;
 	if (node->type == N_PIPE)
@@ -66,7 +73,12 @@ void	wait_all(t_node *node, t_envval *envval)
 		wait_all(node->right, envval);
 	}
 	if (node->type == N_COMMAND)
-		wait(&(envval->status));
+	{
+		// printf("aa\n");
+		wait(&status);
+		// printf("%d\n", status >> 8);
+		envval->status = status >> 8;
+	}
 	return ;
 }
 
@@ -76,7 +88,10 @@ void	ft_execution(t_node *node, t_envval *envval)
 
 	dupin = dup(STDIN_FILENO);
 	input_redir(node, envval);
-	execution(node, false, envval);
+	if (is_single_command(node) && is_builtin(node))
+		exec_builtin(node, envval);
+	else
+		execution(node, false, envval);
 	wait_all(node, envval);
 	// system("leaks -q minishell");
 	dup2(dupin, STDIN_FILENO);
@@ -148,3 +163,4 @@ void	ft_execution(t_node *node, t_envval *envval)
 //     // wait(NULL);
 //     // wait(NULL);
 // }
+

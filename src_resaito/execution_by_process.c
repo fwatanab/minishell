@@ -6,15 +6,17 @@
 /*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 14:17:03 by resaito           #+#    #+#             */
-/*   Updated: 2023/12/04 14:17:14 by resaito          ###   ########.fr       */
+/*   Updated: 2023/12/08 15:54:31 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-void	child_process(t_node *node, bool has_pipe, t_envval *envval,
+int child_process(t_node *node, bool has_pipe, t_envval *envval,
 		int pipefd[2])
 {
+	char	**str;
+
 	if (has_pipe)
 	{
 		close(pipefd[0]);
@@ -22,8 +24,18 @@ void	child_process(t_node *node, bool has_pipe, t_envval *envval,
 		close(pipefd[1]);
 	}
 	redir_dup(node);
-	execve(node->name, node->args, make_env_strs(envval->env));
-	ft_perror(node->name);
+    if (!node->name)
+        exit(print_error(node->args[0], "command not found", 127));
+	if (is_builtin(node))
+		exec_builtin(node, envval);
+	else
+	{
+		str = make_env_strs(envval->env);
+		execve(node->name, node->args, str);
+		str_array_free(str);
+		ft_perror(node->name);
+	}
+    exit (-1);
 }
 
 void	parent_process(bool has_pipe, int pipefd[2])

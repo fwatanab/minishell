@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   search_path.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
+/*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 12:40:54 by resaito           #+#    #+#             */
-/*   Updated: 2023/10/27 17:13:14 by resaito          ###   ########.fr       */
+/*   Updated: 2023/12/08 13:31:57 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ char	*search_path(const char *filename)
 	char	*value;
 	char	*end;
 
+	if (access(filename, X_OK) == 0)
+		return (able_to_access((char *)filename));
 	value = getenv("PATH");
 	while (value)
 	{
