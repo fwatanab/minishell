@@ -134,10 +134,21 @@ void			envs_str_free(t_env *env, char **str);
 void			env_free(t_env *env);
 t_envval		*make_envval(t_env *env);
 
+// builtin
+bool			is_builtin(t_node *node);
+void			exec_builtin(t_node *node, t_envval *envval);
+int				cd(t_node *node, t_envval *envval);
+int				echo(t_node *node);
+int				export(t_node *node, t_envval *envval);
+int				ft_env(t_envval *envval);
+int				pwd(t_envval *envval);
+int				unset(t_node *node, t_envval *envval);
+
 // utils
 void			*ft_xmalloc(size_t size);
 void			ft_perror(char *str);
 int				ft_pipe(int pipefd[2]);
 int				print_error(char *command, char *error, int status);
+bool			is_single_command(t_node *node);
 
 #endif
