@@ -106,10 +106,10 @@ t_node	*parser_start(t_token_list **list)
 	t_node			*node;
 	t_parse_check	*key;
 
-	node = (t_node *)malloc(sizeof(t_node));
+	node = (t_node *)ft_calloc(sizeof(t_node), 1);
 	if (!node)
 		return (NULL);
-	key = (t_parse_check *)malloc(sizeof(t_parse_check));
+	key = (t_parse_check *)ft_calloc(sizeof(t_parse_check), 1);
 	if (!key)
 		return (NULL);
 	node = parser(node, list, key);
