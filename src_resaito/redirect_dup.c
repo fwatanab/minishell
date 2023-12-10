@@ -38,7 +38,7 @@ int	redir_dup(t_node *node)
 	return (0);
 }
 
-int	heredoc_exec(t_redir *redir)
+int	heredoc_exec(t_redir *redir, t_envval *envval)
 {
 	char	*line;
 	int		pipefd[2];
@@ -59,7 +59,7 @@ int	heredoc_exec(t_redir *redir)
 			close(pipefd[1]);
 			break ;
 		}
-		line = expand_parameter(line);
+		line = expand_parameter(line, envval);
 		ft_putendl_fd(line, pipefd[1]);
 		free(line);
 	}

@@ -119,8 +119,8 @@ void			parent_process(bool has_pipe, int pipefd[2]);
 // redir
 int				redir_dup(t_node *node);
 int				indirect_exec(t_node *node);
-int				heredoc_exec(t_redir *redir);
-int				input_redir(t_node *node);
+int				heredoc_exec(t_redir *redir, t_envval *envval);
+int				input_redir(t_node *node, t_envval *envval);
 bool			is_type_heredoc(t_redir *redir);
 bool			is_type_indirect(t_redir *redir);
 void			dup_2_stdin(t_node *node);
