@@ -25,7 +25,8 @@ RE_SRCS = exec.c \
 			builtin/ft_env.c \
 			builtin/pwd.c \
 			builtin/unset.c \
-			is_single_command.c
+			is_single_command.c \
+			get_exit_code.c
 
 BUILTINS	= builtins/
 
@@ -38,7 +39,7 @@ RE_OBJS	= $(addprefix $(RE_SRCSDIR), $(RE_SRCS:.c=.o))
 B_OBJS	= $(addprefix $(BUILTINS), $(B_SRCS:.c=.o))
 
 CC		= cc
-CFLAGS	= -g -I$(READLINEDIR)/include #-fsanitize=address #-Wall -Wextra -Werror
+CFLAGS	= -g -I$(READLINEDIR)/include -fsanitize=address #-Wall -Wextra -Werror
 RM		= rm -f
 READLINEDIR    := $(shell brew --prefix readline)
 

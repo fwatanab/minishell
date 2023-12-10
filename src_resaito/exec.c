@@ -65,6 +65,7 @@ void	execution(t_node *node, bool is_exec_pipe, t_envval *envval)
 void	wait_all(t_node *node, t_envval *envval)
 {
 	int status;
+
 	if (node == NONE)
 		return ;
 	if (node->type == N_PIPE)
@@ -76,8 +77,8 @@ void	wait_all(t_node *node, t_envval *envval)
 	{
 		// printf("aa\n");
 		wait(&status);
-		// printf("%d\n", status >> 8);
-		envval->status = status >> 8;
+		// printf("%d\n", status);
+		envval->status = get_exit_code(status);
 	}
 	return ;
 }
@@ -91,8 +92,10 @@ void	ft_execution(t_node *node, t_envval *envval)
 	if (is_single_command(node) && is_builtin(node))
 		exec_builtin(node, envval);
 	else
+	{
 		execution(node, false, envval);
-	wait_all(node, envval);
+		wait_all(node, envval);
+	}
 	// system("leaks -q minishell");
 	dup2(dupin, STDIN_FILENO);
 	close(dupin);
