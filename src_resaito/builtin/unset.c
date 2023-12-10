@@ -12,6 +12,8 @@
 
 #include "../../inc/minishell.h"
 
+static void remove_env_entry(t_env **env, t_env *prev, t_env *current);
+
 int	unset(t_node *node, t_envval *envval)
 {
 	size_t	size;
@@ -29,12 +31,7 @@ int	unset(t_node *node, t_envval *envval)
 			tmp = tmp->next;
 		}
 		if (tmp->next)
-		{
-			if (tmp == envval->env)
-				envval->env = tmp->next;
-			else if (tmp->next)
-				tmp_back->next = tmp->next;
-		}
+			remove_env_entry(&(envval->env), tmp_back, tmp);
 		else if (ft_strcmp(node->args[size], tmp->key) == 0)
 			tmp_back->next = NULL;
 		else
@@ -43,6 +40,14 @@ int	unset(t_node *node, t_envval *envval)
 		size++;
 	}
 	return (0);
+}
+
+static void remove_env_entry(t_env **env, t_env *prev, t_env *current)
+{
+    if (current == *env)
+        *env = current->next;
+    else
+        prev->next = current->next;
 }
 
 // t_node	*make_node(enum e_type node_type, char **args)
