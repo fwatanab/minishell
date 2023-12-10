@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 21:17:45 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/04 15:27:59 by resaito          ###   ########.fr       */
+/*   Updated: 2023/12/08 16:44:41 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,12 @@
 # define REDIR_HIRE "<<"
 # define REDIR_APPEND ">>"
 
+volatile sig_atomic_t received_signal;
+
 typedef struct s_token_list
 {
 	char				*token;
-	struct s_token_list	*next;
-}	t_token_list;
+	struct s_token_list	*next; }	t_token_list;
 
 typedef enum e_type
 {
@@ -89,11 +90,12 @@ t_node			*parser(t_node *node, t_token_list **list, t_parse_check *key);
 t_redir			*redir_parse(t_node *node, t_redir *redir, t_token_list **list, char *token);
 
 //expansion
-void			check_exp(t_node *node);
+void			check_exp(t_node *node, t_envval *envval);
 
 //signal
 void			signal_handler(int sig);
 void			signal_fork_handler(int sig);
+void			check_status(sig_atomic_t received_signal, t_envval *envval, int fork);
 
 //free
 void			list_free(t_token_list **list);
@@ -117,8 +119,8 @@ void			parent_process(bool has_pipe, int pipefd[2]);
 // redir
 int				redir_dup(t_node *node);
 int				indirect_exec(t_node *node);
-int				heredoc_exec(t_redir *redir);
-int				input_redir(t_node *node);
+int				heredoc_exec(t_redir *redir, t_envval *envval);
+int				input_redir(t_node *node, t_envval *envval);
 bool			is_type_heredoc(t_redir *redir);
 bool			is_type_indirect(t_redir *redir);
 void			dup_2_stdin(t_node *node);

@@ -14,7 +14,7 @@
 #include <errno.h>
 #include <string.h>
 
-int	input_redir(t_node *node)
+int	input_redir(t_node *node, t_envval *envval)
 {
 	t_redir	*redir;
 
@@ -22,8 +22,8 @@ int	input_redir(t_node *node)
 		return (0);
 	if (node->type == N_PIPE)
 	{
-		input_redir(node->left);
-		input_redir(node->right);
+		input_redir(node->left, envval);
+		input_redir(node->right, envval);
 	}
 	if (node->type == N_COMMAND)
 	{
@@ -31,7 +31,7 @@ int	input_redir(t_node *node)
 		while (redir != NULL)
 		{
 			if (is_type_heredoc(redir))
-				redir->fd = heredoc_exec(redir);
+				redir->fd = heredoc_exec(redir, envval);
 			if (is_type_indirect(redir))
 				redir->fd = open(redir->file[0], O_RDONLY);
 			redir = redir->next;
