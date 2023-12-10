@@ -6,11 +6,26 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 21:05:33 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/06 22:14:10 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/08 20:22:11 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/expansion.h"
+
+char	*ft_getenv(char *str, t_env *env)
+{
+	char	*env_var;
+
+	if (!str || *str == '\0')
+		return (NULL);
+	while (env)
+	{
+		if (ft_strcmp(env->key, str) == 0)
+			return (env->value);
+		env = env->next;
+	}
+	return (NULL);
+}
 
 char	*update_string_with_status(t_parm *parm, char *status_str)
 {
@@ -70,7 +85,7 @@ void	check_brackets_balance(size_t *brackets, \
 			i++;
 		if ((*token)[i] == '}')
 			i++;
+		*brackets = 0;
+		parm->tmp = &(*token)[i];
 	}
-	*brackets = 0;
-	parm->end = &(*token)[i];
 }

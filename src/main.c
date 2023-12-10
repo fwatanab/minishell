@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 21:17:52 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/04 14:17:35 by resaito          ###   ########.fr       */
+/*   Updated: 2023/12/08 16:44:57 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void	bash_loop(t_envval *envval)
 		signal(SIGINT, signal_handler);
 		signal(SIGQUIT, signal_handler);
 		line = readline(MINISHELL);
+		check_status(received_signal, envval, 0);
 		if (!line)
 			break ;
 		else if (line[1] == '\0')

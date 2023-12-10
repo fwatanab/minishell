@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 23:43:04 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/06 22:09:29 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/09 11:21:34 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,12 @@ static char	*parse_parameter(char *token, char *env_name, t_parm *parm)
 		i++;
 	}
 	env_name[j] = '\0';
+	parm->tmp = &(token[i]);
 	check_brackets_balance(&brackets, &token, env_name, parm);
 	return (env_name);
 }
 
-char	*get_env_var(t_parm *parm)
+static char	*get_env_var(t_parm *parm, t_envval *envval)
 {
 	char	*env_name;
 	char	*env_var;
@@ -73,7 +74,7 @@ char	*get_env_var(t_parm *parm)
 	env_name = parse_parameter(parm->tmp, env_name, parm);
 	if (!env_name)
 		return (NULL);
-	env_var = getenv(env_name);
+	env_var = ft_getenv(env_name, envval->env);
 	if (!env_var)
 		env_var = ft_strdup("");
 	else
@@ -82,11 +83,11 @@ char	*get_env_var(t_parm *parm)
 	return (env_var);
 }
 
-static char	*expand_env_variable(t_parm *parm)
+static char	*expand_env_variable(t_parm *parm, t_envval *envval)
 {
 	char	*new;
 
-	parm->env_var = get_env_var(parm);
+	parm->env_var = get_env_var(parm, envval);
 	if (!parm->env_var)
 	{
 		free(parm->str);
@@ -119,10 +120,7 @@ char	*check_parameter(t_parm *parm, char *token, t_envval *envval)
 			&& *(parm->tmp + 1) != '\0' && *(parm->tmp + 1) != '"')
 		{
 			if (check_question(parm, token, envval) == 1)
-			{
-				parm->str = expand_env_variable(parm);
-				parm->tmp = parm->end;
-			}
+				parm->str = expand_env_variable(parm, envval);
 			if (!parm->str)
 				return (NULL);
 		}

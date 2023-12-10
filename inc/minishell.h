@@ -33,11 +33,12 @@
 # define REDIR_HIRE "<<"
 # define REDIR_APPEND ">>"
 
+volatile sig_atomic_t received_signal;
+
 typedef struct s_token_list
 {
 	char				*token;
-	struct s_token_list	*next;
-}	t_token_list;
+	struct s_token_list	*next; }	t_token_list;
 
 typedef enum e_type
 {
@@ -94,6 +95,7 @@ void			check_exp(t_node *node, t_envval *envval);
 //signal
 void			signal_handler(int sig);
 void			signal_fork_handler(int sig);
+void			check_status(sig_atomic_t received_signal, t_envval *envval, int fork);
 
 //free
 void			list_free(t_token_list **list);
