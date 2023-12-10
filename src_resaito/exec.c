@@ -75,7 +75,7 @@ void	ft_execution(t_node *node, t_envval *envval)
 	int	dupin;
 
 	dupin = dup(STDIN_FILENO);
-	input_redir(node);
+	input_redir(node, envval);
 	execution(node, false, envval);
 	wait_all(node, envval);
 	// system("leaks -q minishell");
