@@ -74,9 +74,9 @@ void	wait_all(t_node *node, t_envval *envval)
 	}
 	if (node->type == N_COMMAND)
 	{
-		printf("aa\n");
+		// printf("aa\n");
 		wait(&status);
-		printf("%d\n", status >> 8);
+		// printf("%d\n", status >> 8);
 		envval->status = status >> 8;
 	}
 	return ;
@@ -88,7 +88,10 @@ void	ft_execution(t_node *node, t_envval *envval)
 
 	dupin = dup(STDIN_FILENO);
 	input_redir(node, envval);
-	execution(node, false, envval);
+	if (is_single_command(node) && is_builtin(node))
+		exec_builtin(node, envval);
+	else
+		execution(node, false, envval);
 	wait_all(node, envval);
 	// system("leaks -q minishell");
 	dup2(dupin, STDIN_FILENO);

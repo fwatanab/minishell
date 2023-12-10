@@ -26,11 +26,16 @@ int child_process(t_node *node, bool has_pipe, t_envval *envval,
 	redir_dup(node);
     if (!node->name)
         exit(print_error(node->args[0], "command not found", 127));
-	str = make_env_strs(envval->env);
-	execve(node->name, node->args, str);
-	str_array_free(str);
-	ft_perror(node->name);
-    return (0);
+	if (is_builtin(node))
+		exec_builtin(node, envval);
+	else
+	{
+		str = make_env_strs(envval->env);
+		execve(node->name, node->args, str);
+		str_array_free(str);
+		ft_perror(node->name);
+	}
+    exit (-1);
 }
 
 void	parent_process(bool has_pipe, int pipefd[2])
