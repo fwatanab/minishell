@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_parameter.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 23:43:04 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/11 16:47:18 by resaito          ###   ########.fr       */
+/*   Updated: 2023/12/11 19:48:59 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ static char	*parse_parameter(char *token, char *env_name, t_parm *parm)
 			env_name[j++] = token[i];
 		i++;
 	}
-	env_name[j] = '\0';
 	parm->tmp = &(token[i]);
 	check_brackets_balance(&brackets, &token, env_name, parm);
 	return (env_name);
@@ -68,7 +67,7 @@ static char	*get_env_var(t_parm *parm, t_envval *envval)
 
 	if (!parm->tmp || *parm->tmp != '$')
 		return (NULL);
-	env_name = (char *)malloc(sizeof(char) * ft_strlen(parm->tmp));
+	env_name = ft_calloc(ft_strlen(parm->tmp) + 1, sizeof(char));
 	if (!env_name)
 		return (NULL);
 	env_name = parse_parameter(parm->tmp, env_name, parm);
