@@ -6,12 +6,13 @@
 /*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 21:17:52 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/11 16:58:56 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/11 17:51:46 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "../inc/minishell.h"
+#include "../inc/builtins.h"
 
 void	minishell(char *line, t_envval *envval)
 {
@@ -22,12 +23,10 @@ void	minishell(char *line, t_envval *envval)
 	list = tokenize(line);
 	tmp = list;
 	check_token(list);
-//	print_list(list);
 	node = parser_start(&list);
 	check_exp(node, envval);
-	ft_execution(node, envval);
-//	print_node(node);
 	list_free(&tmp);
+	ft_execution(node, envval);
 	node_free(node);
 }
 
@@ -43,7 +42,12 @@ void	bash_loop(t_envval *envval)
 		line = readline(MINISHELL);
 		check_status(envval);
 		if (!line)
+		{
+			printf("exit\n");
+			write(1, "exit\n", 5);
+			exit(envval->status);
 			break ;
+		}
 		else if (line[1] == '\0')
 			free(line);
 		else

@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 21:17:45 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/10 20:59:05 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/11 16:51:36 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ void			check_exp(t_node *node, t_envval *envval);
 //signal
 void			signal_handler(int sig);
 void			signal_fork_handler(int sig);
-void			check_status(t_envval *envval, int fork);
+void			check_status(t_envval *envval);
 
 //free
 void			list_free(t_token_list **list);
