@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 13:39:58 by resaito           #+#    #+#             */
-/*   Updated: 2023/12/11 17:58:30 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/11 18:00:51 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ int	execute_command(t_node *node, bool has_pipe, t_envval *envval)
 {
 	int		pipefd[2];
 	pid_t	pid;
-	int		status;
 
 	if (has_pipe)
 		ft_pipe(pipefd);

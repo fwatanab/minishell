@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 21:17:52 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/11 17:58:38 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/11 18:01:12 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ void	bash_loop(t_envval *envval)
 		check_status(envval);
 		if (!line)
 		{
-			printf("exit\n");
 			write(1, "exit\n", 5);
 			exit(envval->status);
 			break ;
