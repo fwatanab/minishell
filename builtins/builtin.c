@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 13:32:35 by resaito           #+#    #+#             */
-/*   Updated: 2023/12/11 18:56:19 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/11 19:06:30 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ bool	is_builtin(t_node *node)
 		return (true);
 	else if (ft_strcmp(node->args[0], "env") == 0)
 		return (true);
-	 else if (ft_strcmp(node->args[0], "exit") == 0)
-	 	return (true);
+	else if (ft_strcmp(node->args[0], "exit") == 0)
+		return (true);
 	else
 		return (false);
 }

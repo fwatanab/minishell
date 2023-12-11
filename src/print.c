@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 00:21:46 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/08 18:41:07 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/11 19:12:37 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,52 +22,7 @@ void	print_list(t_token_list *list)
 	printf("------------------\n\n");
 }
 
-
-void	print_indent(int depth)
-{
-	for (int i = 0; i < depth; ++i) {
-		printf("  ");
-	}
-}
-
-void	print_tree(t_node *node, int depth)
-{
-	int	i;
-
-	if (!node)
-		return ;
-	print_indent(depth);
-	printf("Type: %d\n", node->type);
-	if (node->name)
-	{
-		print_indent(depth);
-		printf("Name: %s\n", node->name);
-	}
-	if (node->args)
-	{
-		i = 0;
-		while (node->args[i])
-		{
-			print_indent(depth);
-			printf("Arg[%d]: %s\n", i, node->args[i]);
-			i++;
-		}
-	}
-	if (node->left)
-	{
-		print_indent(depth);
-		printf("Left:\n");
-		print_tree(node->left, depth + 1);
-	}
-	if (node->right)
-	{
-		print_indent(depth);
-		printf("Right:\n");
-		print_tree(node->right, depth + 1);
-	}
-}
-
-void	print_redir(t_redir *redir)
+static void	print_redir(t_redir *redir)
 {
 	size_t	i;
 
@@ -84,12 +39,10 @@ void	print_redir(t_redir *redir)
 	print_redir(redir->next);
 }
 
-void	print_node(t_node *node)
+static void	printer(t_node *node)
 {
 	size_t	i;
 
-	if (!node)
-		return ;
 	if (node->name)
 		printf("name: %s\n", node->name);
 	printf("type: %u\n", node->type);
@@ -103,6 +56,13 @@ void	print_node(t_node *node)
 			i++;
 		}
 	}
+}
+
+void	print_node(t_node *node)
+{
+	if (!node)
+		return ;
+	printer(node);
 	if (node->redir)
 	{
 		printf("redir:\n");

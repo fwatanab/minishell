@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 12:50:56 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/08 20:04:44 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/11 19:15:33 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,5 @@ void			check_right_node(t_node *node);
 //print
 void			print_list(t_token_list *list);
 void			print_node(t_node *node);
-void			print_tree(t_node *node, int depth);
-void			print_syntax_tree(t_node *node, int depth);
 
 #endif
