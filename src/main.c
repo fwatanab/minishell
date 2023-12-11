@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 21:17:52 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/11 19:19:02 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/11 19:24:17 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void	minishell(char *line, t_envval *envval)
 	check_token(list);
 	node = parser_start(&list);
 	check_exp(node, envval);
-	print_node(node);
 	list_free(&tmp);
 	ft_execution(node, envval);
 	node_free(node);

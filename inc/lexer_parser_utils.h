@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 12:50:56 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/11 19:15:33 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/11 19:23:57 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,5 @@ char			*pop_token(t_token_list **list);
 char			**add_array(char **array, char *token);
 void			one_n_command(t_node *node);
 void			check_right_node(t_node *node);
-
-//print
-void			print_list(t_token_list *list);
-void			print_node(t_node *node);
 
 #endif
