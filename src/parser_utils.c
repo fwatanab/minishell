@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 16:02:12 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/11 17:58:04 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/11 19:52:12 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,15 +71,15 @@ char	**add_array(char **array, char *token)
 
 void	one_n_command(t_node *node)
 {
-		node->args = node->left->args;
-		node->name = node->left->name;
-		node->type = node->left->type;
-		if (node->left->redir)
-			node->redir = node->left->redir;
-		node->left->args = NULL;
-		node->left->name = NULL;
-		node->left->type = NONE;
-		node->left->redir = NULL;
+	node->args = node->left->args;
+	node->name = node->left->name;
+	node->type = node->left->type;
+	if (node->left->redir)
+		node->redir = node->left->redir;
+	node->left->args = NULL;
+	node->left->name = NULL;
+	node->left->type = NONE;
+	node->left->redir = NULL;
 }
 
 void	check_right_node(t_node *node)
