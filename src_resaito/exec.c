@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 13:39:58 by resaito           #+#    #+#             */
-/*   Updated: 2023/12/04 14:19:04 by resaito          ###   ########.fr       */
+/*   Updated: 2023/12/11 16:56:59 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,8 @@ int	execute_command(t_node *node, bool has_pipe, t_envval *envval)
 {
 	int		pipefd[2];
 	pid_t	pid;
+	int		status;
 
-	signal(SIGINT, signal_fork_handler);
-	signal(SIGQUIT, signal_fork_handler);
 	if (has_pipe)
 		ft_pipe(pipefd);
 	pid = fork();
@@ -30,6 +29,8 @@ int	execute_command(t_node *node, bool has_pipe, t_envval *envval)
 		child_process(node, has_pipe, envval, pipefd);
 	else
 	{
+		signal(SIGINT, signal_fork_handler);
+		signal(SIGQUIT, signal_fork_handler);
 		parent_process(has_pipe, pipefd);
 		return (0);
 	}

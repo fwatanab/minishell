@@ -6,14 +6,12 @@
 /*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 21:17:52 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/11 09:59:14 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/11 16:58:56 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "../inc/minishell.h"
-
-int	env_status = 0;
 
 void	minishell(char *line, t_envval *envval)
 {
@@ -42,9 +40,8 @@ void	bash_loop(t_envval *envval)
 	{
 		signal(SIGINT, signal_handler);
 		signal(SIGQUIT, signal_handler);
-		env_status = 0;
 		line = readline(MINISHELL);
-//		check_status(envval, 0);
+		check_status(envval);
 		if (!line)
 			break ;
 		else if (line[1] == '\0')
