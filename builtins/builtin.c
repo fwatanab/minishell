@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 13:32:35 by resaito           #+#    #+#             */
-/*   Updated: 2023/12/11 17:20:30 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/11 18:56:19 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../inc/minishell.h"
-#include "../../inc/builtins.h"
+#include "../inc/minishell.h"
 
 bool	is_builtin(t_node *node)
 {
