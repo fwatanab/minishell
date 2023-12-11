@@ -6,13 +6,13 @@
 /*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 13:27:05 by resaito           #+#    #+#             */
-/*   Updated: 2023/12/08 16:09:00 by resaito          ###   ########.fr       */
+/*   Updated: 2023/12/11 12:39:16 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static void remove_env_entry(t_env **env, t_env *prev, t_env *current);
+static void	remove_env_entry(t_env **env, t_env *prev, t_env *current);
 
 int	unset(t_node *node, t_envval *envval)
 {
@@ -42,12 +42,12 @@ int	unset(t_node *node, t_envval *envval)
 	return (0);
 }
 
-static void remove_env_entry(t_env **env, t_env *prev, t_env *current)
+static void	remove_env_entry(t_env **env, t_env *prev, t_env *current)
 {
-    if (current == *env)
-        *env = current->next;
-    else
-        prev->next = current->next;
+	if (current == *env)
+		*env = current->next;
+	else
+		prev->next = current->next;
 }
 
 // t_node	*make_node(enum e_type node_type, char **args)

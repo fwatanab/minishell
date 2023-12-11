@@ -6,14 +6,13 @@
 /*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 14:17:03 by resaito           #+#    #+#             */
-/*   Updated: 2023/12/08 15:54:31 by resaito          ###   ########.fr       */
+/*   Updated: 2023/12/11 12:56:37 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-int child_process(t_node *node, bool has_pipe, t_envval *envval,
-		int pipefd[2])
+int	child_process(t_node *node, bool has_pipe, t_envval *envval, int pipefd[2])
 {
 	char	**str;
 
@@ -24,8 +23,8 @@ int child_process(t_node *node, bool has_pipe, t_envval *envval,
 		close(pipefd[1]);
 	}
 	redir_dup(node);
-    if (!node->name)
-        exit(print_error(node->args[0], "command not found", 127));
+	if (!node->name)
+		exit(print_error(node->args[0], "command not found", 127));
 	if (is_builtin(node))
 		exec_builtin(node, envval);
 	else
@@ -35,7 +34,7 @@ int child_process(t_node *node, bool has_pipe, t_envval *envval,
 		str_array_free(str);
 		ft_perror(node->name);
 	}
-    exit (-1);
+	exit(-1);
 }
 
 void	parent_process(bool has_pipe, int pipefd[2])
