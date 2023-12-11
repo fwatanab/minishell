@@ -1,20 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   is_single_command.c                                :+:      :+:    :+:   */
+/*   get_exit_code.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/11 12:38:01 by resaito           #+#    #+#             */
-/*   Updated: 2023/12/11 12:48:09 by resaito          ###   ########.fr       */
+/*   Created: 2023/12/11 12:54:33 by resaito           #+#    #+#             */
+/*   Updated: 2023/12/11 12:54:42 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-bool	is_single_command(t_node *node)
+int	get_exit_code(int n)
 {
-	if (node->type == N_COMMAND)
-		return (true);
-	return (false);
+	if (n % 256 == 0)
+		return (n / 256);
+	else
+		return (n % 256 + 128);
 }

@@ -152,5 +152,6 @@ void			ft_perror(char *str);
 int				ft_pipe(int pipefd[2]);
 int				print_error(char *command, char *error, int status);
 bool			is_single_command(t_node *node);
+int				get_exit_code(int n);
 
 #endif

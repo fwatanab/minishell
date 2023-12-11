@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 03:53:40 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/09 11:26:45 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/11 16:47:37 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ typedef struct s_parm
 t_parm	*parameter_init(char *token);
 
 char	*expand_parameter(char *token, t_envval *envval);
-char	*check_parameter(t_parm *parm, char *token, t_envval *envval);
-int		check_question(t_parm *parm, char *token, t_envval *envval);
+char	*check_parameter(t_parm *parm, t_envval *envval);
+int		check_question(t_parm *parm, t_envval *envval);
 char	*ft_getenv(char *str, t_env *env);
 char	*update_string_with_status(t_parm *parm, char *status_str);
 void	check_brackets_balance(size_t *brackets, char **token, char *env_name, t_parm *parm);

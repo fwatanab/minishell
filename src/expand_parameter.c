@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_parameter.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 23:43:04 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/09 11:21:34 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/11 16:47:18 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,14 +112,14 @@ static char	*expand_env_variable(t_parm *parm, t_envval *envval)
 	return (parm->str);
 }
 
-char	*check_parameter(t_parm *parm, char *token, t_envval *envval)
+char	*check_parameter(t_parm *parm, t_envval *envval)
 {
 	while (*parm->tmp)
 	{
 		if (*parm->tmp == '$' && *(parm->tmp + 1) != ' '
 			&& *(parm->tmp + 1) != '\0' && *(parm->tmp + 1) != '"')
 		{
-			if (check_question(parm, token, envval) == 1)
+			if (check_question(parm, envval) == 1)
 				parm->str = expand_env_variable(parm, envval);
 			if (!parm->str)
 				return (NULL);

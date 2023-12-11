@@ -6,10 +6,9 @@
 /*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 13:39:58 by resaito           #+#    #+#             */
-/*   Updated: 2023/12/04 14:19:04 by resaito          ###   ########.fr       */
+/*   Updated: 2023/12/11 16:47:58 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../inc/minishell.h"
 #include <fcntl.h>
@@ -38,9 +37,8 @@ int	execute_command(t_node *node, bool has_pipe, t_envval *envval)
 
 // #include <stdio.h>
 void	execution(t_node *node, bool is_exec_pipe, t_envval *envval)
-{	
-	int	dupout;
-	int status;
+{
+	int	status;
 
 	if (node == NONE)
 		return ;
@@ -64,7 +62,8 @@ void	execution(t_node *node, bool is_exec_pipe, t_envval *envval)
 
 void	wait_all(t_node *node, t_envval *envval)
 {
-	int status;
+	int	status;
+
 	if (node == NONE)
 		return ;
 	if (node->type == N_PIPE)
@@ -74,10 +73,8 @@ void	wait_all(t_node *node, t_envval *envval)
 	}
 	if (node->type == N_COMMAND)
 	{
-		// printf("aa\n");
 		wait(&status);
-		// printf("%d\n", status >> 8);
-		envval->status = status >> 8;
+		envval->status = get_exit_code(status);
 	}
 	return ;
 }
@@ -91,9 +88,10 @@ void	ft_execution(t_node *node, t_envval *envval)
 	if (is_single_command(node) && is_builtin(node))
 		exec_builtin(node, envval);
 	else
+	{
 		execution(node, false, envval);
-	wait_all(node, envval);
-	// system("leaks -q minishell");
+		wait_all(node, envval);
+	}
 	dup2(dupin, STDIN_FILENO);
 	close(dupin);
 }
@@ -163,4 +161,3 @@ void	ft_execution(t_node *node, t_envval *envval)
 //     // wait(NULL);
 //     // wait(NULL);
 // }
-
