@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 09:47:55 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/11 18:39:35 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/11 20:01:54 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 # include "minishell.h"
 
-typedef struct s_node t_node;
-typedef struct s_envval t_envval;
+typedef struct s_node	t_node;
+typedef struct s_envval	t_envval;
 
 bool			is_builtin(t_node *node);
 void			exec_builtin(t_node *node, t_envval *envval);

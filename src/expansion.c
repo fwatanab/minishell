@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 17:52:58 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/11 16:47:45 by resaito          ###   ########.fr       */
+/*   Updated: 2023/12/11 20:05:34 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char	*expand_parameter(char *token, t_envval *envval)
 	return (new_token);
 }
 
-char	*delete_quote(char	*token)
+char	*delete_quote(char *token)
 {
 	char	*new_token;
 	size_t	i;
