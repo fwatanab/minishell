@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
+/*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 19:19:00 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/21 18:22:12 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/11 16:45:39 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,7 @@ static bool	updata_type_value(t_node *node, \
 	return (true);
 }
 
-static void	updata_name_value(t_node *node, \
-		t_parse_check *key, t_token_list **list)
+static void	updata_name_value(t_node *node, t_parse_check *key)
 {
 	if (key->key_type)
 	{
@@ -93,7 +92,7 @@ t_node	*parser(t_node *node, t_token_list **list, t_parse_check *key)
 		else
 		{
 			if (redir_checker(node, key, list) == false)
-				updata_name_value(node, key, list);
+				updata_name_value(node, key);
 		}
 	}
 	if (node->type == NONE)

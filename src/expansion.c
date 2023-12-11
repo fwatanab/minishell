@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 17:52:58 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/05 22:14:51 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/11 16:47:45 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*expand_parameter(char *token, t_envval *envval)
 	parm = parameter_init(token);
 	if (!parm)
 		return (token);
-	parm->str = check_parameter(parm, token, envval);
+	parm->str = check_parameter(parm, envval);
 	if (!parm->str)
 		return (token);
 	new_token = ft_strdup(parm->str);

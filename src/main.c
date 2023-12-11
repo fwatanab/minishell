@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 21:17:52 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/08 16:44:57 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/11 16:44:37 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_envval *envval;
 
+	(void)argv;
 	if (argc == 1)
 	{
 		envval = make_envval(new_envs(envp));

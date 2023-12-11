@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 13:39:58 by resaito           #+#    #+#             */
-/*   Updated: 2023/12/11 13:03:00 by resaito          ###   ########.fr       */
+/*   Updated: 2023/12/11 16:47:58 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,7 @@ int	execute_command(t_node *node, bool has_pipe, t_envval *envval)
 
 // #include <stdio.h>
 void	execution(t_node *node, bool is_exec_pipe, t_envval *envval)
-{	
-	int	dupout;
+{
 	int	status;
 
 	if (node == NONE)

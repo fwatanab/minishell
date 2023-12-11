@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 13:27:05 by resaito           #+#    #+#             */
-/*   Updated: 2023/12/11 14:24:24 by resaito          ###   ########.fr       */
+/*   Updated: 2023/12/11 16:48:16 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,6 @@ static int	unset_single(char *name, t_envval *envval);
 int	unset(t_node *node, t_envval *envval)
 {
 	size_t	size;
-	t_env	*tmp;
-	t_env	*tmp_back;
 
 	size = 1;
 	while (node->args[size] != NULL)
