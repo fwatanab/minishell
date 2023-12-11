@@ -6,13 +6,11 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 21:17:52 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/11 18:09:55 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/11 19:19:02 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "../inc/minishell.h"
-#include "../inc/builtins.h"
 
 void	minishell(char *line, t_envval *envval)
 {
@@ -25,6 +23,7 @@ void	minishell(char *line, t_envval *envval)
 	check_token(list);
 	node = parser_start(&list);
 	check_exp(node, envval);
+	print_node(node);
 	list_free(&tmp);
 	ft_execution(node, envval);
 	node_free(node);
@@ -61,10 +60,9 @@ void	bash_loop(t_envval *envval)
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_envval *envval;
+	t_envval	*envval;
 
-	(void)argv;
-	if (argc == 1)
+	if (argc == 1 && argv)
 	{
 		envval = make_envval(new_envs(envp));
 		bash_loop(envval);
