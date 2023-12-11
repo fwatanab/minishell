@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 21:17:52 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/11 18:01:12 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/11 18:09:55 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	bash_loop(t_envval *envval)
 			exit(envval->status);
 			break ;
 		}
-		else if (line[1] == '\0')
+		else if (line[0] == '\0')
 			free(line);
 		else
 		{
