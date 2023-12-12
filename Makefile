@@ -2,7 +2,7 @@ NAME	= minishell
 
 SRCSDIR	= src/
 
-SRCS = main.c free.c tokenize.c check_token.c parser.c redir_parser.c parser_utils.c lexer_parser_init.c expansion.c exp_init.c expand_parameter.c expand_utils.c signal.c print.c
+SRCS = main.c free.c check_line.c tokenize.c check_token.c parser.c redir_parser.c parser_utils.c lexer_parser_init.c expansion.c exp_init.c expand_parameter.c expand_utils.c signal.c print.c
 
 RE_SRCSDIR	= src_resaito/
 
@@ -32,7 +32,7 @@ RE_OBJS	= $(addprefix $(RE_SRCSDIR), $(RE_SRCS:.c=.o))
 B_OBJS	= $(addprefix $(BUILTINS), $(B_SRCS:.c=.o))
 
 CC		= cc
-CFLAGS	= -g -I$(READLINEDIR)/include -Wall -Wextra -Werror #-fsanitize=address 
+CFLAGS	= -g -I$(READLINEDIR)/include #-Wall -Wextra -Werror #-fsanitize=address 
 RM		= rm -f
 READLINEDIR    := $(shell brew --prefix readline)
 

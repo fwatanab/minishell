@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 21:17:45 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/12 22:10:32 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/12 23:25:06 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ void					redir_free(t_redir *redir);
 
 //error
 void					malloc_error(void);
+int						is_only_space(const char *str, t_envval *envval);
 
 //resaito search_path
 char					*search_path(const char *filename, t_env *env);
