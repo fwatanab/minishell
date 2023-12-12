@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 21:17:45 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/12 16:52:21 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/12 22:00:12 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ typedef enum e_type
 typedef struct s_redir
 {
 	enum e_type			type;
-	char				**file;
+	char				*file;
 	int					fd;
 	struct s_redir		*next;
 }						t_redir;
