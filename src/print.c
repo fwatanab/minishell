@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 00:21:46 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/12 14:49:57 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/12 21:03:25 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,18 +24,11 @@ void	print_list(t_token_list *list)
 
 static void	print_redir(t_redir *redir)
 {
-	size_t	i;
-
 	if (!redir)
 		return ;
 	printf("r_type: %u\n", redir->type);
 	printf("file:\n");
-	i = 0;
-	while (redir->file[i])
-	{
-		printf("     [%zu] %s\n", i, redir->file[i]);
-		i++;
-	}
+	printf("     %s\n", redir->file);
 	print_redir(redir->next);
 }
 

@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 19:48:34 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/12 21:56:46 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/12 22:01:07 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static void	add_redir_file(t_redir *redir, char *token)
 		return ;
 }
 
-t_redir	*redir_parse(t_node *node, t_redir *redir, \
+t_redir	*redir_parse(t_redir *redir, \
 		t_token_list **list, char *token)
 {
 	t_redir	*current;
