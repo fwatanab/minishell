@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 21:17:52 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/12 11:11:11 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/12 12:09:42 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	minishell(char *line, t_envval *envval)
 	list = tokenize(line);
 	tmp = list;
 	check_token(list);
-	node = parser_start(&list);
+	node = parser_start(&list, envval->env);
 	check_exp(node, envval);
 	list_free(&tmp);
 	ft_execution(node, envval);
