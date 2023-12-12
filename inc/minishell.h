@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 21:17:45 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/11 20:03:17 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/12 15:17:12 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@
 # define REDIR_HIRE "<<"
 # define REDIR_APPEND ">>"
 
-extern int	sig_status;
+extern int	g_sig_status;
 
 typedef struct s_token_list
 {
@@ -98,6 +98,7 @@ void			check_exp(t_node *node, t_envval *envval);
 //signal
 void			signal_handler(int sig);
 void			signal_fork_handler(int sig);
+void			signal_heredoc_handler(int sig);
 void			check_status(t_envval *envval);
 
 //free
