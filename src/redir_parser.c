@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 19:48:34 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/12 22:01:07 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/12 22:11:52 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 static t_redir	*create_redir(void)
 {
-	t_redir		*new;
+	t_redir	*new;
+
 	new = (t_redir *)malloc(sizeof(t_redir));
 	if (!new)
 		return (NULL);
