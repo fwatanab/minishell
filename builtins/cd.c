@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 16:14:59 by resaito           #+#    #+#             */
-/*   Updated: 2023/12/08 16:08:38 by resaito          ###   ########.fr       */
+/*   Updated: 2023/12/11 18:52:33 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../inc/minishell.h"
+#include "../inc/builtins.h"
 
 #define PATHNAME_SIZE 512
 

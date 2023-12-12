@@ -6,23 +6,23 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/25 18:26:49 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/08 16:44:30 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/11 16:58:29 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-volatile sig_atomic_t received_signal = 0;
+int	sig_status = 0;
 
 void	signal_handler(int sig)
 {
-	received_signal = sig;
 	if (sig == SIGINT)
 	{
 		write(1, "\n", 1);
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
+		sig_status = 1;
 	}
 	else if (sig == SIGQUIT)
 		;
@@ -30,7 +30,6 @@ void	signal_handler(int sig)
 
 void	signal_fork_handler(int sig)
 {
-	received_signal = sig;
 	if (sig == SIGINT)
 		write(1, "\n", 1);
 	else if (sig == SIGQUIT)
@@ -39,29 +38,15 @@ void	signal_fork_handler(int sig)
 		ft_putnbr_fd(sig, 1);
 		write(1, "\n", 1);
 	}
+	if (sig)
+		sig_status = 128 + sig;
 }
 
-void	check_status(sig_atomic_t received_signal, \
-		t_envval *envval, int fork)
+void	check_status(t_envval *envval)
 {
-	if (!fork)
+	if (sig_status)
 	{
-		if (received_signal)
-		{
-			if (received_signal == SIGINT)
-				envval->status = 1;
-			received_signal = 0;
-		}
-	}
-	else if (fork)
-	{
-		if (received_signal)
-		{
-			if (received_signal == SIGINT)
-				envval->status = 130;
-			else if (received_signal == SIGQUIT)
-				envval->status = 131;
-			received_signal = 0;
-		}
+		envval->status = sig_status;
+		sig_status = 0;
 	}
 }

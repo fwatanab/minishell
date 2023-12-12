@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 13:27:05 by resaito           #+#    #+#             */
-/*   Updated: 2023/12/11 16:48:16 by resaito          ###   ########.fr       */
+/*   Updated: 2023/12/11 18:53:09 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../inc/minishell.h"
+#include "../inc/builtins.h"
 
 static void	remove_env_entry(t_env **env, t_env *prev, t_env *current);
 static bool	is_equal_in_args(char *args);

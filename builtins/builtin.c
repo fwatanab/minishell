@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 13:32:35 by resaito           #+#    #+#             */
-/*   Updated: 2023/12/08 16:08:29 by resaito          ###   ########.fr       */
+/*   Updated: 2023/12/11 19:25:37 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../inc/minishell.h"
+#include "../inc/minishell.h"
 
 bool	is_builtin(t_node *node)
 {
@@ -26,8 +26,8 @@ bool	is_builtin(t_node *node)
 		return (true);
 	else if (ft_strcmp(node->args[0], "env") == 0)
 		return (true);
-	// else if (ft_strcmp(node->args[0], "exit") == 0)
-	// 	return (true);
+	else if (ft_strcmp(node->args[0], "exit") == 0)
+		return (true);
 	else
 		return (false);
 }
@@ -46,6 +46,6 @@ void	exec_builtin(t_node *node, t_envval *envval)
 		envval->status = unset(node, envval);
 	else if (ft_strcmp(node->args[0], "env") == 0)
 		envval->status = ft_env(envval);
-	// else if (ft_strcmp(node->args[0], "exit") == 0)
-	// 	envval->status = ft_exit(node, envval);
+	else if (ft_strcmp(node->args[0], "exit") == 0)
+		ft_exit(node, envval);
 }

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 16:07:03 by resaito           #+#    #+#             */
-/*   Updated: 2023/12/08 16:52:48 by resaito          ###   ########.fr       */
+/*   Updated: 2023/12/11 18:52:41 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../inc/minishell.h"
+#include "../inc/builtins.h"
 
 int	echo(t_node *node)
 {

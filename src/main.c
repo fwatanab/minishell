@@ -3,13 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 21:17:52 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/11 16:44:37 by resaito          ###   ########.fr       */
+/*   Updated: 2023/12/12 11:11:11 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../inc/minishell.h"
 
@@ -22,14 +21,26 @@ void	minishell(char *line, t_envval *envval)
 	list = tokenize(line);
 	tmp = list;
 	check_token(list);
-//	print_list(list);
 	node = parser_start(&list);
 	check_exp(node, envval);
-	ft_execution(node, envval);
-//	print_node(node);
 	list_free(&tmp);
+	ft_execution(node, envval);
 	node_free(node);
 }
+
+//static int	is_only_space(const char *str)
+//{
+//	while (*str)
+//	{
+//		if (*str == ' ' || *str == '\t' || *str == '\n'
+//				|| *str == '\v' || *str == '\f' || *str == '\r')
+//			;
+//		else
+//			return (1);
+//		str++;
+//	}
+//	return (0);
+//}
 
 void	bash_loop(t_envval *envval)
 {
@@ -41,10 +52,14 @@ void	bash_loop(t_envval *envval)
 		signal(SIGINT, signal_handler);
 		signal(SIGQUIT, signal_handler);
 		line = readline(MINISHELL);
-		check_status(received_signal, envval, 0);
+		check_status(envval);
 		if (!line)
+		{
+			write(1, "exit\n", 5);
+			exit(envval->status);
 			break ;
-		else if (line[1] == '\0')
+		}
+		else if (line[0] == '\0')// || is_only_space(line))
 			free(line);
 		else
 		{
@@ -58,10 +73,9 @@ void	bash_loop(t_envval *envval)
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_envval *envval;
+	t_envval	*envval;
 
-	(void)argv;
-	if (argc == 1)
+	if (argc == 1 && argv)
 	{
 		envval = make_envval(new_envs(envp));
 		bash_loop(envval);
