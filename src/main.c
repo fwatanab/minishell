@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 21:17:52 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/11 21:31:14 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/12 11:11:11 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,17 +28,19 @@ void	minishell(char *line, t_envval *envval)
 	node_free(node);
 }
 
-static int	is_only_spaces(const char *str)
-{
-	while (*str)
-	{
-		if (*str == ' ' || *str == '\t' || *str == '\n'
-				|| *str == '\v' || *str == '\f' || *str == '\r')
-			return (1);
-		str++;
-	}
-	return (0);
-}
+//static int	is_only_space(const char *str)
+//{
+//	while (*str)
+//	{
+//		if (*str == ' ' || *str == '\t' || *str == '\n'
+//				|| *str == '\v' || *str == '\f' || *str == '\r')
+//			;
+//		else
+//			return (1);
+//		str++;
+//	}
+//	return (0);
+//}
 
 void	bash_loop(t_envval *envval)
 {
@@ -57,7 +59,7 @@ void	bash_loop(t_envval *envval)
 			exit(envval->status);
 			break ;
 		}
-		else if (line[0] == '\0' || is_only_spaces(line))
+		else if (line[0] == '\0')// || is_only_space(line))
 			free(line);
 		else
 		{
