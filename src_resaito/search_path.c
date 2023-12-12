@@ -6,16 +6,16 @@
 /*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 12:40:54 by resaito           #+#    #+#             */
-/*   Updated: 2023/12/08 13:31:57 by resaito          ###   ########.fr       */
+/*   Updated: 2023/12/12 12:16:39 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+#include "../inc/expansion.h"
 
-char	*search_path(const char *filename);
-char	*able_to_access(char *path);
+static char	*able_to_access(char *path);
 
-char	*search_path(const char *filename)
+char	*search_path(const char *filename, t_env *env)
 {
 	char	path[PATH_MAX];
 	char	*value;
@@ -23,7 +23,7 @@ char	*search_path(const char *filename)
 
 	if (access(filename, X_OK) == 0)
 		return (able_to_access((char *)filename));
-	value = getenv("PATH");
+	value = ft_getenv("PATH", env);
 	while (value)
 	{
 		ft_bzero(path, PASS_MAX);
@@ -43,7 +43,7 @@ char	*search_path(const char *filename)
 	return (NULL);
 }
 
-char	*able_to_access(char *path)
+static char	*able_to_access(char *path)
 {
 	char	*dup;
 
