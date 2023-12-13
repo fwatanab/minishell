@@ -33,7 +33,7 @@ int	input_redir(t_node *node, t_envval *envval)
 			if (is_type_heredoc(redir))
 				redir->fd = heredoc_exec(redir, envval);
 			if (is_type_indirect(redir))
-				redir->fd = open(redir->file[0], O_RDONLY);
+				redir->fd = open(redir->file, O_RDONLY);
 			redir = redir->next;
 		}
 	}
@@ -52,7 +52,7 @@ int	dup_2_stdin(t_node *node)
 		if (is_type_heredoc(redir) || is_type_indirect(redir))
 		{
 			if (redir->fd == -1)
-				return (print_error(redir->file[0], "No such file or directory",
+				return (print_error(redir->file, "No such file or directory",
 						1));
 			dup2(redir->fd, STDIN_FILENO);
 			close(redir->fd);
