@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 17:52:58 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/11 20:05:34 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/13 18:53:52 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,57 +32,29 @@ char	*expand_parameter(char *token, t_envval *envval)
 	return (new_token);
 }
 
-char	*delete_quote(char *token)
+static char	*delete_quote(char *token)
 {
-	char	*new_token;
+	size_t	length;
+	char	*result;
 	size_t	i;
 	size_t	j;
 
-	if (!token || (token[0] != '\'' && token[0] != '"'))
-		return (token);
-	new_token = (char *)malloc(sizeof(char) * (ft_strlen(token) - 1));
-	if (!new_token)
+	if (token == NULL)
+		return (NULL);
+	length = strlen(token);
+	result = malloc(length + 1);
+	if (result == NULL)
 		return (NULL);
 	i = 0;
-	j = 1;
-	while (token[j])
+	j = 0;
+	while (i < length)
 	{
-		if (token[j] == '\'' || token[j] == '"')
-			break ;
-		new_token[i++] = token[j++];
+		if (token[i] != '\'' && token[i] != '\"')
+			result[j++] = token[i];
+		i++;
 	}
-	new_token[i] = '\0';
-	free(token);
-	return (new_token);
-}
-
-char	*check_command(char *str)
-{
-	char	*tmp;
-	bool	quote;
-	size_t	open;
-	size_t	close;
-
-	tmp = str;
-	quote = false;
-	open = 0;
-	close = 0;
-	while (*tmp)
-	{
-		if (!quote && (*tmp == '\'' || *tmp == '"'))
-			quote = true;
-		else if (quote && (*tmp == '\'' || *tmp == '"'))
-			quote = false;
-		else if (*tmp == '$' && *(tmp + 1) == '{')
-			open++;
-		else if ((close + 1) == open && *tmp == '}')
-			close++;
-		tmp++;
-	}
-	if (quote || (str[0] == '\'' && str[ft_strlen(str) - 1] == '"')
-		|| (str[0] == '"' && str[ft_strlen(str)-1] == '\'') || open != close)
-		str[0] = '\0';
-	return (str);
+	result[j] = '\0';
+	return (result);
 }
 
 void	expansion(char **array, t_envval *envval)
@@ -94,7 +66,7 @@ void	expansion(char **array, t_envval *envval)
 	new_array = NULL;
 	while (array[i])
 	{
-		array[i] = check_command(array[i]);
+		array[i] = check_command(array[i], envval);
 		array[i] = expand_parameter(array[i], envval);
 		array[i] = delete_quote(array[i]);
 		i++;
