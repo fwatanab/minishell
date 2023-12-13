@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 02:23:51 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/08 19:06:45 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/12 23:16:16 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	redir_free(t_redir *redir)
 	{
 		tmp = redir;
 		if (redir->file)
-			str_array_free(tmp->file);
+			free(redir->file);
 		redir = redir->next;
 		free(tmp);
 	}
@@ -76,10 +76,4 @@ void	node_free(t_node *node)
 	if (node->right)
 		node_free(node->right);
 	free(node);
-}
-
-void	malloc_error(void)
-{
-	printf("%s\n", "Failed to allocate memory");
-	exit(EXIT_FAILURE);
 }

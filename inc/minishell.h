@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 21:17:45 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/12 12:52:11 by resaito          ###   ########.fr       */
+/*   Updated: 2023/12/12 23:25:06 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@
 # include "../libft/inc/libft_utils.h"
 # include "lexer_parser_utils.h"
 # include <fcntl.h>
+# include <stdio.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
 # include <stddef.h>
-# include <stdio.h>
 
 # define MINISHELL "minishell $ "
 # define SPACE ' '
@@ -34,7 +34,7 @@
 # define REDIR_HIRE "<<"
 # define REDIR_APPEND ">>"
 
-extern int				sig_status;
+extern int				g_sig_status;
 
 typedef struct s_token_list
 {
@@ -56,7 +56,7 @@ typedef enum e_type
 typedef struct s_redir
 {
 	enum e_type			type;
-	char				**file;
+	char				*file;
 	int					fd;
 	struct s_redir		*next;
 }						t_redir;
@@ -90,8 +90,8 @@ void					check_token(t_token_list *list);
 t_node					*parser_start(t_token_list **list, t_env *env);
 t_node					*parser(t_node *node, t_token_list **list,
 							t_parse_check *key, t_env *env);
-t_redir					*redir_parse(t_node *node, t_redir *redir,
-							t_token_list **list, char *token);
+t_redir					*redir_parse(t_redir *redir, \
+						t_token_list **list, char *token);
 
 //expansion
 void					check_exp(t_node *node, t_envval *envval);
@@ -99,6 +99,7 @@ void					check_exp(t_node *node, t_envval *envval);
 //signal
 void					signal_handler(int sig);
 void					signal_fork_handler(int sig);
+void					signal_heredoc_handler(int sig);
 void					check_status(t_envval *envval);
 
 //free
@@ -109,6 +110,7 @@ void					redir_free(t_redir *redir);
 
 //error
 void					malloc_error(void);
+int						is_only_space(const char *str, t_envval *envval);
 
 //resaito search_path
 char					*search_path(const char *filename, t_env *env);

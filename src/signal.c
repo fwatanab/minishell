@@ -6,13 +6,13 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/25 18:26:49 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/11 16:58:29 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/12 16:06:34 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-int	sig_status = 0;
+int	g_sig_status = 0;
 
 void	signal_handler(int sig)
 {
@@ -22,7 +22,7 @@ void	signal_handler(int sig)
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
-		sig_status = 1;
+		g_sig_status = 1;
 	}
 	else if (sig == SIGQUIT)
 		;
@@ -39,14 +39,25 @@ void	signal_fork_handler(int sig)
 		write(1, "\n", 1);
 	}
 	if (sig)
-		sig_status = 128 + sig;
+		g_sig_status = 128 + sig;
+}
+
+void	signal_heredoc_handler(int sig)
+{
+	if (sig == SIGINT)
+	{
+		write(1, "\n", 1);
+		g_sig_status = 1;
+	}
+	else if (sig == SIGQUIT)
+		;
 }
 
 void	check_status(t_envval *envval)
 {
-	if (sig_status)
+	if (g_sig_status)
 	{
-		envval->status = sig_status;
-		sig_status = 0;
+		envval->status = g_sig_status;
+		g_sig_status = 0;
 	}
 }
