@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 17:52:58 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/13 18:53:52 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/13 19:16:23 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static char	*delete_quote(char *token)
 	return (result);
 }
 
-void	expansion(char **array, t_envval *envval)
+char	*expansion(char **array, t_envval *envval)
 {
 	char	*new_array;
 	size_t	i;
@@ -71,6 +71,9 @@ void	expansion(char **array, t_envval *envval)
 		array[i] = delete_quote(array[i]);
 		i++;
 	}
+	if (array[0])
+		return (search_path(array[0], envval->env));
+	return (NULL);
 }
 
 void	check_exp(t_node *node, t_envval *envval)
@@ -81,7 +84,7 @@ void	check_exp(t_node *node, t_envval *envval)
 	if (!node)
 		return ;
 	if (node->args)
-		expansion(node->args, envval);
+		node->name = expansion(node->args, envval);
 	if (node->left)
 		check_exp(node->left, envval);
 	if (node->right)

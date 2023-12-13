@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 21:17:52 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/12 23:24:13 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/13 19:17:28 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	minishell(char *line, t_envval *envval)
 	list = tokenize(line);
 	tmp = list;
 	check_token(list);
-	node = parser_start(&list, envval->env);
+	node = parser_start(&list);
 	check_exp(node, envval);
 	list_free(&tmp);
 	ft_execution(node, envval);
