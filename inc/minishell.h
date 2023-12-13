@@ -131,6 +131,8 @@ int						input_redir(t_node *node, t_envval *envval);
 bool					is_type_heredoc(t_redir *redir);
 bool					is_type_indirect(t_redir *redir);
 int						dup_2_stdin(t_node *node);
+int						able_file(char *filepath, t_redir *redir);
+bool    				able_read(char *filepath);
 
 // env
 t_env					*new_envs(char **envp);
