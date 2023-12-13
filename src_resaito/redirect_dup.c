@@ -26,11 +26,11 @@ int	redir_dup(t_node *node)
 			|| node->redir->type == N_REDIR_APPEND))
 	{
 		if (node->redir->type == N_REDIR_OUT)
-			out_fd = open(node->redir->file[0],
+			out_fd = open(node->redir->file,
 					O_WRONLY | O_CREAT | O_TRUNC | O_CLOEXEC,
 					S_IRUSR | S_IWUSR);
 		else
-			out_fd = open(node->redir->file[0],
+			out_fd = open(node->redir->file,
 					O_WRONLY | O_CREAT | O_APPEND | O_CLOEXEC,
 					S_IRUSR | S_IWUSR);
 		node->redir = node->redir->next;
@@ -55,7 +55,7 @@ int	heredoc_exec(t_redir *redir, t_envval *envval)
 		line = readline("> ");
 		if (line == NULL)
 			break ;
-		if (ft_strncmp(line, redir->file[0], ft_strlen(redir->file[0])) == 0)
+		if (ft_strncmp(line, redir->file, ft_strlen(redir->file)) == 0)
 		{
 			free(line);
 			close(pipefd[1]);
