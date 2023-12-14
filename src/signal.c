@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/25 18:26:49 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/12 16:06:34 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/13 20:51:05 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ void	signal_heredoc_handler(int sig)
 {
 	if (sig == SIGINT)
 	{
-		write(1, "\n", 1);
 		g_sig_status = 1;
 	}
 	else if (sig == SIGQUIT)

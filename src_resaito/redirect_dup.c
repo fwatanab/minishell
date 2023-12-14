@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 14:05:49 by resaito           #+#    #+#             */
-/*   Updated: 2023/11/29 17:38:48 by resaito          ###   ########.fr       */
+/*   Updated: 2023/12/13 20:54:43 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,19 @@ int	heredoc_exec(t_redir *redir, t_envval *envval)
 	}
 	while (1)
 	{
+		signal(SIGINT, signal_heredoc_handler);
+		signal(SIGQUIT, signal_heredoc_handler);
 		line = readline("> ");
-		if (line == NULL)
+		if (line == NULL || g_sig_status == 1)
+		{
+			if (g_sig_status == 1)
+			{
+				check_status(envval);
+				free(line);
+				close(pipefd[1]);
+			}
 			break ;
+		}
 		if (ft_strncmp(line, redir->file, ft_strlen(redir->file)) == 0)
 		{
 			free(line);
