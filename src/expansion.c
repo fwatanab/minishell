@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 17:52:58 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/13 19:16:23 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/14 16:31:51 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,30 +32,74 @@ char	*expand_parameter(char *token, t_envval *envval)
 	return (new_token);
 }
 
+static void	check_quote(t_quote_status *q_status, char c)
+{
+	if (c == '\'' && !q_status->d_quote)
+	{
+		if (!q_status->s_quote)
+			q_status->s_quote = true;
+		else
+			q_status->s_quote = false;
+	}
+	else if (c == '\"' && !q_status->s_quote)
+	{
+		if (!q_status->d_quote)
+			q_status->d_quote = true;
+		else
+			q_status->d_quote = false;
+	}
+	else if (!q_status->s_quote && !q_status->d_quote
+		&& (c == '\'' || c == '\"'))
+		;
+	else
+		q_status->result[q_status->i++] = c;
+}
+
 static char	*delete_quote(char *token)
 {
-	size_t	length;
-	char	*result;
-	size_t	i;
-	size_t	j;
+	t_quote_status	*q_status;
+	char			*str;
+	size_t			i;
 
-	if (token == NULL)
-		return (NULL);
-	length = strlen(token);
-	result = malloc(length + 1);
-	if (result == NULL)
+	q_status = quote_status_init(token);
+	if (!q_status)
 		return (NULL);
 	i = 0;
-	j = 0;
-	while (i < length)
+	while (i < q_status->len)
 	{
-		if (token[i] != '\'' && token[i] != '\"')
-			result[j++] = token[i];
+		check_quote(q_status, token[i]);
 		i++;
 	}
-	result[j] = '\0';
-	return (result);
+	str = ft_strdup(q_status->result);
+	free(q_status->result);
+	free(q_status);
+	return (str);
 }
+
+//static char	*delete_quote(char *token)
+//{
+//	size_t	length;
+//	char	*result;
+//	size_t	i;
+//	size_t	j;
+//
+//	if (token == NULL)
+//		return (NULL);
+//	length = strlen(token);
+//	result = malloc(length + 1);
+//	if (result == NULL)
+//		return (NULL);
+//	i = 0;
+//	j = 0;
+//	while (i < length)
+//	{
+//		if (token[i] != '\'' && token[i] != '\"')
+//			result[j++] = token[i];
+//		i++;
+//	}
+//	result[j] = '\0';
+//	return (result);
+//}
 
 char	*expansion(char **array, t_envval *envval)
 {
