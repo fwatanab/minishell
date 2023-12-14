@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 17:52:58 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/14 16:42:43 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/14 17:24:37 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,11 @@ static char	*delete_quote(char *token)
 	str = ft_strdup(q_status->result);
 	free(q_status->result);
 	free(q_status);
+	free(token);
 	return (str);
 }
 
-char	*expansion(char **array, t_envval *envval)
+static void	expansion(char **array, t_node *node, t_envval *envval)
 {
 	char	*new_array;
 	size_t	i;
@@ -93,8 +94,10 @@ char	*expansion(char **array, t_envval *envval)
 		i++;
 	}
 	if (array[0])
-		return (search_path(array[0], envval->env));
-	return (NULL);
+	{
+		free(node->name);
+		node->name = search_path(array[0], envval->env);
+	}
 }
 
 void	check_exp(t_node *node, t_envval *envval)
@@ -105,7 +108,7 @@ void	check_exp(t_node *node, t_envval *envval)
 	if (!node)
 		return ;
 	if (node->args)
-		node->name = expansion(node->args, envval);
+		expansion(node->args, node, envval);
 	if (node->redir)
 	{
 		node->redir->file = check_command(node->redir->file, envval);
