@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 23:43:04 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/11 19:48:59 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/13 18:44:01 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,6 @@ static char	*parse_parameter(char *token, char *env_name, t_parm *parm)
 			brackets++;
 		else if ((brackets < 2 && 0 < brackets) && token[i] == '}')
 			brackets++;
-		else if (token[i] != '_' && ft_isalnum(token[i]) != 1)
-			return (NULL);
 		else if (token[i] == '{' || token[i] == '}')
 			break ;
 		else

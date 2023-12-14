@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 00:13:37 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/08 21:20:29 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/13 18:47:06 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,27 +54,18 @@ static t_token_list	*create_list(const char *str, \
 	return (list);
 }
 
-static const char	*check_cmd_type(const char *str, t_token_check *check)
+static const char	*check_cmd_type(const char *str)
 {
+	bool	in_quote;
+
+	in_quote = false;
 	while (*str)
 	{
-		if (!check->s_quote && !check->d_quote && *str == D_QUOTE)
-			check->d_quote = true;
-		else if (!check->d_quote && !check->s_quote && *str == S_QUOTE)
-			check->s_quote = true;
-		else if ((check->d_quote && *str == D_QUOTE)
-			|| (check->s_quote && *str == S_QUOTE))
-		{
-			if (*str == D_QUOTE)
-				check->d_quote = false;
-			if (*str == S_QUOTE)
-				check->s_quote = false;
-			str++;
-			break ;
-		}
-		else if (!check->d_quote && !check->s_quote && *str == SPACE)
-			break ;
-		else if (!check->d_quote && !check->s_quote && (*str == PYPE
+		if (!in_quote && (*str == D_QUOTE || *str == S_QUOTE))
+			in_quote = true;
+		else if (in_quote && (*str == D_QUOTE || *str == S_QUOTE))
+			in_quote = false;
+		else if (!in_quote && (*str == SPACE || *str == PYPE
 				|| *str == REDIR_IN || *str == REDIR_OUT))
 			break ;
 		str++;
@@ -94,7 +85,7 @@ t_token_list	*tokenize(const char *str)
 		while (*str == SPACE)
 			str++;
 		check->start = str;
-		str = check_cmd_type(str, check);
+		str = check_cmd_type(str);
 		if (*check->start == PYPE || *check->start == REDIR_IN
 			|| *check->start == REDIR_OUT)
 		{
