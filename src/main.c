@@ -65,6 +65,8 @@ int	main(int argc, char **argv, char **envp)
 	{
 		envval = make_envval(new_envs(envp));
 		bash_loop(envval);
+		envs_free(envval->env);
+		free(envval);
 	}	
 	return (0);
 }
