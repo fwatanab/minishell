@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 17:52:58 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/11 20:05:34 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/14 17:24:37 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,84 +32,83 @@ char	*expand_parameter(char *token, t_envval *envval)
 	return (new_token);
 }
 
-char	*delete_quote(char *token)
+static void	check_quote(t_quote_status *q_status, char c)
 {
-	char	*new_token;
-	size_t	i;
-	size_t	j;
-
-	if (!token || (token[0] != '\'' && token[0] != '"'))
-		return (token);
-	new_token = (char *)malloc(sizeof(char) * (ft_strlen(token) - 1));
-	if (!new_token)
-		return (NULL);
-	i = 0;
-	j = 1;
-	while (token[j])
+	if (c == '\'' && !q_status->d_quote)
 	{
-		if (token[j] == '\'' || token[j] == '"')
-			break ;
-		new_token[i++] = token[j++];
+		if (!q_status->s_quote)
+			q_status->s_quote = true;
+		else
+			q_status->s_quote = false;
 	}
-	new_token[i] = '\0';
-	free(token);
-	return (new_token);
+	else if (c == '\"' && !q_status->s_quote)
+	{
+		if (!q_status->d_quote)
+			q_status->d_quote = true;
+		else
+			q_status->d_quote = false;
+	}
+	else if (!q_status->s_quote && !q_status->d_quote
+		&& (c == '\'' || c == '\"'))
+		;
+	else
+		q_status->result[q_status->i++] = c;
 }
 
-char	*check_command(char *str)
+static char	*delete_quote(char *token)
 {
-	char	*tmp;
-	bool	quote;
-	size_t	open;
-	size_t	close;
+	t_quote_status	*q_status;
+	char			*str;
+	size_t			i;
 
-	tmp = str;
-	quote = false;
-	open = 0;
-	close = 0;
-	while (*tmp)
+	if (!token)
+		return (NULL);
+	q_status = quote_status_init(token);
+	if (!q_status)
+		return (NULL);
+	i = 0;
+	while (i < q_status->len)
 	{
-		if (!quote && (*tmp == '\'' || *tmp == '"'))
-			quote = true;
-		else if (quote && (*tmp == '\'' || *tmp == '"'))
-			quote = false;
-		else if (*tmp == '$' && *(tmp + 1) == '{')
-			open++;
-		else if ((close + 1) == open && *tmp == '}')
-			close++;
-		tmp++;
+		check_quote(q_status, token[i]);
+		i++;
 	}
-	if (quote || (str[0] == '\'' && str[ft_strlen(str) - 1] == '"')
-		|| (str[0] == '"' && str[ft_strlen(str)-1] == '\'') || open != close)
-		str[0] = '\0';
+	str = ft_strdup(q_status->result);
+	free(q_status->result);
+	free(q_status);
+	free(token);
 	return (str);
 }
 
-void	expansion(char **array, t_envval *envval)
+static void	expansion(char **array, t_node *node, t_envval *envval)
 {
-	char	*new_array;
 	size_t	i;
 
 	i = 0;
-	new_array = NULL;
 	while (array[i])
 	{
-		array[i] = check_command(array[i]);
+		array[i] = check_command(array[i], envval);
 		array[i] = expand_parameter(array[i], envval);
 		array[i] = delete_quote(array[i]);
 		i++;
+	}
+	if (array[0])
+	{
+		free(node->name);
+		node->name = search_path(array[0], envval->env);
 	}
 }
 
 void	check_exp(t_node *node, t_envval *envval)
 {
-	size_t	i;
-
-	i = 0;
 	if (!node)
 		return ;
 	if (node->args)
-		expansion(node->args, envval);
+		expansion(node->args, node, envval);
+	if (node->redir)
+	{
+		node->redir->file = check_command(node->redir->file, envval);
+		node->redir->file = delete_quote(node->redir->file);
+	}
 	if (node->left)
 		check_exp(node->left, envval);
 	if (node->right)

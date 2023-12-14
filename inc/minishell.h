@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 21:17:45 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/12 23:25:06 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/13 19:09:24 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,9 +88,9 @@ typedef struct s_envval
 //lexer parser
 t_token_list			*tokenize(const char *str);
 void					check_token(t_token_list *list);
-t_node					*parser_start(t_token_list **list, t_env *env);
+t_node					*parser_start(t_token_list **list);
 t_node					*parser(t_node *node, t_token_list **list,
-							t_parse_check *key, t_env *env);
+							t_parse_check *key);
 t_redir					*redir_parse(t_redir *redir, \
 						t_token_list **list, char *token);
 
