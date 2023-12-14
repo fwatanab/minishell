@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 17:52:58 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/14 17:24:37 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/14 20:03:44 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ static void	expansion(char **array, t_node *node, t_envval *envval)
 	i = 0;
 	while (array[i])
 	{
-		array[i] = check_command(array[i], envval);
+		array[i] = check_command(array[i]);
 		array[i] = expand_parameter(array[i], envval);
 		array[i] = delete_quote(array[i]);
 		i++;
@@ -106,7 +106,7 @@ void	check_exp(t_node *node, t_envval *envval)
 		expansion(node->args, node, envval);
 	if (node->redir)
 	{
-		node->redir->file = check_command(node->redir->file, envval);
+		node->redir->file = check_command(node->redir->file);
 		node->redir->file = delete_quote(node->redir->file);
 	}
 	if (node->left)
