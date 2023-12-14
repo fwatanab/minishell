@@ -51,6 +51,8 @@ int	dup_2_stdin(t_node *node)
 	{
 		if (is_type_heredoc(redir) || is_type_indirect(redir))
 		{
+			if (!able_read(redir->file))
+				return (print_error(redir->file, "Permission denied", 1));
 			if (redir->fd == -1)
 				return (print_error(redir->file, "No such file or directory",
 						1));

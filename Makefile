@@ -19,7 +19,9 @@ RE_SRCS = exec.c \
 			execution_by_process.c \
 			print_error.c \
 			is_single_command.c \
-			get_exit_code.c
+			get_exit_code.c \
+			output_redir.c \
+			ft_stat.c
 
 BUILTINS	= builtins/
 

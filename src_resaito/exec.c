@@ -50,6 +50,8 @@ void	execution(t_node *node, bool is_exec_pipe, t_envval *envval)
 	if (node->type == N_COMMAND)
 	{
 		status = dup_2_stdin(node);
+		if (status == 0)
+			status = dup_2_stdout(node);
 		if (status != 0)
 		{
 			envval->status = status;
@@ -82,9 +84,12 @@ void	wait_all(t_node *node, t_envval *envval)
 void	ft_execution(t_node *node, t_envval *envval)
 {
 	int	dupin;
+	int dupout;
 
 	dupin = dup(STDIN_FILENO);
+	dupout = dup(STDOUT_FILENO);
 	input_redir(node, envval);
+	output_redir(node, envval);
 	if (is_single_command(node) && is_builtin(node))
 		exec_builtin(node, envval);
 	else
@@ -94,6 +99,8 @@ void	ft_execution(t_node *node, t_envval *envval)
 	}
 	dup2(dupin, STDIN_FILENO);
 	close(dupin);
+	dup2(dupout, STDOUT_FILENO);
+	close(dupout);
 }
 
 // bool	has_pipe(t_node *node)

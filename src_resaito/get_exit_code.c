@@ -14,6 +14,8 @@
 
 int	get_exit_code(int n)
 {
+	if (n == 1)
+		return (n);
 	if (n % 256 == 0)
 		return (n / 256);
 	else
