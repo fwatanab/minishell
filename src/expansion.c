@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 17:52:58 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/14 16:31:51 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/14 16:42:43 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ static char	*delete_quote(char *token)
 	char			*str;
 	size_t			i;
 
+	if (!token)
+		return (NULL);
 	q_status = quote_status_init(token);
 	if (!q_status)
 		return (NULL);
@@ -75,31 +77,6 @@ static char	*delete_quote(char *token)
 	free(q_status);
 	return (str);
 }
-
-//static char	*delete_quote(char *token)
-//{
-//	size_t	length;
-//	char	*result;
-//	size_t	i;
-//	size_t	j;
-//
-//	if (token == NULL)
-//		return (NULL);
-//	length = strlen(token);
-//	result = malloc(length + 1);
-//	if (result == NULL)
-//		return (NULL);
-//	i = 0;
-//	j = 0;
-//	while (i < length)
-//	{
-//		if (token[i] != '\'' && token[i] != '\"')
-//			result[j++] = token[i];
-//		i++;
-//	}
-//	result[j] = '\0';
-//	return (result);
-//}
 
 char	*expansion(char **array, t_envval *envval)
 {
@@ -129,6 +106,11 @@ void	check_exp(t_node *node, t_envval *envval)
 		return ;
 	if (node->args)
 		node->name = expansion(node->args, envval);
+	if (node->redir)
+	{
+		node->redir->file = check_command(node->redir->file, envval);
+		node->redir->file = delete_quote(node->redir->file);
+	}
 	if (node->left)
 		check_exp(node->left, envval);
 	if (node->right)
