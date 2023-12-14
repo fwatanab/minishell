@@ -23,6 +23,7 @@
 # include <readline/readline.h>
 # include <signal.h>
 # include <stddef.h>
+# include <stdbool.h>
 
 # define MINISHELL "minishell $ "
 # define SPACE ' '
@@ -128,11 +129,15 @@ int						redir_dup(t_node *node);
 int						indirect_exec(t_node *node);
 int						heredoc_exec(t_redir *redir, t_envval *envval);
 int						input_redir(t_node *node, t_envval *envval);
+int						output_redir(t_node *node, t_envval *envval);
+bool					is_type_redirect(t_redir *redir);
+bool					is_type_append(t_redir *redir);
 bool					is_type_heredoc(t_redir *redir);
 bool					is_type_indirect(t_redir *redir);
 int						dup_2_stdin(t_node *node);
-int						able_file(char *filepath, t_redir *redir);
+int						dup_2_stdout(t_node *node);
 bool    				able_read(char *filepath);
+bool    				able_write(char *filepath);
 
 // env
 t_env					*new_envs(char **envp);
