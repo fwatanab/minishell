@@ -81,11 +81,9 @@ static char	*delete_quote(char *token)
 
 static void	expansion(char **array, t_node *node, t_envval *envval)
 {
-	char	*new_array;
 	size_t	i;
 
 	i = 0;
-	new_array = NULL;
 	while (array[i])
 	{
 		array[i] = check_command(array[i], envval);
@@ -102,9 +100,6 @@ static void	expansion(char **array, t_node *node, t_envval *envval)
 
 void	check_exp(t_node *node, t_envval *envval)
 {
-	size_t	i;
-
-	i = 0;
 	if (!node)
 		return ;
 	if (node->args)
