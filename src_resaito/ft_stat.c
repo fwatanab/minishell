@@ -24,3 +24,14 @@ bool    able_write(char *filepath)
         return (true);
     return (false);
 }
+
+bool    able_exec(char *filepath)
+{
+    struct stat buf;
+    
+    if (stat(filepath, &buf) < 0)
+        exit(1);
+    if (buf.st_mode & S_IXUSR)
+        return (true);
+    return (false);
+}
