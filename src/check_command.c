@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 18:47:48 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/13 18:52:39 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/14 20:03:21 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static char	*check_env_var_braces(char *str)
 	return (NULL);
 }
 
-char	*check_command(char *str, t_envval *envval)
+char	*check_command(char *str)
 {
 	char	*result;
 	char	*token;
@@ -68,14 +68,6 @@ char	*check_command(char *str, t_envval *envval)
 	result = check_close_quote(str);
 	token = check_env_var_braces(str);
 	if (result || token)
-	{
 		str[0] = '\0';
-		envval->status = 1;
-		if (result)
-			printf("Unbalanced quote found: %s\n", result);
-		else if (token)
-			printf("Unbalanced quote found: %s\n", token);
-		return (str);
-	}
 	return (str);
 }
