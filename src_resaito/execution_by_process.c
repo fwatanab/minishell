@@ -24,7 +24,6 @@ int	child_process(t_node *node, bool has_pipe, t_envval *envval, int pipefd[2])
 		dup2(pipefd[1], STDOUT_FILENO);
 		close(pipefd[1]);
 	}
-	redir_dup(node);
 	if (!node->name && ft_getpath(envval->env))
 		exit(print_error(node->args[0], "command not found", 127));
 	else if (!ft_getpath(envval->env))
