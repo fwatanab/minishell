@@ -88,7 +88,8 @@ void	ft_execution(t_node *node, t_envval *envval)
 
 	dupin = dup(STDIN_FILENO);
 	dupout = dup(STDOUT_FILENO);
-	input_redir(node, envval);
+	if (input_redir(node, envval) == -1)
+		return ;
 	output_redir(node, envval);
 	if (is_single_command(node) && is_builtin(node))
 		exec_builtin(node, envval);
