@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 14:05:49 by resaito           #+#    #+#             */
-/*   Updated: 2023/12/13 20:54:43 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/15 17:51:44 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "../inc/expansion.h"
 
 char	*expand_parameter(char *token, t_envval *envval);
+int		signal_check(void);
 
 int	redir_dup(t_node *node)
 {
@@ -54,15 +55,13 @@ int	heredoc_exec(t_redir *redir, t_envval *envval)
 	{
 		signal(SIGINT, signal_heredoc_handler);
 		signal(SIGQUIT, signal_heredoc_handler);
+		rl_event_hook = signal_check;
 		line = readline("> ");
 		if (line == NULL || g_sig_status == 1)
 		{
 			if (g_sig_status == 1)
-			{
-				check_status(envval);
 				free(line);
-				close(pipefd[1]);
-			}
+			close(pipefd[1]);
 			break ;
 		}
 		if (ft_strncmp(line, redir->file, ft_strlen(redir->file)) == 0)
