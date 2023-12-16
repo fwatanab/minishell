@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/25 18:26:49 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/15 18:56:42 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/16 19:39:28 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,5 +64,4 @@ int	signal_check(void)
 	if (g_sig_status)
 		rl_done = 1;
 	return (0);
-
 }
