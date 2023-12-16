@@ -123,6 +123,7 @@ void					ft_execution(t_node *node, t_envval *envval);
 int						child_process(t_node *node, bool has_pipe,
 							t_envval *envval, int pipefd[2]);
 void					parent_process(bool has_pipe, int pipefd[2]);
+bool    				able_exec(char *filepath);
 
 // redir
 int						redir_dup(t_node *node);
