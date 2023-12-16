@@ -21,6 +21,7 @@ int	execute_command(t_node *node, bool has_pipe, t_envval *envval)
 	if (has_pipe)
 		ft_pipe(pipefd);
 	pid = fork();
+	node->pid = pid;
 	if (pid < 0)
 		ft_perror("fork");
 	else if (pid == 0)
@@ -75,7 +76,8 @@ void	wait_all(t_node *node, t_envval *envval)
 	}
 	if (node->type == N_COMMAND)
 	{
-		wait(&status);
+		printf("pid: %d\n", node->pid);
+		waitpid(node->pid, &status, 0);
 		envval->status = get_exit_code(status);
 	}
 	return ;

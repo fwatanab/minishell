@@ -70,6 +70,7 @@ typedef struct s_node
 	struct s_redir		*redir;
 	struct s_node		*left;
 	struct s_node		*right;
+	pid_t				pid;
 }						t_node;
 
 typedef struct s_env
