@@ -76,7 +76,6 @@ void	wait_all(t_node *node, t_envval *envval)
 	}
 	if (node->type == N_COMMAND)
 	{
-		printf("pid: %d\n", node->pid);
 		waitpid(node->pid, &status, 0);
 		envval->status = get_exit_code(status);
 	}
@@ -98,6 +97,8 @@ void	ft_execution(t_node *node, t_envval *envval)
 	else
 	{
 		execution(node, false, envval);
+		close(STDIN_FILENO);
+		close(STDOUT_FILENO);
 		wait_all(node, envval);
 	}
 	dup2(dupin, STDIN_FILENO);
