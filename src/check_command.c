@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 18:47:48 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/14 20:03:21 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/16 19:34:32 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,14 +60,43 @@ static char	*check_env_var_braces(char *str)
 	return (NULL);
 }
 
-char	*check_command(char *str)
+static void	delete_node(t_node *node, t_envval *envval)
+{
+	size_t	i;
+
+	if (!node)
+		return ;
+	i = 0;
+	if (node->args)
+	{
+		while (node->args[i])
+		{
+			node->args[i][0] = '\0';
+			i++;
+		}
+	}
+	if (node->redir)
+		node->redir->file[0] = '\0';
+	if (node->left)
+		delete_node(node->left, envval);
+	if (node->right)
+		delete_node(node->right, envval);
+}
+
+char	*check_command(char *str, t_node *node, t_envval *envval)
 {
 	char	*result;
 	char	*token;
 
 	result = check_close_quote(str);
 	token = check_env_var_braces(str);
-	if (result || token)
-		str[0] = '\0';
+	if (token || result)
+	{
+		if (result)
+			printf("minishell: Unclosed quote found: %s\n", result);
+		if (token)
+			printf("minishell: Unclosed brace found: %s\n", token);
+		delete_node(node, envval);
+	}
 	return (str);
 }
