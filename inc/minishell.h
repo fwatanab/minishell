@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 21:17:45 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/13 19:09:24 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/16 19:39:06 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ t_redir					*redir_parse(t_redir *redir, \
 						t_token_list **list, char *token);
 
 //expansion
-void					check_exp(t_node *node, t_envval *envval);
+int						check_exp(t_node *node, t_envval *envval);
 
 //signal
 void					signal_handler(int sig);
@@ -124,7 +124,7 @@ void					ft_execution(t_node *node, t_envval *envval);
 int						child_process(t_node *node, bool has_pipe,
 							t_envval *envval, int pipefd[2]);
 void					parent_process(bool has_pipe, int pipefd[2]);
-bool    				able_exec(char *filepath);
+bool					able_exec(char *filepath);
 
 // redir
 int						redir_dup(t_node *node);
@@ -138,8 +138,8 @@ bool					is_type_heredoc(t_redir *redir);
 bool					is_type_indirect(t_redir *redir);
 int						dup_2_stdin(t_node *node);
 int						dup_2_stdout(t_node *node);
-bool    				able_read(char *filepath);
-bool    				able_write(char *filepath);
+bool					able_read(char *filepath);
+bool					able_write(char *filepath);
 
 // env
 t_env					*new_envs(char **envp);

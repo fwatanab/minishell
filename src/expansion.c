@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 17:52:58 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/14 20:03:44 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/16 19:37:18 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,38 +79,55 @@ static char	*delete_quote(char *token)
 	return (str);
 }
 
-static void	expansion(char **array, t_node *node, t_envval *envval)
+static int	expansion(char **array, t_node *node, t_envval *envval)
 {
 	size_t	i;
 
 	i = 0;
 	while (array[i])
 	{
-		array[i] = check_command(array[i]);
+		array[i] = check_command(array[i], node, envval);
 		array[i] = expand_parameter(array[i], envval);
 		array[i] = delete_quote(array[i]);
 		i++;
 	}
-	if (array[0])
+	if (node->args[0] && array[0] && array[0][0] != '\0')
 	{
 		free(node->name);
 		node->name = search_path(array[0], envval->env);
 	}
+	else
+	{
+		envval->status = 1;
+		node_free(node);
+		return (1);
+	}
+	return (0);
 }
 
-void	check_exp(t_node *node, t_envval *envval)
+int	check_exp(t_node *node, t_envval *envval)
 {
 	if (!node)
-		return ;
+		return (0);
 	if (node->args)
-		expansion(node->args, node, envval);
+	{
+		if (expansion(node->args, node, envval) == 1)
+			return (1);
+	}
 	if (node->redir)
 	{
-		node->redir->file = check_command(node->redir->file);
+		node->redir->file = check_command(node->redir->file, node, envval);
 		node->redir->file = delete_quote(node->redir->file);
 	}
 	if (node->left)
-		check_exp(node->left, envval);
+	{
+		if (check_exp(node->left, envval) == 1)
+			return (1);
+	}
 	if (node->right)
-		check_exp(node->right, envval);
+	{
+		if (check_exp(node->right, envval) == 1)
+			return (1);
+	}
+	return (0);
 }
