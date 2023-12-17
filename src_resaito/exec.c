@@ -100,6 +100,7 @@ void	ft_execution(t_node *node, t_envval *envval)
 		close(STDIN_FILENO);
 		close(STDOUT_FILENO);
 		wait_all(node, envval);
+
 	}
 	dup2(dupin, STDIN_FILENO);
 	close(dupin);
