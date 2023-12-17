@@ -38,6 +38,7 @@ t_node	*node_init(void)
 	node->redir = NULL;
 	node->left = NULL;
 	node->right = NULL;
+	node->pid = 0;
 	return (node);
 }
 

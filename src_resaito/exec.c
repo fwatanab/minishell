@@ -21,6 +21,7 @@ int	execute_command(t_node *node, bool has_pipe, t_envval *envval)
 	if (has_pipe)
 		ft_pipe(pipefd);
 	pid = fork();
+	node->pid = pid;
 	if (pid < 0)
 		ft_perror("fork");
 	else if (pid == 0)
@@ -75,7 +76,7 @@ void	wait_all(t_node *node, t_envval *envval)
 	}
 	if (node->type == N_COMMAND)
 	{
-		wait(&status);
+		waitpid(node->pid, &status, 0);
 		envval->status = get_exit_code(status);
 	}
 	return ;
@@ -88,14 +89,18 @@ void	ft_execution(t_node *node, t_envval *envval)
 
 	dupin = dup(STDIN_FILENO);
 	dupout = dup(STDOUT_FILENO);
-	input_redir(node, envval);
+	if (input_redir(node, envval) == -1)
+		return ;
 	output_redir(node, envval);
 	if (is_single_command(node) && is_builtin(node))
 		exec_builtin(node, envval);
 	else
 	{
 		execution(node, false, envval);
+		close(STDIN_FILENO);
+		close(STDOUT_FILENO);
 		wait_all(node, envval);
+
 	}
 	dup2(dupin, STDIN_FILENO);
 	close(dupin);

@@ -46,6 +46,8 @@ int	heredoc_exec(t_redir *redir, t_envval *envval)
 	char	*line;
 	int		pipefd[2];
 
+	if (g_sig_status == 1)
+		return (-2);
 	if (pipe(pipefd) < 0)
 	{
 		perror("pipe");
@@ -57,14 +59,15 @@ int	heredoc_exec(t_redir *redir, t_envval *envval)
 		signal(SIGQUIT, signal_heredoc_handler);
 		rl_event_hook = signal_check;
 		line = readline("> ");
-		if (line == NULL || g_sig_status == 1)
+		if ( g_sig_status == 1)
 		{
 			if (g_sig_status == 1)
 				free(line);
 			close(pipefd[1]);
-			break ;
+			close(pipefd[0]);
+			return (-2);
 		}
-		if (ft_strncmp(line, redir->file, ft_strlen(redir->file)) == 0)
+		if (line == NULL || ft_strncmp(line, redir->file, ft_strlen(redir->file)) == 0)
 		{
 			free(line);
 			close(pipefd[1]);

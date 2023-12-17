@@ -56,6 +56,8 @@ int	dup_2_stdin(t_node *node)
 			if (redir->fd == -1)
 				return (print_error(redir->file, "No such file or directory",
 						1));
+			if (redir->fd == -2)
+				return (1);
 			dup2(redir->fd, STDIN_FILENO);
 			close(redir->fd);
 		}

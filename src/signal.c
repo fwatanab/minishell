@@ -52,11 +52,9 @@ void	signal_heredoc_handler(int sig)
 
 void	check_status(t_envval *envval)
 {
-	if (g_sig_status)
-	{
+	if (g_sig_status && envval->status != 0)
 		envval->status = g_sig_status;
-		g_sig_status = 0;
-	}
+	g_sig_status = 0;
 }
 
 int	signal_check(void)
