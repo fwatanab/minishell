@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 21:17:45 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/16 19:39:06 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/18 18:32:25 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ void					signal_handler(int sig);
 void					signal_fork_handler(int sig);
 void					signal_heredoc_handler(int sig);
 void					check_status(t_envval *envval);
+void					check_fork_status(t_envval *envval);
 
 //free
 void					list_free(t_token_list **list);
