@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 21:17:52 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/18 18:32:44 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/18 18:44:18 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,12 @@ void	bash_loop(t_envval *envval)
 			exit(envval->status);
 			break ;
 		}
-		else if (line[0] == '\0' || is_only_space(line, envval) == 0)
-			free(line);
-		else
+		else if (!(line[0] == '\0' || is_only_space(line, envval) == 0))
 		{
 			add_history(line);
 			minishell(line, envval);
-			free(line);
 		}
+		free(line);
 	}
 	rl_clear_history();
 }
