@@ -49,7 +49,10 @@ int	check_question(t_parm *parm, t_envval *envval)
 	if (*(parm->tmp + 1) == '{' && *(parm->tmp + 2) == '?'
 		&& *(parm->tmp + 3) == '}')
 	{
-		tmp = ft_itoa(envval->status);
+		if (g_sig_status == 1)
+			tmp = ft_itoa(g_sig_status);
+		else
+			tmp = ft_itoa(envval->status);
 		parm->str = update_string_with_status(parm, tmp);
 		free(tmp);
 		if (!parm->str)
@@ -59,7 +62,10 @@ int	check_question(t_parm *parm, t_envval *envval)
 	}
 	else if (*(parm->tmp + 1) == '?')
 	{
-		tmp = ft_itoa(envval->status);
+		if (g_sig_status == 1)
+			tmp = ft_itoa(g_sig_status);
+		else
+			tmp = ft_itoa(envval->status);
 		parm->str = update_string_with_status(parm, tmp);
 		free(tmp);
 		if (!parm->str)
