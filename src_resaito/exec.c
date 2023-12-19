@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 13:39:58 by resaito           #+#    #+#             */
-/*   Updated: 2023/12/17 19:57:11 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/19 18:35:33 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ int	execute_command(t_node *node, bool has_pipe, t_envval *envval)
 {
 	int		pipefd[2];
 	pid_t	pid;
-	int		status;
 
 	if (has_pipe)
 		ft_pipe(pipefd);
@@ -31,7 +30,6 @@ int	execute_command(t_node *node, bool has_pipe, t_envval *envval)
 	{
 		signal(SIGINT, signal_fork_handler);
 		signal(SIGQUIT, signal_fork_handler);
-		waitpid(pid, &status, 0);
 		parent_process(has_pipe, pipefd);
 		return (0);
 	}
@@ -79,7 +77,12 @@ void	wait_all(t_node *node, t_envval *envval)
 	if (node->type == N_COMMAND)
 	{
 		waitpid(node->pid, &status, 0);
-		envval->status = get_exit_code(status);
+		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+			envval->status = 130;
+		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
+			envval->status = 131;
+		else if (WIFEXITED(status))
+			envval->status = WEXITSTATUS(status);
 	}
 	return ;
 }
@@ -99,8 +102,8 @@ void	ft_execution(t_node *node, t_envval *envval)
 	else
 	{
 		execution(node, false, envval);
-		close(STDIN_FILENO);
-		close(STDOUT_FILENO);
+//		close(STDIN_FILENO);
+//		close(STDOUT_FILENO);
 		wait_all(node, envval);
 
 	}
