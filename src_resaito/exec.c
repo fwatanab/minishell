@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 13:39:58 by resaito           #+#    #+#             */
-/*   Updated: 2023/12/19 12:33:24 by resaito          ###   ########.fr       */
+/*   Updated: 2023/12/19 12:36:18 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,6 @@ void	ft_execution(t_node *node, t_envval *envval)
 		close(STDIN_FILENO);
 		close(STDOUT_FILENO);
 		wait_all(node, envval);
-
 	}
 	dup2(dupin, STDIN_FILENO);
 	close(dupin);
