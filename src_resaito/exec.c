@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 13:39:58 by resaito           #+#    #+#             */
-/*   Updated: 2023/12/17 19:57:11 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/19 12:36:18 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void	wait_all(t_node *node, t_envval *envval)
 void	ft_execution(t_node *node, t_envval *envval)
 {
 	int	dupin;
-	int dupout;
+	int	dupout;
 
 	dupin = dup(STDIN_FILENO);
 	dupout = dup(STDOUT_FILENO);
@@ -102,7 +102,6 @@ void	ft_execution(t_node *node, t_envval *envval)
 		close(STDIN_FILENO);
 		close(STDOUT_FILENO);
 		wait_all(node, envval);
-
 	}
 	dup2(dupin, STDIN_FILENO);
 	close(dupin);

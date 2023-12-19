@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   redirect_dup.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
+/*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 14:05:49 by resaito           #+#    #+#             */
-/*   Updated: 2023/12/18 18:29:41 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/19 12:33:05 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 #include "../inc/expansion.h"
 
-char	*expand_parameter(char *token, t_envval *envval);
+static int	single_heredoc(int pipefd[2], t_redir *redir, t_envval *envval);
 
 int	redir_dup(t_node *node)
 {
@@ -49,8 +49,8 @@ int	signal_check(void)
 
 int	heredoc_exec(t_redir *redir, t_envval *envval)
 {
-	char	*line;
 	int		pipefd[2];
+	int		single_return;
 
 	if (g_sig_status == 1)
 		return (-2);
@@ -64,26 +64,39 @@ int	heredoc_exec(t_redir *redir, t_envval *envval)
 		signal(SIGINT, signal_heredoc_handler);
 		signal(SIGQUIT, signal_heredoc_handler);
 		rl_event_hook = signal_check;
-		line = readline("> ");
-		if ( g_sig_status == 1)
-		{
-			if (g_sig_status == 1)
-				free(line);
-			close(pipefd[1]);
-			close(pipefd[0]);
-			return (-2);
-		}
-		if (line == NULL || ft_strncmp(line, redir->file, ft_strlen(redir->file)) == 0)
-		{
-			free(line);
-			close(pipefd[1]);
+		single_return = single_heredoc(pipefd, redir, envval);
+		if (single_return == 1)
 			break ;
-		}
-		line = expand_parameter(line, envval);
-		ft_putendl_fd(line, pipefd[1]);
-		free(line);
+		else if (single_return == -2)
+			return (-2);
 	}
 	return (pipefd[0]);
+}
+
+static int	single_heredoc(int pipefd[2], t_redir *redir, t_envval *envval)
+{
+	char	*line;
+
+	line = readline("> ");
+	if (g_sig_status == 1)
+	{
+		if (g_sig_status == 1)
+			free(line);
+		close(pipefd[1]);
+		close(pipefd[0]);
+		return (-2);
+	}
+	if (line == NULL || ft_strncmp(line, redir->file,
+			ft_strlen(redir->file)) == 0)
+	{
+		free(line);
+		close(pipefd[1]);
+		return (1);
+	}
+	line = expand_parameter(line, envval);
+	ft_putendl_fd(line, pipefd[1]);
+	free(line);
+	return (0);
 }
 
 // t_node *make_node(enum e_type node_type, char **args)
