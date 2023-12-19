@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 21:17:52 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/16 19:50:23 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/18 18:44:18 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,22 +38,21 @@ void	bash_loop(t_envval *envval)
 	{
 		signal(SIGINT, signal_handler);
 		signal(SIGQUIT, signal_handler);
-		check_status(envval);
+		check_fork_status(envval);
 		line = readline(MINISHELL);
+		check_status(envval);
 		if (!line)
 		{
 			write(1, "exit\n", 5);
 			exit(envval->status);
 			break ;
 		}
-		else if (line[0] == '\0' || is_only_space(line, envval) == 0)
-			free(line);
-		else
+		else if (!(line[0] == '\0' || is_only_space(line, envval) == 0))
 		{
 			add_history(line);
 			minishell(line, envval);
-			free(line);
 		}
+		free(line);
 	}
 	rl_clear_history();
 }
