@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 14:05:49 by resaito           #+#    #+#             */
-/*   Updated: 2023/12/15 18:57:19 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/18 18:29:41 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 static int	single_heredoc(int pipefd[2], t_redir *redir, t_envval *envval);
 char	*expand_parameter(char *token, t_envval *envval);
-int		signal_check(void);
 
 int	redir_dup(t_node *node)
 {
@@ -39,6 +38,13 @@ int	redir_dup(t_node *node)
 	}
 	dup2(out_fd, STDOUT_FILENO);
 	close(out_fd);
+	return (0);
+}
+
+int	signal_check(void)
+{
+	if (g_sig_status)
+		rl_done = 1;
 	return (0);
 }
 

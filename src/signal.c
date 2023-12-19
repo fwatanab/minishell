@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/25 18:26:49 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/16 19:39:28 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/18 18:33:23 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,14 @@ void	signal_heredoc_handler(int sig)
 
 void	check_status(t_envval *envval)
 {
-	if (g_sig_status && envval->status != 0)
-		envval->status = g_sig_status;
+	if (g_sig_status)
+		envval->status = 1;
 	g_sig_status = 0;
 }
 
-int	signal_check(void)
+void	check_fork_status(t_envval *envval)
 {
-	if (g_sig_status)
-		rl_done = 1;
-	return (0);
+	if (g_sig_status && envval->status != 0)
+		envval->status = g_sig_status;
+	g_sig_status = 0;
 }

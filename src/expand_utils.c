@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 21:05:33 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/11 16:46:34 by resaito          ###   ########.fr       */
+/*   Updated: 2023/12/18 18:27:01 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,7 @@ int	check_question(t_parm *parm, t_envval *envval)
 	if (*(parm->tmp + 1) == '{' && *(parm->tmp + 2) == '?'
 		&& *(parm->tmp + 3) == '}')
 	{
-		if (g_sig_status == 1)
-			tmp = ft_itoa(g_sig_status);
-		else
-			tmp = ft_itoa(envval->status);
+		tmp = ft_itoa(envval->status);
 		parm->str = update_string_with_status(parm, tmp);
 		free(tmp);
 		if (!parm->str)
@@ -62,10 +59,7 @@ int	check_question(t_parm *parm, t_envval *envval)
 	}
 	else if (*(parm->tmp + 1) == '?')
 	{
-		if (g_sig_status == 1)
-			tmp = ft_itoa(g_sig_status);
-		else
-			tmp = ft_itoa(envval->status);
+		tmp = ft_itoa(envval->status);
 		parm->str = update_string_with_status(parm, tmp);
 		free(tmp);
 		if (!parm->str)
