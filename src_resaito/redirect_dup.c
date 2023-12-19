@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect_dup.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: resaito <resaito@student.42.fr>            +#+  +:+       +#+        */
+/*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 14:05:49 by resaito           #+#    #+#             */
-/*   Updated: 2023/12/18 18:29:41 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/19 12:33:05 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include "../inc/expansion.h"
 
 static int	single_heredoc(int pipefd[2], t_redir *redir, t_envval *envval);
-char	*expand_parameter(char *token, t_envval *envval);
 
 int	redir_dup(t_node *node)
 {
