@@ -34,6 +34,11 @@ bool	is_builtin(t_node *node)
 
 void	exec_builtin(t_node *node, t_envval *envval)
 {
+	int	status;
+
+	status = dup_2_stdin(node);
+	if (status == 0)
+		status = dup_2_stdout(node);
 	if (ft_strcmp(node->args[0], "echo") == 0)
 		envval->status = echo(node);
 	else if (ft_strcmp(node->args[0], "cd") == 0)
