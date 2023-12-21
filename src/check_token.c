@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 02:25:36 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/11/27 18:53:01 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/22 05:51:54 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	check_token(t_token_list *list)
 	char			*old_token;
 
 	tmp = list;
-	while (tmp->next)
+	while (tmp && tmp->next)
 	{
 		if ((ft_strcmp(tmp->token, "<") == 0
 				&& ft_strcmp(tmp->next->token, "<") == 0)
