@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 17:52:58 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/22 06:00:34 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/22 06:14:27 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static void	check_quote(t_quote_status *q_status, char c)
 		q_status->result[q_status->i++] = c;
 }
 
-static char	*delete_quote(char *token)
+char	*delete_quote(char *token)
 {
 	t_quote_status	*q_status;
 	char			*str;

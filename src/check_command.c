@@ -6,11 +6,26 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 18:47:48 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/16 19:34:32 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/22 06:11:44 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/expansion.h"
+
+int	check_redir(t_node *node, t_envval *envval)
+{
+	if (node->redir)
+	{
+		if (node->redir->type == 0)
+		{
+			envval->status = 258;
+			return (1);
+		}
+		node->redir->file = check_command(node->redir->file, node, envval);
+		node->redir->file = delete_quote(node->redir->file);
+	}
+	return (0);
+}
 
 static char	*check_close_quote(char *str)
 {
