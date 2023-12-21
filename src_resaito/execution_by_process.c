@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 14:17:03 by resaito           #+#    #+#             */
-/*   Updated: 2023/12/12 12:40:33 by resaito          ###   ########.fr       */
+/*   Updated: 2023/12/21 16:45:50 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	child_process(t_node *node, bool has_pipe, t_envval *envval, int pipefd[2])
 	}
 	if (!node->name && ft_getpath(envval->env))
 		exit(print_error(node->args[0], "command not found", 127));
-	else if (!ft_getpath(envval->env))
+	else if (!ft_getpath(envval->env) && access(node->name, X_OK) < 0)
 		exit(print_error(node->args[0], "No such file or directory", 127));
 	if (is_builtin(node))
 		exec_builtin(node, envval);
@@ -54,6 +54,8 @@ static t_env	*ft_getpath(t_env *env)
 {
 	t_env	*tmp;
 
+	if (env == NULL)
+		return (NULL);
 	tmp = env;
 	while (tmp && ft_strcmp(tmp->key, "PATH") != 0)
 		tmp = tmp->next;
