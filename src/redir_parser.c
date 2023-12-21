@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 19:48:34 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/21 17:16:11 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/21 17:33:06 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,12 @@ t_redir	*redir_parse(t_redir *redir, \
 	}
 	set_redir_type(current, token);
 	if (*list)
-	token = pop_token(list);
+		token = pop_token(list);
+	else
+	{
+		printf("minishell: syntax error near unexpected token `newline'\n");
+		redir->type = 0;
+	}
 	add_redir_file(current, token);
 	return (redir);
 }
