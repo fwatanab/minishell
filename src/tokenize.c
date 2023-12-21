@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 00:13:37 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/13 18:47:06 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/21 17:16:25 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static t_token_list	*create_list(const char *str, \
 {
 	if (str > check->start)
 	{
-		check->token = strndup(check->start, str - check->start);
+		check->token = ft_strndup(check->start, str - check->start);
 		if (!check->token)
 		{
 			list_free(&list);
