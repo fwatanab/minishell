@@ -42,15 +42,15 @@ static size_t	len_2_equal(char *str)
 	len = 0;
 	if (str == NULL)
 		return (0);
-	while (str[len] != '\0' && str[len] != '=')
-		len++;
-	if (len == 0)
+	if (!is_name(str))
 	{
 		ft_putstr_fd("minishell: export: `", STDERR_FILENO);
 		ft_putstr_fd(str, STDERR_FILENO);
 		ft_putendl_fd("': not a valid identififer", STDERR_FILENO);
 		return (0);
 	}
+	while (str[len] != '\0' && str[len] != '=')
+		len++;
 	if (str[len] != '=')
 		return (0);
 	return (len);
@@ -109,7 +109,7 @@ bool	is_name(char *str)
 	len = 0;
 	if (ft_isdigit(str[0]) || str[0] == '=')
 		return (false);
-	while (str[len] != '\0')
+	while (str[len] != '\0' && str[len] != '=')
 	{
 		if ((!ft_isalnum(str[len])) && str[len] != '_')
 			return (false);
