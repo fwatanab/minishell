@@ -53,6 +53,15 @@ t_env	*new_env(char *envp)
 		exit(1);
 	key_len = ft_strchr(envp, '=') - envp;
 	new->key = ft_strndup(envp, key_len);
+	if (!is_name(new->key))
+	{
+		ft_putstr_fd("minishell: export: `", STDERR_FILENO);
+		ft_putstr_fd(envp, STDERR_FILENO);
+		ft_putendl_fd("': not a valid identififer", STDERR_FILENO);
+		free(new->key);
+		free(new);
+		return(NULL);
+	}
 	value = ft_strchr(envp, '=') + 1;
 	new->value = ft_strdup(value);
 	new->next = NULL;
