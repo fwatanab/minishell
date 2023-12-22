@@ -152,6 +152,7 @@ void					envs_free(t_env *env);
 void					envs_str_free(t_env *env, char **str);
 void					env_free(t_env *env);
 t_envval				*make_envval(t_env *env);
+bool					is_name(char *str);
 
 // utils
 void					*ft_xmalloc(size_t size);
