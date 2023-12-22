@@ -28,7 +28,6 @@ void	minishell(char *line, t_envval *envval)
 		node_free(node);
 		return ;
 	}
-	print_node(node);
 	ft_execution(node, envval);
 	node_free(node);
 }
