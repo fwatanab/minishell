@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 17:52:58 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/22 06:14:27 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/22 19:22:48 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,6 @@ static int	expansion(char **array, t_node *node, t_envval *envval)
 	else
 	{
 		envval->status = 1;
-		node_free(node);
 		return (1);
 	}
 	return (0);
