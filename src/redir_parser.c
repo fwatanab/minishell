@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 19:48:34 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/22 05:46:26 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/22 19:37:44 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,10 @@ t_redir	*redir_parse(t_redir *redir, \
 		current = redir->next;
 	}
 	set_redir_type(current, token);
-	if (*list)
-		token = pop_token(list);
 	if (check_redir_error(redir, list) == 1)
 		return (NULL);
+	if (*list)
+		token = pop_token(list);
 	add_redir_file(current, token);
 	return (redir);
 }
