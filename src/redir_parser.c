@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 19:48:34 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/12 22:11:52 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/22 19:37:44 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,21 @@ static void	add_redir_file(t_redir *redir, char *token)
 		return ;
 }
 
+static int	check_redir_error(t_redir *redir, t_token_list **list)
+{
+	if (!redir)
+	{
+		printf("minishell: syntax error near unexpected token `newline'\n");
+		return (1);
+	}
+	else if (!*list)
+	{
+		printf("minishell: syntax error near unexpected token `newline'\n");
+		redir->type = 0;
+	}
+	return (0);
+}
+
 t_redir	*redir_parse(t_redir *redir, \
 		t_token_list **list, char *token)
 {
@@ -64,13 +79,11 @@ t_redir	*redir_parse(t_redir *redir, \
 		redir->next = create_redir();
 		current = redir->next;
 	}
-	if (!redir)
-	{
-		printf("minishell: syntax error near unexpected token `newline'\n");
-		return (NULL);
-	}
 	set_redir_type(current, token);
-	token = pop_token(list);
+	if (check_redir_error(redir, list) == 1)
+		return (NULL);
+	if (*list)
+		token = pop_token(list);
 	add_redir_file(current, token);
 	return (redir);
 }

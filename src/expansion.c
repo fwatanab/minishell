@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 17:52:58 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/16 19:37:18 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/22 19:22:48 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static void	check_quote(t_quote_status *q_status, char c)
 		q_status->result[q_status->i++] = c;
 }
 
-static char	*delete_quote(char *token)
+char	*delete_quote(char *token)
 {
 	t_quote_status	*q_status;
 	char			*str;
@@ -99,7 +99,6 @@ static int	expansion(char **array, t_node *node, t_envval *envval)
 	else
 	{
 		envval->status = 1;
-		node_free(node);
 		return (1);
 	}
 	return (0);
@@ -114,11 +113,8 @@ int	check_exp(t_node *node, t_envval *envval)
 		if (expansion(node->args, node, envval) == 1)
 			return (1);
 	}
-	if (node->redir)
-	{
-		node->redir->file = check_command(node->redir->file, node, envval);
-		node->redir->file = delete_quote(node->redir->file);
-	}
+	if (check_redir(node, envval) == 1)
+		return (1);
 	if (node->left)
 	{
 		if (check_exp(node->left, envval) == 1)
