@@ -14,6 +14,8 @@
 
 void	envs_free(t_env *env)
 {
+	if (!env)
+		return ;
 	if (env->next)
 		envs_free(env->next);
 	env_free(env);

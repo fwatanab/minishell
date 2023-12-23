@@ -60,7 +60,7 @@ t_env	*new_env(char *envp)
 		ft_putendl_fd("': not a valid identififer", STDERR_FILENO);
 		free(new->key);
 		free(new);
-		return(NULL);
+		return (NULL);
 	}
 	value = ft_strchr(envp, '=') + 1;
 	new->value = ft_strdup(value);

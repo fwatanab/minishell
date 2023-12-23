@@ -69,10 +69,10 @@ static int	unset_single(char *name, t_envval *envval)
 	}
 	if (tmp->next)
 		remove_env_entry(&(envval->env), tmp_back, tmp);
+	else if (ft_strcmp(tmp->key, tmp_back->key) == 0)
+		envval->env = NULL;
 	else if (ft_strcmp(name, tmp->key) == 0)
 		tmp_back->next = NULL;
-	else
-		return (0);
 	env_free(tmp);
 	return (0);
 }
@@ -91,16 +91,27 @@ static int	unset_single(char *name, t_envval *envval)
 // int	main(int ac, char **av, char **envp)
 // {
 // 	t_node	*node;
+// 	t_node	*node2;
 // 	// t_env	*env;
 //     t_envval *envval;
 //     char    **array;
 //     int     size = 0;
-// 	char	*unset_arg[] = {"unset", "PATH", NULL};
+// 	char	*unset_arg[] = {"unset", "aaa", NULL};
+// 	char	*args[] = {"aaa=hoge", "hoge=fuga", NULL};
+// 	char	*unset_arg2[] = {"unset", "hoge", NULL};
 
 // 	node = make_node(N_COMMAND, unset_arg);
-// 	envval = make_envval(new_envs(envp)); //make_envval.c make_env.c
-// 	printf("%d\n",unset(node, envval));
+// 	node2 = make_node(N_COMMAND, unset_arg2);
+// 	envval = make_envval(new_envs(args)); //make_envval.c make_env.c
+// 	unset(node, envval);
+// 	unset(node2, envval);
+// 	// printf("%d\n",unset(node, envval));
 //     array = make_env_strs(envval->env); //make_env.c
+// 	if (array == NULL)
+// 	{
+// 		printf("array == NULL\n");
+// 		exit(1);
+// 	}
 //     envs_free(envval->env); // env_free.c
 //     free(envval);
 //     while (array[size] != NULL)
@@ -109,6 +120,7 @@ static int	unset_single(char *name, t_envval *envval)
 //         size++;
 //     }
 // 	free(node);
+// 	free(node2);
 //     str_array_free(array); //env_free.c ../src/free.c
 // 	// envs_str_free(env, array);
 // } // ../libft/libft.a
