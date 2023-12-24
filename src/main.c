@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 21:17:52 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/18 18:44:18 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/22 19:21:32 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,10 @@ void	minishell(char *line, t_envval *envval)
 	node = parser_start(&list);
 	list_free(&tmp);
 	if (check_exp(node, envval) == 1)
+	{
+		node_free(node);
 		return ;
+	}
 	ft_execution(node, envval);
 	node_free(node);
 }
