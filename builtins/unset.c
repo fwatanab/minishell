@@ -73,6 +73,8 @@ static int	unset_single(char *name, t_envval *envval)
 		envval->env = NULL;
 	else if (ft_strcmp(name, tmp->key) == 0)
 		tmp_back->next = NULL;
+	else
+		return (0);
 	env_free(tmp);
 	return (0);
 }
