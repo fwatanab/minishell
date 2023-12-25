@@ -13,6 +13,7 @@
 #include "../inc/minishell.h"
 
 static t_env	*ft_getpath(t_env *env);
+static void		print_exec_error(t_node *node, t_envval *envval);
 
 int	child_process(t_node *node, bool has_pipe, t_envval *envval, int pipefd[2])
 {
@@ -24,14 +25,11 @@ int	child_process(t_node *node, bool has_pipe, t_envval *envval, int pipefd[2])
 		dup2(pipefd[1], STDOUT_FILENO);
 		close(pipefd[1]);
 	}
-	if (!node->name && ft_getpath(envval->env))
-		exit(print_error(node->args[0], "command not found", 127));
-	else if (!ft_getpath(envval->env) && access(node->name, X_OK) < 0)
-		exit(print_error(node->args[0], "No such file or directory", 127));
 	if (is_builtin(node))
 		exec_builtin(node, envval);
 	else
 	{
+		print_exec_error(node, envval);
 		str = make_env_strs(envval->env);
 		execve(node->name, node->args, str);
 		str_array_free(str);
@@ -62,4 +60,14 @@ static t_env	*ft_getpath(t_env *env)
 	if (tmp == NULL)
 		return (NULL);
 	return (tmp);
+}
+
+static void	print_exec_error(t_node *node, t_envval *envval)
+{
+	if (!node->name && ft_getpath(envval->env))
+		exit(print_error(node->args[0], "command not found", 127));
+	else if (!ft_getpath(envval->env) && access(node->name, X_OK) < 0)
+		exit(print_error(node->args[0], "No such file or directory", 127));
+	else
+		return ;
 }
