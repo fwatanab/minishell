@@ -44,7 +44,7 @@ void	exec_builtin(t_node *node, t_envval *envval)
 	else if (ft_strcmp(node->args[0], "cd") == 0)
 		envval->status = cd(node, envval);
 	else if (ft_strcmp(node->args[0], "pwd") == 0)
-		envval->status = pwd(envval);
+		envval->status = pwd();
 	else if (ft_strcmp(node->args[0], "export") == 0)
 		envval->status = export(node, envval);
 	else if (ft_strcmp(node->args[0], "unset") == 0)

@@ -12,15 +12,15 @@
 
 #include "../inc/builtins.h"
 
-int	pwd(t_envval *envval)
-{
-	t_env	*tmp;
+#define PATHNAME_SIZE 512
 
-	tmp = envval->env;
-	while (ft_strcmp(tmp->key, "PWD") != 0 && tmp->next)
-		tmp = tmp->next;
-	if (!(tmp->next))
+int	pwd(void)
+{
+	char	pathname[PATHNAME_SIZE];
+
+	ft_memset(pathname, '\0', PATHNAME_SIZE);
+	if (getcwd(pathname, PATHNAME_SIZE) == NULL)
 		return (1);
-	ft_putendl_fd(tmp->value, STDOUT_FILENO);
+	ft_putendl_fd(pathname, STDOUT_FILENO);
 	return (0);
 }

@@ -25,7 +25,7 @@ int				cd(t_node *node, t_envval *envval);
 int				echo(t_node *node);
 int				export(t_node *node, t_envval *envval);
 int				ft_env(t_envval *envval);
-int				pwd(t_envval *envval);
+int				pwd(void);
 int				unset(t_node *node, t_envval *envval);
 void			ft_exit(t_node *node, t_envval *envval);
 
