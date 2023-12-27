@@ -34,17 +34,17 @@ bool	is_builtin(t_node *node)
 
 void	exec_builtin(t_node *node, t_envval *envval)
 {
-	int	status;
-
-	status = dup_2_stdin(node);
-	if (status == 0)
-		status = dup_2_stdout(node);
+	envval->status = dup_2_stdin(node);
+	if (envval->status == 0)
+		envval->status = dup_2_stdout(node);
+	if (envval->status != 0)
+		return ;
 	if (ft_strcmp(node->args[0], "echo") == 0)
 		envval->status = echo(node);
 	else if (ft_strcmp(node->args[0], "cd") == 0)
 		envval->status = cd(node, envval);
 	else if (ft_strcmp(node->args[0], "pwd") == 0)
-		envval->status = pwd(envval);
+		envval->status = pwd();
 	else if (ft_strcmp(node->args[0], "export") == 0)
 		envval->status = export(node, envval);
 	else if (ft_strcmp(node->args[0], "unset") == 0)

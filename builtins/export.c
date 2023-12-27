@@ -87,7 +87,7 @@ static int	single_export(char *arg, t_envval *envval)
 	while (tmp->next && ft_strncmp(tmp->key, arg,
 			equal_len) != 0)
 		tmp = tmp->next;
-	if (ft_strncmp(tmp->key, arg, equal_len) == 0)
+	if (tmp->key && ft_strncmp(tmp->key, arg, equal_len) == 0)
 	{
 		free(tmp->value);
 		tmp->value = ft_strdup(arg + (equal_len + 1));
@@ -153,13 +153,12 @@ bool	is_name(char *str)
 // 	t_envval	*envval;
 //     char    **array;
 //     int     size = 0;
-// 	char	*export_arg[] = {"export", "$aaa=#a$s/a", NULL};
 
 // 	node = make_node(N_COMMAND, export_arg);
 // 	envval = make_envval(new_envs(envp));
 // 	export(node, envval);
 //     // array = make_env_strs(envval->env);
-//     envs_free(envval->env);
+//     envs_free(envval->env); // envs_free.c
 // 	free(envval);
 //     // while (array[size] != NULL)
 //     // {

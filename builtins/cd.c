@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 16:14:59 by resaito           #+#    #+#             */
-/*   Updated: 2023/12/11 18:52:33 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/24 18:06:16 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ int	cd(t_node *node, t_envval *envval)
 	ft_memset(pathname, '\0', PATHNAME_SIZE);
 	while (tmp->next && ft_strcmp(tmp->key, "PWD") != 0)
 		tmp = tmp->next;
-	free(tmp->value);
 	if (getcwd(pathname, PATHNAME_SIZE) == NULL)
 		return (1);
+	free(tmp->value);
 	tmp->value = ft_strdup(pathname);
 	return (0);
 }

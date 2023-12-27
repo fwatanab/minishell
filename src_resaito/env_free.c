@@ -29,7 +29,10 @@ void	envs_str_free(t_env *env, char **str)
 
 void	env_free(t_env *env)
 {
-	free(env->key);
-	free(env->value);
-	free(env);
+	if (env->key)
+		free(env->key);
+	if (env->value)
+		free(env->value);
+	if (env)
+		free(env);
 }
