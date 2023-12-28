@@ -20,10 +20,6 @@ int	export(t_node *node, t_envval *envval)
 {
 	size_t	size;
 
-	if (!envval)
-		return (0);
-	if (!envval->env)
-		return (0);
 	size = 1;
 	while (node->args[size] != NULL)
 	{
@@ -84,10 +80,10 @@ static int	single_export(char *arg, t_envval *envval)
 	if (equal_len == 0)
 		return (1);
 	tmp = envval->env;
-	while (tmp->next && ft_strncmp(tmp->key, arg,
+	while (tmp && ft_strncmp(tmp->key, arg,
 			equal_len) != 0)
 		tmp = tmp->next;
-	if (tmp->key && ft_strncmp(tmp->key, arg, equal_len) == 0)
+	if (tmp && tmp->key && ft_strncmp(tmp->key, arg, equal_len) == 0)
 	{
 		free(tmp->value);
 		tmp->value = ft_strdup(arg + (equal_len + 1));

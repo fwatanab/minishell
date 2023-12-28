@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../inc/builtins.h"
+#include "../inc/expansion.h"
 
 #define PATHNAME_SIZE 512
 
@@ -21,7 +22,7 @@ int	cd(t_node *node, t_envval *envval)
 	char	pathname[PATHNAME_SIZE];
 
 	if (node->args[1] == NULL)
-		val = chdir(getenv("HOME"));
+		val = chdir(ft_getenv("HOME", envval->env));
 	else
 		val = chdir(node->args[1]);
 	if (val < 0)
@@ -29,11 +30,13 @@ int	cd(t_node *node, t_envval *envval)
 		perror("cd");
 		return (1);
 	}
+	if (!envval->env)
+		return (0);
 	tmp = envval->env;
 	ft_memset(pathname, '\0', PATHNAME_SIZE);
 	while (tmp->next && ft_strcmp(tmp->key, "PWD") != 0)
 		tmp = tmp->next;
-	if (getcwd(pathname, PATHNAME_SIZE) == NULL)
+	if (ft_strcmp(tmp->key, "PWD") != 0 || !getcwd(pathname, PATHNAME_SIZE))
 		return (1);
 	free(tmp->value);
 	tmp->value = ft_strdup(pathname);
