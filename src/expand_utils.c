@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 21:05:33 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/18 18:27:01 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/28 08:31:43 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 char	*ft_getenv(char *str, t_env *env)
 {
-	if (!str || *str == '\0')
+	if (!str || *str == '\0' || !env)
 		return (NULL);
 	while (env)
 	{
-		if (ft_strcmp(env->key, str) == 0)
+		if (env->key && ft_strcmp(env->key, str) == 0)
 			return (env->value);
 		env = env->next;
 	}
