@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 14:08:23 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/28 16:09:04 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/28 16:18:26 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ void	add_minimal_env_if_missing(t_env **env)
 	char	*tmp;
 
 	if (!find_env_var(*env, "PATH"))
-		envadd_back(env, new_env("PATH=/usr/local/bin:/usr/bin:/bin"));
+		envadd_back(env, new_env("PATH=/usr/local/bin:/System/Cryptexes/"
+				"App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin"));
 	if (!find_env_var(*env, "PWD"))
 	{
 		if (getcwd(cwd, sizeof(cwd)))
