@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 21:17:45 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/18 18:32:25 by fwatanab         ###   ########.fr       */
+/*   Updated: 2023/12/28 16:09:17 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,9 @@ typedef struct s_envval
 	t_env				*env;
 	int					status;
 }						t_envval;
+
+//init env
+void					add_minimal_env_if_missing(t_env **env);
 
 //lexer parser
 t_token_list			*tokenize(const char *str);
