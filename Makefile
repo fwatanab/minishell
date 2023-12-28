@@ -2,7 +2,7 @@ NAME	= minishell
 
 SRCSDIR	= src/
 
-SRCS = main.c free.c check_line.c tokenize.c check_token.c parser.c redir_parser.c parser_utils.c lexer_parser_init.c expansion.c exp_init.c check_command.c expand_parameter.c expand_utils.c signal.c print.c
+SRCS = main.c free.c check_line.c check_env_init.c tokenize.c check_token.c parser.c redir_parser.c parser_utils.c lexer_parser_init.c expansion.c exp_init.c check_command.c expand_parameter.c expand_utils.c signal.c print.c
 
 RE_SRCSDIR	= src_resaito/
 

@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 15:12:57 by resaito           #+#    #+#             */
-/*   Updated: 2023/12/01 15:24:03 by resaito          ###   ########.fr       */
+/*   Updated: 2023/12/28 14:13:25 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ t_env	*new_envs(char **envp)
 		envadd_back(&env, new_env(envp[size]));
 		size++;
 	}
+	add_minimal_env_if_missing(&env);
 	return (env);
 }
 
