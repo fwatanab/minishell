@@ -21,6 +21,8 @@ int	unset(t_node *node, t_envval *envval)
 {
 	size_t	size;
 
+	if (!envval || !envval->env)
+		return (0);
 	size = 1;
 	while (node->args[size] != NULL)
 	{
