@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 19:48:34 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/22 19:37:44 by fwatanab         ###   ########.fr       */
+/*   Updated: 2024/01/06 16:06:20 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,11 @@ t_redir	*redir_parse(t_redir *redir, \
 	}
 	else
 	{
-		redir->next = create_redir();
-		current = redir->next;
+		current = redir;
+		while (current->next)
+			current = current->next;
+		current->next = create_redir();
+		current = current->next;
 	}
 	set_redir_type(current, token);
 	if (check_redir_error(redir, list) == 1)
