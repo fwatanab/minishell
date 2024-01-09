@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 13:32:35 by resaito           #+#    #+#             */
-/*   Updated: 2023/12/11 19:25:37 by fwatanab         ###   ########.fr       */
+/*   Updated: 2024/01/09 16:48:24 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,16 @@ bool	is_builtin(t_node *node)
 
 void	exec_builtin(t_node *node, t_envval *envval)
 {
-	envval->status = dup_2_stdin(node);
-	if (envval->status == 0)
-		envval->status = dup_2_stdout(node);
-	if (envval->status != 0)
+	int	status;
+
+	status = dup_2_stdin(node);
+	if (status == 0)
+		status = dup_2_stdout(node);
+	if (status != 0)
+	{
+		envval->status = status;
 		return ;
+	}
 	if (ft_strcmp(node->args[0], "echo") == 0)
 		envval->status = echo(node);
 	else if (ft_strcmp(node->args[0], "cd") == 0)
