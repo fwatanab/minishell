@@ -6,7 +6,7 @@
 /*   By: fwatanab <fwatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 00:13:37 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/21 17:16:25 by fwatanab         ###   ########.fr       */
+/*   Updated: 2024/01/10 19:42:09 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static const char	*check_cmd_type(const char *str)
 			in_quote = true;
 		else if (in_quote && (*str == D_QUOTE || *str == S_QUOTE))
 			in_quote = false;
-		else if (!in_quote && (*str == SPACE || *str == PYPE
+		else if (!in_quote && (*str == SPACE || *str == '\t' || *str == PYPE
 				|| *str == REDIR_IN || *str == REDIR_OUT))
 			break ;
 		str++;
@@ -82,7 +82,7 @@ t_token_list	*tokenize(const char *str)
 	check = checker_init();
 	while (*str)
 	{
-		while (*str == SPACE)
+		while (*str == SPACE || *str == '\t')
 			str++;
 		check->start = str;
 		str = check_cmd_type(str);
