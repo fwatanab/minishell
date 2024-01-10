@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 12:09:13 by resaito           #+#    #+#             */
-/*   Updated: 2023/12/19 12:14:32 by resaito          ###   ########.fr       */
+/*   Updated: 2024/01/10 19:48:17 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,12 @@ int	output_redir(t_node *node, t_envval *envval)
 {
 	t_redir	*redir;
 
-	if (node->type == NONE)
-		return (0);
 	if (node->type == N_PIPE)
 	{
 		output_redir(node->left, envval);
 		output_redir(node->right, envval);
 	}
-	if (node->type == N_COMMAND)
+	if (node->type == N_COMMAND || node->type == NONE)
 	{
 		redir = node->redir;
 		while (redir != NULL)

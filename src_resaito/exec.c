@@ -6,7 +6,7 @@
 /*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 13:39:58 by resaito           #+#    #+#             */
-/*   Updated: 2023/12/21 12:03:23 by resaito          ###   ########.fr       */
+/*   Updated: 2024/01/10 19:48:11 by resaito          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,12 @@ void	execution(t_node *node, bool is_exec_pipe, t_envval *envval)
 {
 	int	status;
 
-	if (node == NONE)
-		return ;
 	if (node->type == N_PIPE)
 	{
 		execution(node->left, true, envval);
 		execution(node->right, false, envval);
 	}
-	if (node->type == N_COMMAND)
+	if (node->type == N_COMMAND || node->type == NONE)
 	{
 		status = dup_2_stdin(node);
 		if (status == 0)
@@ -58,7 +56,8 @@ void	execution(t_node *node, bool is_exec_pipe, t_envval *envval)
 			envval->status = status;
 			return ;
 		}
-		execute_command(node, is_exec_pipe, envval);
+		if (node->type == N_COMMAND)
+			execute_command(node, is_exec_pipe, envval);
 	}
 	return ;
 }
