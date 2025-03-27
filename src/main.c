@@ -6,11 +6,24 @@
 /*   By: resaito <resaito@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 21:17:52 by fwatanab          #+#    #+#             */
-/*   Updated: 2023/12/22 19:21:32 by fwatanab         ###   ########.fr       */
+/*   Updated: 2025/03/27 19:58:47 by fwatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+
+void	print_banner(void)
+{
+	printf("\n");
+	printf("  ##     ## #### ##     ##  #### ######## ##     ## ######## ##       ##       \n");
+	printf("  ###   ###  ##  ###    ##   ##  ##       ##     ## ##       ##       ##       \n");
+	printf("  #### ####  ##  ####   ##   ##  ##       ##     ## ##       ##       ##       \n");
+	printf("  ## ### ##  ##  ## ##  ##   ##  ######## ######### ######   ##       ##       \n");
+	printf("  ##     ##  ##  ##  ## ##   ##        ## ##     ## ##       ##       ##       \n");
+	printf("  ##     ##  ##  ##   ####   ##        ## ##     ## ##       ##       ##       \n");
+	printf("  ##     ## #### ##    ###  #### ######## ##     ## ######## ######## ######## \n");
+	printf("\n\n");
+}
 
 void	minishell(char *line, t_envval *envval)
 {
@@ -37,6 +50,7 @@ void	bash_loop(t_envval *envval)
 	char	*line;
 
 	rl_catch_signals = 0;
+	print_banner();
 	while (1)
 	{
 		signal(SIGINT, signal_handler);
@@ -70,6 +84,6 @@ int	main(int argc, char **argv, char **envp)
 		bash_loop(envval);
 		envs_free(envval->env);
 		free(envval);
-	}	
+	}
 	return (0);
 }
